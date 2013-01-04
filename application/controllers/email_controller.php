@@ -2,7 +2,7 @@
 if(!defined('BASEPATH'))
 	die();
 
-class Email_controller extends CI_Controller{
+class Email_controller extends CI_Controller {
 	
 	function __construct(){
 		parent::__construct();
@@ -15,7 +15,7 @@ class Email_controller extends CI_Controller{
 		);
 		$this->email->initialize($config);
 		if($from!=null){
-			$this->email->from($from);			
+			$this->email->from($from);
 		}
 		else{
 			$this->email->from("info@elencantobernal.com");
