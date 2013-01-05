@@ -18,7 +18,7 @@ class Email_controller extends CI_Controller {
 			$this->email->from($from);
 		}
 		else{
-			$this->email->from("info@elencantobernal.com");
+			$this->email->from("CUENTA_CORREO");
 		}
 		$this->email->to($to);
 		$this->email->subject($asunto);

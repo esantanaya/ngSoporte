@@ -7,12 +7,30 @@ class Usuario_model extends CI_Model {
 	public function __construct()
 	{
 		parent::__construct();
-		//Do your magic here
+		$this->load->config('tables', TRUE);
+		$this->tablas = $this->config->item('tablas', 'tables');
+		$this->load->model('auth_model');
 	}
 
-	function insert_usuario() {
-		$this
+	function insert_usuario($data) 
+	{
+		$this->db->insert($this->tablas['usuarios'], $data);
+		return $this->db->insert_id();
 	}
+
+	public function get_usuario_tipo($tipo)
+	{
+		$this->db->where('id_tipo_usuario', $tipo);
+		$this->db->get($this->tablas['usuarios']);
+
+		if ($query->num_rows() >= 1) 
+		{
+		 	return $query;
+		 }
+		 return NULL; 
+	}
+
+
 }
 
 /* End of file usuario_model.php */
