@@ -24,6 +24,9 @@ class Pruebas_controller extends CI_Controller {
 
 	public function manda_dato()
 	{
+
+		$this->load->library('usuario');
+
 		$id_usuario = $this->usuario_model->get_current_id_usuario();
 		$clave_usuario = $this->input->post('usuario');
 		
@@ -36,8 +39,10 @@ class Pruebas_controller extends CI_Controller {
 		}
 		else
 		{
+			$usuario = new Usuario;
 
-			$data = array('id_usuario' => $id_usuario, 
+
+			/*$data = array('id_usuario' => $id_usuario, 
 				'id_grupo_usuario' => $this->input->post('tipo_usuario'),
 				'cod_usuario' =>  $clave_usuario,
 				'nombre_usuario' => $this->input->post('nombre'),
@@ -48,7 +53,7 @@ class Pruebas_controller extends CI_Controller {
 				'tel_usuario' => $this->input->post('tel'),
 				'movil_usuario' => $this->input->post('movil'),
 				'firma_usuario' => $this->input->post('firma'),
-				);
+				);*/
 
 			$id = $this->usuario_model->insert_usuario($data);
 			$datos['id_usuario'] = 'ahhh si tu id de usuario es '
