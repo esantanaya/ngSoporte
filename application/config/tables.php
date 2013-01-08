@@ -3,19 +3,19 @@
 *	Tablas de la base de datos
 */
 
-$config['tablas']['sop_syslog'] = 'syslog';
-$config['tablas']['tk_datos_adjuntos'] = 'datos';
-$config['tablas']['tk_lock'] = 'lock';
-$config['tablas']['tk_mensaje'] = 'mensaje';
-$config['tablas']['tk_notas'] = 'notas';
-$config['tablas']['tk_prioridad'] = 'prioridad';
-$config['tablas']['tk_respuesta'] = 'respuesta';
-$config['tablas']['tk_ticket'] = 'ticket';
-$config['tablas']['us_departamentos'] = 'departamentos';
-$config['tablas']['us_email'] = 'email';
-$config['tablas']['us_grupos'] = 'grupos';
-$config['tablas']['us_tipos_usuarios'] = 'tipos';
-$config['tablas']['us_usuarios'] = 'usuarios';
+$config['tablas']['syslog'] = 'sop_syslog';
+$config['tablas']['adjuntos'] = 'tk_datos_datos';
+$config['tablas']['lock'] = 'tk_lock';
+$config['tablas']['mensaje'] = 'tk_mensaje';
+$config['tablas']['notas'] = 'tk_notas';
+$config['tablas']['prioridad'] = 'tk_prioridad';
+$config['tablas']['respuesta'] = 'tk_respuesta';
+$config['tablas']['ticket'] = 'tk_ticket';
+$config['tablas']['departamentos'] = 'us_departamentos';
+$config['tablas']['email'] = 'us_email';
+$config['tablas']['grupos'] = 'us_grupos';
+$config['tablas']['tipos'] = 'us_tipos_usuarios';
+$config['tablas']['usuarios'] = 'us_usuarios';
 
 /* End of file tables.php */
 /* Location: ./application/config/tables.php */

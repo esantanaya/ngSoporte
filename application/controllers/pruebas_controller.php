@@ -16,6 +16,7 @@ class Pruebas_controller extends CI_Controller {
 
 		$data['SYS_metaTitle'] = 'Pruebas';
 		$data['exito'] = 'indesiso';
+		$data['num'] = rand(100000,999999);
 
 		if ($this->form_validation->run() == FALSE) 
 		{
