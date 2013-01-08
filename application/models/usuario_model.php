@@ -15,13 +15,13 @@ class Usuario_model extends CI_Model {
 	public function get_current_id_usuario()
 	{
 		$this->db->select_max('id_usuario');
-		$query = $this->db->get($this->tablas['usuarios']);
+		$query = $this->db->get($this->tablas['usuarios']) + 1;
 
-		if ($query->num_rows() == 0)
+		if ($query->num_rows() === 0)
 		{
 			return 1;
 		}
-		return $query;
+		return $query->result();
 	}
 
 	public function insert_usuario($data) 
@@ -37,9 +37,9 @@ class Usuario_model extends CI_Model {
 
 		if ($query->num_rows() >= 1) 
 		{
-		 	return $query;
+		 	return $query->result();
 		 }
-		 return NULL; 
+		 return null; 
 	}
 
 	public function get_usuario_clave($clave)
@@ -49,7 +49,7 @@ class Usuario_model extends CI_Model {
 
 		if ($query->num_rows() >= 1)
 		{
-			return $query;
+			return $query->result();
 		}
 		return null;
 	}
@@ -120,14 +120,14 @@ class Usuario_model extends CI_Model {
 	public function get_current_grupo()
 	{
 		$this->db->select_max('group_id');
-		$query = $this->db->get($this->tablas['grupos']);
+		$query = $this->db->get($this->tablas['grupos']) + 1;
 
 		if ($query->num_rows() == 0)
 		{
 			return 1;
 		}
 
-		return $query;
+		return $query->result();
 	}
 
 	public function get_grupo_name($nombre)
@@ -137,7 +137,7 @@ class Usuario_model extends CI_Model {
 
 		if ($query->num_rows() >= 1) 
 		{
-			return $query;
+			return $query->result();
 		}
 		return null;
 	}
