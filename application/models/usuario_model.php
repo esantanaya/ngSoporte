@@ -15,13 +15,17 @@ class Usuario_model extends CI_Model {
 	public function get_current_id_usuario()
 	{
 		$this->db->select_max('id_usuario');
-		$query = $this->db->get($this->tablas['usuarios']) + 1;
+		$query = $this->db->get($this->tablas['usuarios']);
 
-		if ($query->num_rows() === 0)
+		if ($query->num_rows() > 0)
 		{
-			return 1;
+			$row = $query->result_array();
+			$data = $row[0]['id_usuario'];
+
+			return $data;
 		}
-		return $query->result();
+		
+		return 1;
 	}
 
 	public function insert_usuario($data) 

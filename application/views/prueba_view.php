@@ -39,6 +39,8 @@
 
 		<div><input type="submit" value="Probar"></div>
 		<p>Mira un n&uacute;mero aleatorio: <?=$num?></p>
+		<p>Aca va el id de usuario <?=$temp_id_usuario?></p>
+		<p>La fecha es <?=$fecha?></p>
 		<p><?=$id_usuario?></p>
 		<div>
 			<table></table>

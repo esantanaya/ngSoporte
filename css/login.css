@@ -1,0 +1,67 @@
+* {
+	margin: 0 auto;
+	padding: 0;
+}
+
+body {
+	background: #fff url('../imagenes/degradado.png') 0 0 repeat-x;
+}
+
+#wrapper {
+	width: 802px;
+	height: auto;
+	text-align: center;
+}
+
+#logo {
+	margin: 150px 0 20px 0;
+	height: 60px;
+	width: 100%;
+	background: url("../imagenes/logo.png") no-repeat scroll center top transparent;
+}
+
+#label_login {
+	color: red;
+}
+
+#formulario {
+	width: 350px;
+	text-align: right;
+}
+
+#boton {
+	margin-top: 10px;
+	text-align: center;
+}
+
+#footer {
+	background: #fff url('../imagenes/piedepagina.png') 0 0 repeat-x;
+	color: #A4A3A3;
+	text-align: center;
+	width: 802px;
+	font-size: 10px;
+	padding-top: 15px;
+	height: 41px;
+}
+
+.texto {
+	height: 39px;
+	width: 267px;
+	border: none;
+	padding: 0 10px;
+	background: #fff url('../imagenes/cuadro.png') 0 0 no-repeat;
+}
+
+.entrar {
+	border: none;
+	color: #A4A3A3;
+	height: 39px;
+	width: 177px;
+	background: url('../imagenes/boton.png');
+}
+
+/*
+ * gris obscuro : 303030
+ * gris claro : A4A3A3
+ * rojo: B91618
+ */
