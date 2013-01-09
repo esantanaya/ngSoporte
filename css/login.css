@@ -5,12 +5,13 @@
 
 body {
 	background: #fff url('../imagenes/degradado.png') 0 0 repeat-x;
+	font-family: 'Gisha';
+	text-align: center;
 }
 
 #wrapper {
 	width: 802px;
 	height: auto;
-	text-align: center;
 }
 
 #logo {
@@ -25,7 +26,7 @@ body {
 }
 
 #formulario {
-	width: 350px;
+	width: 365px;
 	text-align: right;
 }
 
@@ -50,6 +51,7 @@ body {
 	border: none;
 	padding: 0 10px;
 	background: #fff url('../imagenes/cuadro.png') 0 0 no-repeat;
+	margin-left: 5px;
 }
 
 .entrar {
@@ -58,8 +60,34 @@ body {
 	height: 39px;
 	width: 177px;
 	background: url('../imagenes/boton.png');
+	font-family: 'PTSans';
 }
 
+.clear {
+	clear: both;
+}
+
+@font-face {
+	font-family: 'Gisha';
+	src: url('fonts/Gisha/ufontscomgisha.eot');
+	src: url('fonts/Gisha/ufontscomgisha.eot?#iefix') format('embedded-opentype'),
+			 url('fonts/Gisha/ufontscomgisha.woff') format('woff'),
+			 url('fonts/Gisha/ufontscomgisha.ttf') format('truetype'),
+			 url('fonts/Gisha/ufontscomgisha.svg#gothic') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'PTSans';
+	src: url('fonts/PTSansBold/pts75f.eot');
+	src: url('fonts/PTSansBold/pts75f.eot?#iefix') format('embedded-opentype'),
+			 url('fonts/PTSansBold/pts75f.woff') format('woff'),
+			 url('fonts/PTSansBold/pts75f.ttf') format('truetype'),
+			 url('fonts/PTSansBold/pts75f.svg#gothic') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
 /*
  * gris obscuro : 303030
  * gris claro : A4A3A3

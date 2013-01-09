@@ -26,6 +26,7 @@
 			</div>
 		</div>
 		<div style="height: 250px;"></div>
+		<div class="clear"></div>
 		<div id="footer">
 			Copyright &copy; 2013 Sistema de Tickets  All Rights Reserved.
 		</div>
