@@ -20,7 +20,7 @@ class Sesion extends CI_Controller {
 		$this->form_validation->set_rules('pass', 
 			'Contrase&ntilde;a', 'trim|required|xss_clean');
 		$this->form_validation->set_message('required', 
-			'El campo "%s" es requerido');
+			'Ingrese su "%s" por favor');
 		$this->form_validation->set_message('xss_clean', 
 			'El campo "%s" contiene un posible ataque XSS');
 		$this->form_validation->set_error_delimiters('<span class="error">', 
@@ -29,30 +29,28 @@ class Sesion extends CI_Controller {
 		// Ejecuto la validacion de campos de lado del servidor
 		if (!$this->form_validation->run()) 
 		{
-			$this->session->set_flashdata('error', 'error_4');
-			redirect($failredir);
+			$data['mensaje_login'] = 'Error';
+			$this->load->view('public/login_view', $data);
 			return false;
-		} else {						
-			// if(!isThatMyToken('loginForm', $this->input->post('token'), 0))
-			//{
-				// $this->session->set_flashdata('error', 'invalidToken');
-				// redirect($failredir);
-				// return false;
-			// }
-			$usuario = $this -> input -> post('usuario');
-			$password = $this -> input -> post('pass');
-			$recordarme = $this -> input -> post('recordarme');
+		} 
+		else 
+		{						
+			$usuario = $this->input->post('usuario');
+			$password = $this->input->post('pass');
+			$recordarme = $this->input->post('recordarme');
 			if($failredir=='index')
 				$failredir = '';
-			switch($this -> auth_model -> login($usuario, $password, 
+			switch($this->auth_model->login($usuario, $password, 
 				$recordarme)) {
 				case 1:
-					if($query!=""){
+					if($query!="")
+					{
 						$redirect = $redir.$query;
 						$redirect = substr($redirect, 0,
 							(strlen($redirect)-12));
 					}
-					else{
+					else
+					{
 						$redirect = $redir;
 					}
 					redirect($redirect);
@@ -71,6 +69,20 @@ class Sesion extends CI_Controller {
 				break;
 			}
 		}
+	}
+
+	function logout($redir, $error = null) 
+	{
+		$this->session->sess_destroy();
+		$this->auth_model->deleteCookies();
+		//borramos cookies
+		if($error!=null){
+			$this->session->sess_create();
+			$this->session->set_flashdata('error', $error);
+		}
+		if($redir == 'index')
+			redirect('');
+		redirect($redir);
 	}
 }
 

@@ -12,6 +12,8 @@ class Usuario_model extends CI_Model {
 		$this->load->model('auth_model');
 	}
 
+	//****USUARIOS****
+
 	public function get_current_id_usuario()
 	{
 		$this->db->select_max('id_usuario');
@@ -19,8 +21,10 @@ class Usuario_model extends CI_Model {
 
 		if ($query->num_rows() > 0)
 		{
-			$row = $query->result_array();
-			$data = $row[0]['id_usuario'];
+			//$row = $query->result_array();
+			//$data = $row[0]['id_usuario'];
+			$row = $query->row();
+			$data = $row->id_usuario;
 
 			return $data;
 		}
@@ -32,6 +36,8 @@ class Usuario_model extends CI_Model {
 	{
 		$data['pass_usuario'] = $this->auth_model->hashPassword(
 			$data['pass_usuario'], null);
+		$data['authKey'] = $this->auth_model->getNewAuthKey(
+			$data['cod_usuario'], 20);
 		$this->db->insert($this->tablas['usuarios'], $data);
 		return $this->db->insert_id();
 	}
@@ -123,6 +129,17 @@ class Usuario_model extends CI_Model {
 		return false;
 	}
 
+	public function get_miembros_staff()
+	{
+		$this->db->where('id_tipo_usuario', 2);
+		$this->db->select('cod_usuario');
+		$staff = $this->db->get($this->tablas['usuarios']);
+
+		return $staff;
+	}
+
+	//****GRUPOS****
+
 	public function get_current_grupo()
 	{
 		$this->db->select_max('group_id');
@@ -205,9 +222,19 @@ class Usuario_model extends CI_Model {
 		return false;
 	}
 
+	//****DEPARTAMENTOS****
+
 	public function insert_departamento($data)
 	{
 		$this->db->insert($this->tablas['departamentos'], $data);
+	}
+
+	public function get_departamentos_id()
+	{
+		$this->db->select('dept_id, dept_name');
+		$query = $this->db->get($this->tablas['departamentos']);
+
+		return $query->result_array();
 	}
 }
 

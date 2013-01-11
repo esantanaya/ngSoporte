@@ -63,6 +63,10 @@ body {
 	font-family: 'PTSans';
 }
 
+.error {
+	color: red;
+}
+
 .clear {
 	clear: both;
 }

@@ -21,7 +21,8 @@ class Pruebas_controller extends CI_Controller {
 		$data['SYS_metaTitle'] = 'Pruebas';
 		$data['num'] = rand(100000,999999);
 		$data['id_usuario'] = '';
-		$data['temp_id_usuario'] = $this->usuario_model->get_current_id_usuario();
+		$data['temp_id_usuario'] = $this->usuario_model->
+									get_current_id_usuario();
 		$data['fecha'] = mdate($datestring, $time);
 
 		$this->load->view('prueba_view', $data);
