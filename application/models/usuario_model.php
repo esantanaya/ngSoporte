@@ -30,6 +30,8 @@ class Usuario_model extends CI_Model {
 
 	public function insert_usuario($data) 
 	{
+		$data['pass_usuario'] = $this->auth_model->hashPassword(
+			$data['pass_usuario'], null);
 		$this->db->insert($this->tablas['usuarios'], $data);
 		return $this->db->insert_id();
 	}

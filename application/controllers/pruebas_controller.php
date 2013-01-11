@@ -94,7 +94,7 @@ class Pruebas_controller extends CI_Controller {
 				'firma_usuario' => $this->input->post('firma'),
 				);
 
-			$id = $this->usuario_model->insert_usuario($this->usuario);
+			$id = $this->usuario_model->insert_usuario($data);
 			$datos['id_usuario'] = 'ahhh si tu id de usuario es ' . $id;
 			$this->load->view('prueba_view', $datos);
 		}

@@ -48,4 +48,3 @@ $lang['admin404']			   = "El contenido que está buscando no existe o ha sido bo
 
 $lang['noCliente404']		   = 'El número de cliente que ingresó no existe. Favor de verificarlo.';
 $lang['solicitudEnviada']	   = 'Su información ha sido enviada correctamente, recibirá la confirmación en las próximas 12 horas';
-?>
