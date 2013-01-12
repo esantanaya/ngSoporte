@@ -42,8 +42,6 @@ $route['default_controller'] = "public/login";
 $route['404_override'] = '';
 
 $route['login'] = 'public/login';
-$route['ticket-usuario'] = 'public/tickets';
-
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

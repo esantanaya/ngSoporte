@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Tickets extends CI_Controller {
+class Tickets_usuario extends CI_Controller {
 
 	public function __construct()
 	{
@@ -26,16 +26,18 @@ class Tickets extends CI_Controller {
 
 	public function crea_ticket()
 	{
+		$this->load->helper('date');
 		$date_string = "%Y%m%d %h:%i:%s";
 		$time = time();
 
-		$ticket['dept_id'] = $this->input->post('departamento');
-		$ticket['subject'] = $this->input->post('asunto');
-		$ticket['created'] = mdate($date_string, $time);
-		$ticket['ticketID'] = $this->ticket_model->create_ticket_usuario();
+		$chi['dept_id'] = $this->input->post('departamento');
+		$chi['subject'] = $this->input->post('asunto');
+		$chi['created'] = mdate($date_string, $time);
+		$chi['ticketID'] = $this->ticket_model->create_ticket_usuario();
+		$chi['usuario_id'] = $this->session->userdata('idUsuario');
  
 		$mensaje['message'] = $this->input->post('mensaje');
-		$mensaje[''];
+		//$mensaje['ticket_id'] = ;
 
 		$miembros_staff = $this->usuario_model->get_miembros_staff();
 
@@ -48,16 +50,19 @@ class Tickets extends CI_Controller {
 
 			case 1:
 				$row = $miembros_staff->row();
-				$data = $row->cod_staff;
+				$data = $row->cod_usuario;
 
-				$ticket['cod_staff'] = $data;
+				$chi['cod_staff'] = $data;
 				break;
 			
 			default:
-				$ticket['cod_staff'] = $this->ticket_model->get_elegido(
+				$chi['cod_staff'] = $this->ticket_model->get_elegido(
 									$miembros_staff);
 				break;
 		}
+
+		$this->ticket_model->insert_ticket($chi, null);
+		$this->load->view('public/nuevo_ticket_view', $chi);
 	}
 }
 
