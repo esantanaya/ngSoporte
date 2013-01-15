@@ -129,9 +129,9 @@ class Usuario_model extends CI_Model {
 		return false;
 	}
 
-	public function get_miembros_staff()
+	public function get_miembros_staff($dept)
 	{
-		$this->db->where('id_tipo_usuario', 2);
+		$this->db->where('id_departamento_usuario', $dept);
 		$this->db->select('cod_usuario');
 		$staff = $this->db->get($this->tablas['usuarios']);
 

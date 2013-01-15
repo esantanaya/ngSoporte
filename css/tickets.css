@@ -1,0 +1,174 @@
+*{
+	margin: 0 auto;
+	padding: 0;
+}
+
+#wrapper {
+	width: 802px;
+	height: auto;
+	color: #313131;
+	font-family: 'Gisha';
+	font-size: 16px;
+}
+
+#top {
+	height: 109px;
+	width: 100%;
+	background: #fff url('../imagenes/titulo.png') 0 0 no-repeat;
+}
+
+#menu {
+	width: 100%;
+	height: 49px;
+	background: #fff url('../imagenes/menu.png') 0 0 no-repeat;
+	text-align: right;
+	font-family: 'PTSans';
+	font-size: 14px;
+}
+
+#menu a{
+	color: #9B9B9B;
+	text-decoration: none;
+}
+
+#menu ul{
+	list-style-type: none;
+	text-decoration: none;
+}
+
+#menu ul li{
+	display: inline-block;
+	width: 134px;
+	padding: 13px 0;
+	text-align: center;
+	vertical-align: middle;
+	background: url('../imagenes/separador.png') left center no-repeat;
+}
+
+#content #nuevoTitulo {
+	background: url("../imagenes/ic_nuevoticket.png") no-repeat scroll left
+				center transparent;
+    margin-left: 30px;
+    padding: 20px 0 20px 75px;
+    width: 100%;
+}
+
+#nuevoTitulo h1 {
+	font-size: 24.5px;
+}
+
+.rojo {
+	color: #B81315;
+}
+
+#content #linea {
+	width: 100%;
+	height: 5px;
+	background: #fff url('../imagenes/linea.png') center center no-repeat;
+	margin-bottom: 20px;
+}
+
+#labels {
+	margin: 0 10px;
+}
+
+.select {
+	overflow: hidden;
+	width: 266;
+	background: url('../imagenes/combobox.png') no-repeat;
+}
+
+select {
+	background: transparent;
+	width: 295px;
+	height: 39px;
+	padding: 10px;
+	border: none;
+	-webkit-appearance: none;
+	margin-bottom: 5px;
+}
+
+.texto {
+	border: none;
+	height: 39px;
+	width: 267px;
+	background: #fff url('../imagenes/cuadro.png') 0 0 no-repeat;
+	padding: 10px;
+	margin-bottom: 5px;
+}
+
+.mensaje {
+	border: thin solid;
+	border-radius: 10px;
+	width: 528px;
+	height: 170px;
+	padding: 10px;
+	margin-bottom: 5px;
+}
+
+.arriba {
+	vertical-align: text-top;
+}
+
+#footer{
+	width: 100%;
+	height: 41px;
+	background: url('../imagenes/piedepagina.png') no-repeat;
+	text-align: center;
+	color: #9B9B9B;
+	padding-top: 13px;
+	font-size: 14px;
+}
+
+#espacio {
+	height: 59px;
+	width: 116
+}
+
+.boton {
+	width: 177px;
+	height: 39px;
+	background: url('../imagenes/boton.png');
+	border: none;
+	color: #9B9B9B;
+	font-family: 'PTSans';
+}
+
+table {
+	width: 100%;
+	margin-bottom: 50px;
+}
+
+#alargaCelda {
+	padding-right: 3000px;
+}
+
+.error {
+	color: #B81315;
+}
+
+/*
+ * FUENTES
+ */
+
+@font-face {
+	font-family: 'Gisha';
+	src: url('fonts/Gisha/ufontscomgisha.eot');
+	src: url('fonts/Gisha/ufontscomgisha.eot?#iefix') format('embedded-opentype'),
+			 url('fonts/Gisha/ufontscomgisha.woff') format('woff'),
+			 url('fonts/Gisha/ufontscomgisha.ttf') format('truetype'),
+			 url('fonts/Gisha/ufontscomgisha.svg#gothic') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'PTSans';
+	src: url('fonts/PTSansBold/pts75f.eot');
+	src: url('fonts/PTSansBold/pts75f.eot?#iefix') format('embedded-opentype'),
+			 url('fonts/PTSansBold/pts75f.woff') format('woff'),
+			 url('fonts/PTSansBold/pts75f.ttf') format('truetype'),
+			 url('fonts/PTSansBold/pts75f.svg#gothic') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}

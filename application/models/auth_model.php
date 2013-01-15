@@ -96,6 +96,7 @@ class Auth_model extends CI_Model {
 	{
 		
 		$this->db->where('cod_usuario', $codUsuario);
+		$this->db->or_where('email_usuario', $codUsuario);
 		$this->db->limit(1);
 		$query = $this->db->get($this->tablas['usuarios']);
 		if ($query->num_rows() == 1) 

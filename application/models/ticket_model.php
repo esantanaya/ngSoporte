@@ -60,30 +60,41 @@ class Ticket_model extends CI_Model {
 		return $ticketID;
 	}
 
-	public function insert_ticket($ticket, $mensaje)
+	public function insert_ticket($ticket)
 	{
 		$this->db->insert($this->tablas['ticket'], $ticket);
-		if ($mensaje != null)
-		{
-			$this->db->insert($this->tablas['mensaje'], $mensaje);	
-		}
 
-		return $this->get_current_id($this->db->insert_id());
+		return $this->db->insert_id();
 	}
 
-
-	//TODO SEME DERRITE EL CEREBRO ACA!!!
-	public function get_elegido($staff)
+	public function insert_mensaje($mensaje)
 	{
-		$elegido = '';
-		$max = 0;
-		$min = 0;
-		$indice = 1;
-		$staff = $staff->result_array();
+		$this->db->insert($this->tablas['mensaje'], $mensaje);
 
-		foreach ($staff as $row => $miembro) 
+		return $this->db->insert_id();
+	}
+
+	public function get_tickets_staff($dept)
+	{
+		$this->db->select('cod_staff, count(cod_staff) tickets');
+		$this->db->where('dept_id', $dept);
+		$this->db->where('id_departamento_usuario', $dept);
+		$this->db->join($this->tablas['usuarios'], 'cod_staff = cod_usuario');
+		$this->db->group_by('cod_staff');
+		$this->db->order_by('tickets', 'desc');
+		$query = $this->db->get($this->tablas['ticket']);
+
+		return $query->result();
+	}
+
+	public function get_elegido($dept)
+	{
+		
+		$this->load->model('usuario_model');
+		$miembros = $this->usuario_model->get_miembros_staff($dept);
+		$miembros = $miembros->result_array();
+		foreach ($miembros as $miembro) 
 		{
-			
 			$miembro_actual = $miembro['cod_usuario'];
 			$this->db->where('cod_staff', $miembro_actual);
 			$this->db->select('cod_staff');
@@ -92,28 +103,13 @@ class Ticket_model extends CI_Model {
 			if ($query->num_rows() == 0) 
 			{
 				$elegido = $miembro_actual;
+				return $elegido;
 			}
-			if ($indice == 1)
-			{
-				$max = $query->num_rows();
-				$min = $query->num_rows();
-			}
-			if ($query->num_rows() > $max) 
-			{
-				$max = $query->num_rows();
-			}
-			if ($query->num_rows() < $min) 
-			{
-				$min = $query->num_rows();
-				$elegido = $miembro_actual;
-			}
-			if ($query->num_rows() === $min && $query->num_rows() === $max)
-			{
-				$elegido = $miembro_actual;
-			}
-
-			$indice = $indice++;
 		}
+
+		$miembros = $this->get_tickets_staff($dept);
+		$elegido = end($miembros);
+		$elegido = $elegido->cod_staff;
 
 		return $elegido;
 	}
