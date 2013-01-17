@@ -30,6 +30,8 @@ class Sesion extends CI_Controller {
 		if (!$this->form_validation->run()) 
 		{
 			$data['mensaje_login'] = 'Error';
+			$data['SYS_MetaTitle'] = 'Login :: Sistema de Tickets';
+			
 			$this->load->view('public/login_view', $data);
 			return false;
 		} 

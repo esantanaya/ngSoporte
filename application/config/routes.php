@@ -38,7 +38,7 @@
 |
 */
 
-$route['default_controller'] = "public/login";
+$route['default_controller'] = "tickets_usuario";
 $route['404_override'] = '';
 
 $route['login'] = 'public/login';

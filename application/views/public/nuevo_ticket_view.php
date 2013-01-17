@@ -2,7 +2,7 @@
 	<h1><span class="rojo">>></span>NUEVO TICKET</h1>
 	<p>Por favor ingrese en el formuario los datos de su ticket</p>
 </div>
-<div id="linea"></div>
+<div class="linea"></div>
 <div id="formContent">
 	<?php 
 		$this->load->model('usuario_model');
@@ -12,8 +12,7 @@
 			$select[$valor['dept_id']] = $valor['dept_name'];
 		}	
 	?>
-	<?php echo validation_errors(); ?>
-	<form action="<?=base_url()?>tickets_usuario/crea_ticket" method="post" enctype="">
+	<form action="<?=base_url()?>tickets_usuario/crea_ticket" method="post" enctype="multipart/form-data">
 		<table>
 			<tr>
 				<td>Departamento:</td>
@@ -30,12 +29,24 @@
 			</tr>
 			<tr>
 				<td>Asunto:</td>
-				<td><input type="text" name="asunto" class="texto" maxlength="50"></td>
+				<td>
+					<?php 
+						echo form_error('asunto'); 
+						if (form_error('asunto') != '')
+							echo '<br>';
+					?>
+					<input type="text" name="asunto" class="texto" maxlength="50" value="<?php echo set_value('asunto'); ?>">
+				</td>
 			</tr>
 			<tr>
 				<td class="arriba">Mensaje:</td>
 				<td>
-					<textarea name="mensaje" cols="65" rows="10" class="mensaje" maxlength="1000"></textarea>
+					<?php 
+						echo form_error('mensaje'); 
+						if (form_error('mensaje') != '')
+							echo '<br>';
+					?>
+					<textarea name="mensaje" cols="65" rows="10" class="mensaje" maxlength="1000" value="<?php echo set_value('mensaje')?>"></textarea>
 				</td>
 			</tr>
 			<tr>

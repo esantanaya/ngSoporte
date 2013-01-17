@@ -138,6 +138,53 @@ class Usuario_model extends CI_Model {
 		return $staff;
 	}
 
+	public function get_usuario_nombre($cod_usuario, $id_usuario = null)
+	{
+		if ($id_usuario == null)
+		{
+			$this->db->where('cod_usuario', $cod_usuario);
+			$this->db->select('nombre_usuario, apellido_paterno');
+			$query = $this->db->get($this->tablas['usuarios'], 1);
+		}
+		elseif($cod_usuario == null)
+		{
+			$this->db->where('id_usuario', $id_usuario);
+			$this->db->select('nombre_usuario, apellido_paterno');
+			$query = $this->db->get($this->tablas['usuarios'], 1);	
+		}
+		
+		if ($query->num_rows() > 0)
+		{
+			return $query->result_array();
+		}
+		return null;
+	}
+
+	public function get_usuario_mail($cod_usuario, $id_usuario = null)
+	{
+		if ($id_usuario == null)
+		{
+			$this->db->where('cod_usuario', $cod_usuario);
+			$this->db->select('email_usuario');
+			$query = $this->db->get($this->tablas['usuarios'], 1);	
+		}
+		elseif ($cod_usuario == null)
+		{
+			$this->db->where('id_usuario', $id_usuario);
+			$this->db->select('email_usuario');
+			$query = $this->db->get($this->tablas['usuarios'], 1);	
+		}
+		
+
+		if ($query->num_rows() > 0)
+		{
+			$row = $query->row();
+			$mail = $row->email_usuario;
+			return $mail;
+		}
+		return null;
+	}
+
 	//****GRUPOS****
 
 	public function get_current_grupo()

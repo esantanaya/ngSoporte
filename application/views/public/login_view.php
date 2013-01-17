@@ -21,14 +21,27 @@
 				?>
 			</p>
 			<br>
-			<?php echo validation_errors(); ?>
 			<div id="formulario">
 				<?php echo form_open('sesion/login/login/login'); ?>
+				<?php 
+					echo form_error('usuario'); 
+					if (form_error('usuario') != '')
+						echo '<br>';
+				?>
 				<label for="usuario">Usuario:</label>
-				<input type="text" name="usuario" class="texto">
+				<input type="text" name="usuario" class="texto" value="<?php
+				 	echo set_value('usuario');
+				 ?>">
 				<br>
+				<?php 
+					echo form_error('pass'); 
+					if (form_error('pass') != '')
+						echo '<br>';
+				?>
 				<label for="pass">Contrase&ntilde;a:</label>
-				<input type="password" name="pass" class="texto">
+				<input type="password" name="pass" class="texto" value="<?php
+				 	echo set_value('pass');
+				 ?>">
 				<br>
 				<div id="boton">
 					<input type="submit" value="INGRESAR" class="entrar">

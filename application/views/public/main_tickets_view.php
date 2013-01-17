@@ -9,10 +9,24 @@
 	</head>
 	<body>
 		<div id="wrapper">
-			<div id="top"></div>
+			<div id="top">
+				<?php 
+					$usuario_loggeado = $this->session->userdata('nombre');
+				?>
+				<ul>
+					<li>
+						Bienvenido, <strong><?=$usuario_loggeado?></strong>
+					</li>		
+					<li>
+						<a href="<?=base_url()?>sesion/logout/login">
+							Cerrar sesi&oacute;n
+						</a>
+					</li>
+				</ul>
+			</div>
 			<div id="menu">
 				<ul>
-					<li><a href="">INICIO</a></li>
+					<li><a href="<?=base_url()?>tickets_usuario">INICIO</a></li>
 					<li><a href="<?=base_url()?>tickets_usuario/nuevo">NUEVO TICKET</a></li>
 					<li><a href="">ESTADO DE TICKET</a></li>
 				</ul>

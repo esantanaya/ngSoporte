@@ -4,7 +4,7 @@
 */
 
 $config['tablas']['syslog'] = 'sop_syslog';
-$config['tablas']['adjuntos'] = 'tk_datos_datos';
+$config['tablas']['adjuntos'] = 'tk_datos_adjuntos';
 $config['tablas']['lock'] = 'tk_lock';
 $config['tablas']['mensaje'] = 'tk_mensaje';
 $config['tablas']['notas'] = 'tk_notas';

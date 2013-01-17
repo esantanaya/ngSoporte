@@ -7,7 +7,7 @@ class Login extends CI_Controller {
 		parent::__construct();
 		if (is_logged())
 		{
-			redirect('principal');
+			redirect(base_url());
 		}
 	}
 

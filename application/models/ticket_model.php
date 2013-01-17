@@ -74,6 +74,13 @@ class Ticket_model extends CI_Model {
 		return $this->db->insert_id();
 	}
 
+	public function insert_adjunto($data)
+	{
+		$this->db->insert($this->tablas['adjuntos'], $data);
+
+		return $this->db->insert_id();
+	}
+
 	public function get_tickets_staff($dept)
 	{
 		$this->db->select('cod_staff, count(cod_staff) tickets');
@@ -112,6 +119,38 @@ class Ticket_model extends CI_Model {
 		$elegido = $elegido->cod_staff;
 
 		return $elegido;
+	}
+
+	public function get_ticket_ticketID($ticketID)
+	{
+		$this->db->where('ticketID', $ticketID);
+		$query = $this->db->get($this->tablas['ticket'], 1);
+
+		if ($query->num_rows() > 0)
+		{
+			$row = $query->row();
+			$ticket_id = $row->ticket_id;
+			return $ticket_id;
+		}
+		return null;
+	}
+
+	public function get_vista_ticket($ticketID)
+	{
+		$query = $this->db->query('SELECT A.status, B.dept_name, A.created, 
+			C.nombre_usuario, C.apellido_paterno, C.email_usuario, 
+			C.tel_usuario, A.subject
+			FROM tk_ticket A
+			INNER JOIN us_departamentos B ON B.dept_id = A.dept_id
+			INNER JOIN us_usuarios C ON C.cod_usuario = A.cod_staff
+			WHERE A.ticketID = ' . $ticketID . ' LIMIT 1');
+		
+		if ($query->num_rows() > 0)
+		{
+			return $query->result_array();	
+		}
+		
+		return null;
 	}
 }
 
