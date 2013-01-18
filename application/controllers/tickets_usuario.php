@@ -10,6 +10,8 @@ class Tickets_usuario extends CI_Controller {
 			redirect(base_url() . 'login');
 		}
 
+		error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
+
 		$this->load->model('ticket_model');
 		$this->load->model('usuario_model');
 		$this->load->model('file_model');
@@ -125,12 +127,14 @@ class Tickets_usuario extends CI_Controller {
 		$mensaje['message'] = $this->input->post('mensaje');
 		$mensaje['ticket_id'] = $ticket_id;
 		$mensaje['created'] = $date_string;
+		$mensaje['usuario_id'] = $this->session->userdata('idUsuario');
 
-		$this->ticket_model->insert_mensaje($mensaje);
+		$mensaje_id = $this->ticket_model->insert_mensaje($mensaje);
 
 		if ($envio)
 		{
 			$arrInsert = array('ticket_id' => $ticket_id, 
+						'ref_id' => $mensaje_id,
 						'file_name' => $archivo,
 						'file_key' => substr($archivo, 12, 5),
 						'created' => $date_string);
@@ -196,26 +200,8 @@ class Tickets_usuario extends CI_Controller {
 		}
 		else
 		{
-			
-			$arrDatos = $this->ticket_model->get_vista_ticket($ticketID);
 
-			$data['SYS_MetaTitle'] = 'Tickets :: Estado';
-			$data['SYS_metaKeyWords'] = 'sistema ticket n&g';
-			$data['SYS_metaDescription'] = 'Estado de un ticket';
-			$data['modulo'] = 'public/ticket_view';
-			$data['error'] = '';
-
-			$data['ticketID'] = $ticketID;
-			$data['estado_ticket'] = $arrDatos[0]['status'];
-			$data['departamento_ticket'] = $arrDatos[0]['dept_name'];
-			$data['creacion_ticket'] = $arrDatos[0]['created'];
-			$data['staff_name'] = $arrDatos[0]['nombre_usuario'] . ' ' 
-									. $arrDatos[0]['apellido_paterno'];
-			$data['staff_correo'] = $arrDatos[0]['email_usuario'];
-			$data['staff_tel'] = $arrDatos[0]['tel_usuario'];
-			$data['asunto'] = $arrDatos[0]['subject'];
-
-			$this->load->view('public/main_tickets_view', $data);	
+			$this->entra_edita_ticket($ticketID);
 		}
 	}
 
@@ -312,7 +298,6 @@ class Tickets_usuario extends CI_Controller {
 		$this->form_validation->set_error_delimiters('<span class="error">', 
 			'</span>');
 
-		//TODO Arreglar esto
 		if (! $this->form_validation->run() || is_array($archivo))
 		{
 			$arrDatos = $this->ticket_model->get_vista_ticket($ticketID);
@@ -340,17 +325,162 @@ class Tickets_usuario extends CI_Controller {
 			$data['staff_tel'] = $arrDatos[0]['tel_usuario'];
 			$data['asunto'] = $arrDatos[0]['subject'];
 
-			$this->load->view('public/main_tickets_view', $data);
+			//$this->load->view('public/main_tickets_view', $data);
+			$this->entra_edita_ticket($ticketID, $data['error']);
 			return false;
 		}
 
 		$respuesta = array('ticket_id' => $ticket_id,
 							 'message' => $mensaje,
+							 'usuario_id' => $this->session->userdata(
+							 								'idUsuario'),
 							 'created' => $date_string);
+		$mensaje_id = $this->ticket_model->insert_mensaje($respuesta);
 
-		$this->ticket_model->insert_mensaje($respuesta);
+		if ($envio)
+		{
+			$arrInsert = array('ticket_id' => $ticket_id, 
+						'ref_id' => $mensaje_id,
+						'file_name' => $archivo,
+						'file_key' => substr($archivo, 12, 5),
+						'created' => $date_string);
+			$this->ticket_model->insert_adjunto($arrInsert);
+		}
+
+		$this->entra_edita_ticket($ticketID);
+	}
+
+	public function entra_edita_ticket($ticketID, $error = null)
+	{
+		$this->load->library('table');
+
+		$ticket_id = $this->ticket_model->get_ticket_ticketID($ticketID);
+		$mensajes = $this->ticket_model->get_historial_mensaje(
+													$ticket_id);
+		$respuestas = $this->ticket_model->get_historial_respuesta(
+												$ticket_id);
+		
+		$arreglo_historial = array();
+		$x = 0;
+		foreach ($mensajes as $row => $value)
+		{
+			$mensaje_id = $value['msg_id'];
+			$encabezado = $value['created'] . ' ' 
+						. $value['nombre_cliente'] . ' ' 
+						. $value['apellido_cliente'];
+			$mensaje = $value['message'];
+			$adjunto_completo = $this->ticket_model->get_adjunto_mensaje(
+								$mensaje_id, $ticket_id);
+			$adjunto = '';
+			if ($adjunto_completo != null)
+			{
+				$adjunto = '<a href="' . base_url() . 'docs/tickets/' 
+						. $adjunto_completo . '">' . substr($adjunto_completo,
+						 18) . '</a>';
+			}
+
+			$historial['encabezado'] = '<div class="encabezado">' 
+										. $encabezado . '</div>';
+			if ($adjunto != null)
+			{
+				$historial['adjunto'] = $adjunto;
+			}
+			else
+			{
+				$historial['adjunto'] = '';
+			}
+			$historial['mensaje'] = $mensaje;
+
+			$bandera = false;
+
+			foreach ($respuestas as $fila => $valor) 
+			{
+				$respuesa_mensaje = $valor['msg_id'];
+
+				if ($respuesa_mensaje == $mensaje_id)
+				{
+					$respuesta_id = $valor['response_id'];
+					$adjunto_completo_staff = $this->ticket_model->
+								get_adjunto_mensaje($respuesa_id, $ticket_id);
+					if ($adjunto_completo_staff != null)
+						$adjunto_staff = '<a href="' . base_url() 
+						. 'docs/tickets/' . $adjunto_completo_staff . '">' 
+						. substr($adjunto_completo, 18) . '</a>';
+					
+					$encabezado_staff = '<div class="encabezado_staff">' 
+										. $valor['created'] . ' ' . $valor[
+										'nombre_usuario'] . ' ' . $valor[
+										'apellido_paterno'] . '</div>';
+
+					$historial['encabezado_staff'] = $encabezado_staff;
+					if ($adjunto_staff != null)
+					{
+						$historial['adjunto_staff'] = $adjunto_staff;
+					}
+					else
+					{
+						$historial['adjunto_staff'] = '';
+					}
+					$historial['mensaje_staff'] = $valor['response'];
+					$bandera = true;
+				}
+				elseif (! $bandera)
+				{
+					$historial['encabezado_staff'] = '';
+					$historial['mensaje_staff'] = '';
+					$historial['adjunto_staff'] = '';
+					$bandera = false;
+				}
+			}
+
+			$arreglo_historial[$x] = $historial;
+			$x++;
+		}
+		$arrDatos = $this->ticket_model->get_vista_ticket($ticketID);
+
+		$tmpl = array('table_open' => '<table class="historial_table"
+				 cellspacing="0" cellpadding="4" border="1">', );
+		$this->table->set_template($tmpl);
+
+		foreach ($arreglo_historial as $key => $value) 
+		{
+			$this->table->set_heading('Historial');
+			if ($value['encabezado'])
+				$this->table->add_row($value['encabezado']);
+			if ($value['adjunto'])
+				$this->table->add_row($value['adjunto']);
+			if ($value['mensaje'])
+				$this->table->add_row($value['mensaje']);
+			if ($value['encabezado_staff'])
+				$this->table->add_row($value['encabezado_staff']);
+			if ($value['adjunto_staff'])
+				$this->table->add_row($value['adjunto_staff']);
+			if ($value['mensaje_staff'])
+				$this->table->add_row($value['mensaje_staff']);
+		}
 
 
+		$data['SYS_MetaTitle'] = 'Tickets :: Estado';
+		$data['SYS_metaKeyWords'] = 'sistema ticket n&g';
+		$data['SYS_metaDescription'] = 'Estado de un ticket';
+		$data['modulo'] = 'public/ticket_view';
+		$data['error'] = '';
+		if ($error != null)
+			$data['error'] = $error;
+
+		$data['ticketID'] = $ticketID;
+		$data['estado_ticket'] = $arrDatos[0]['status'];
+		$data['departamento_ticket'] = $arrDatos[0]['dept_name'];
+		$data['creacion_ticket'] = $arrDatos[0]['created'];
+		$data['staff_name'] = $arrDatos[0]['nombre_usuario'] . ' ' 
+								. $arrDatos[0]['apellido_paterno'];
+		$data['staff_correo'] = $arrDatos[0]['email_usuario'];
+		$data['staff_tel'] = $arrDatos[0]['tel_usuario'];
+		$data['asunto'] = $arrDatos[0]['subject'];
+
+		$data['tabla'] = $arreglo_historial;
+
+		$this->load->view('public/main_tickets_view', $data);
 	}
 }
 

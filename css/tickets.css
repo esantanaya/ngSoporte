@@ -277,6 +277,27 @@ table {
 	background-color: #a6a4a4;
 } 
 
+#contenedor_respuesta {
+	padding: 20px 0 40px 40px;
+}
+
+#contenedor_respuesta #adjunto {
+	margin-bottom: 20px;
+}
+
+.historial_table {
+	margin: 20px 0;
+}
+
+.encabezado {
+	background-color: #A6A4A4;
+	color: white;
+}
+
+.encabezado_staff {
+	background-color: #313131;
+	color: white;
+}
 
 /*
  * FUENTES

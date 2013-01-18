@@ -152,6 +152,74 @@ class Ticket_model extends CI_Model {
 		
 		return null;
 	}
+
+	public function get_historial_mensaje($ticket_id)
+	{
+		$query = $this->db->query('SELECT A.msg_id, A.created, 
+					C.nombre_usuario AS nombre_staff, 
+					C.apellido_paterno AS apellido_staff, 
+					D.nombre_usuario AS nombre_cliente, 
+					D.apellido_paterno AS apellido_cliente,A.message
+					FROM tk_mensaje A
+					INNER JOIN tk_ticket B ON A.ticket_id = B.ticket_id
+					INNER JOIN us_usuarios C ON B.usuario_id = C.id_usuario
+					INNER JOIN us_usuarios D ON A.usuario_id = D.id_usuario
+					WHERE A.ticket_id = ' . $ticket_id . ' 
+					ORDER BY A.msg_id ASC;');
+
+		if ($query->num_rows() > 0)
+		{
+			return $query->result_array();
+		}
+
+		return null;
+	}
+
+	public function get_historial_respuesta($ticket_id)
+	{
+		$query = $this->db->query('SELECT A.msg_id, A.created, 
+				C.nombre_usuario, C.apellido_paterno, A.response,
+				A.response_id
+				FROM tk_respuesta A
+				INNER JOIN tk_ticket B ON A.ticket_id = B.ticket_id
+				INNER JOIN us_usuarios C ON B.usuario_id = C.id_usuario
+				WHERE A.ticket_id = ' . $ticket_id . ' 
+				ORDER BY A.msg_id ASC;');
+
+		if ($query->num_rows() > 0)
+		{
+			return $query->result_array();
+		}
+
+		return null;
+	}
+
+	public function get_adjunto_mensaje($mensaje_id, $ticket_id)
+	{
+		$this->db->select('file_name');
+		$this->db->where('ref_id', $mensaje_id);
+		$this->db->where('ticket_id', $ticket_id);
+		$query = $this->db->get($this->tablas['adjuntos'], 1);
+
+		if ($query->num_rows() > 0)
+		{
+			$row = $query->row();
+			$data = $row->file_name;
+
+			return $data;
+		}
+
+		return null;
+	}
+
+	public function get_ticket_usuario($usuario_id, $order)
+	{
+		$query = $this->db->query('SELECT A.ticket_id, A.ticketId, A.created, 
+				A.status, A.subject, B.nombre_usuario, B.apellido_paterno
+				FROM tk_ticket A
+				INNER JOIN us_usuarios B ON A.cod_staff = B.cod_usuario
+				WHERE usuario_id = ' . $usuario_id . ' ORDER BY ' . $order);
+	}
 }
 
 /* End of file ticket_model.php */

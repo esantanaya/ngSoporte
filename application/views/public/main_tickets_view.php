@@ -39,6 +39,7 @@
 			<div id="footer">
 				Copyright &copy; 2013 N&G  All Rights Reserved.
 			</div>
+			<div class="clear"></div>
 		</div>
 	</body>
 </html>

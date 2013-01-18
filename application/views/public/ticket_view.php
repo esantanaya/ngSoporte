@@ -45,7 +45,9 @@
 	Asunto: <?=$asunto?>
 </div>
 <div id="historial">
-	
+	<?php
+		echo $this->table->generate();
+	?>
 </div>
 <div id="contenedor_respuesta">
 	<form action="<?=base_url()?>tickets_usuario/agrega_mensaje" method="post" enctype="multipart/form-data">
@@ -55,7 +57,8 @@
 	<br>
 	<textarea name="mensaje" class="mensaje"></textarea>
 	<br>
-	<input type="file" name="adjunto" size="20">
+	<?php echo '<span class="error">' . $error . '</span>'; ?>
+	<input type="file" name="adjunto" size="20" id="adjunto">
 	<br>
 	<input type="submit" value="RESPUESTA" class="boton">
 	<input type="reset" value="RESET" class="boton">
