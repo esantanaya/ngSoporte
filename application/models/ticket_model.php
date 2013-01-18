@@ -104,6 +104,7 @@ class Ticket_model extends CI_Model {
 		{
 			$miembro_actual = $miembro['cod_usuario'];
 			$this->db->where('cod_staff', $miembro_actual);
+			$this->db->where('status', 'abierto');
 			$this->db->select('cod_staff');
 			$query = $this->db->get($this->tablas['ticket']);
 
@@ -212,13 +213,50 @@ class Ticket_model extends CI_Model {
 		return null;
 	}
 
-	public function get_ticket_usuario($usuario_id, $order)
+	public function get_ticket_usuario($usuario_id, $num_order = 1, 
+										$estado = null)
 	{
-		$query = $this->db->query('SELECT A.ticket_id, A.ticketId, A.created, 
-				A.status, A.subject, B.nombre_usuario, B.apellido_paterno
+
+		switch ($num_order) 
+		{
+			case 1:
+				$order = 'FECHAS';
+				break;
+
+			case 2:
+				$order = 'TICKETS';
+				break;
+
+			case 3:
+				$order = 'ESTADO';
+				break;
+			
+			default:
+				$order = 'FECHAS';
+				break;
+		}
+		$cadena_query = 'SELECT CONCAT(\'<a href=" '. base_url() 
+				. 'tickets_usuario/entra_edita_ticket/\', A.ticketID,\'">\', 
+				A.ticketID, \'</a>\') AS TICKETS, 
+				SUBSTR(A.created, 1, 10) AS FECHAS, 
+				A.status AS ESTADO, A.subject AS ASUNTO, 
+				CONCAT(B.nombre_usuario, \' \', B.apellido_paterno) AS STAFF
 				FROM tk_ticket A
 				INNER JOIN us_usuarios B ON A.cod_staff = B.cod_usuario
-				WHERE usuario_id = ' . $usuario_id . ' ORDER BY ' . $order);
+				WHERE usuario_id = ' . $usuario_id;
+
+		if ($estado != null)
+			$cadena_query .= ' AND status = \'' . $estado . '\'';
+
+		$cadena_query .= ' ORDER BY ' . $order;
+
+		$query = $this->db->query($cadena_query);
+
+		if ($query->num_rows() > 0)
+		{
+			return $query;
+		}
+		return null;
 	}
 }
 

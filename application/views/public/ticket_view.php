@@ -1,7 +1,7 @@
 <div id="tabla_resumen">
 	<p>Ticket #<?=$ticketID?> 
-		<a href="<?=base_url()?>" title="Reload">
-			<span class="refresh"> </span>
+		<a href="<?=base_url()?>tickets_usuario/entra_edita_ticket/<?=$ticketID?>" title="Reload"> 
+			<img src="<?=base_url()?>imagenes/iconos/tickets/ic_refresh.png" alt="Reload">
 		</a>
 	</p>
 	<div class="contenedor_resumen">
@@ -45,6 +45,7 @@
 	Asunto: <?=$asunto?>
 </div>
 <div id="historial">
+	<div class="historial"><p>Historial</p></div>
 	<?php
 		echo $this->table->generate();
 	?>

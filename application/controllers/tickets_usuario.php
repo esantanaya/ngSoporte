@@ -16,6 +16,7 @@ class Tickets_usuario extends CI_Controller {
 		$this->load->model('usuario_model');
 		$this->load->model('file_model');
 		$this->load->helper('date');
+		$this->load->library('table');
 	}
 
 	public function index()
@@ -222,7 +223,11 @@ class Tickets_usuario extends CI_Controller {
 					 ':</strong>
 					<br />
 					<p>
-						Tu tucket <strong>#' . $ticketID . '</strong> fue asignado al Ingeniero de Soporte <strong>'
+						Tu ticket <strong><a href="' . base_url() 
+						. 'tickets_usuario/entra_edita_ticket/' . $ticketID 
+						. '">#' . $ticketID 
+						. '</a></strong> fue asignado al Ingeniero de Soporte 
+						<strong>'
 						 . $nombre_staff .'</strong>
 					</p>
 					<br />
@@ -325,7 +330,6 @@ class Tickets_usuario extends CI_Controller {
 			$data['staff_tel'] = $arrDatos[0]['tel_usuario'];
 			$data['asunto'] = $arrDatos[0]['subject'];
 
-			//$this->load->view('public/main_tickets_view', $data);
 			$this->entra_edita_ticket($ticketID, $data['error']);
 			return false;
 		}
@@ -350,10 +354,54 @@ class Tickets_usuario extends CI_Controller {
 		$this->entra_edita_ticket($ticketID);
 	}
 
+	public function lista_ticket($estado = null)
+	{
+		$usuario_id = $this->session->userdata('idUsuario');
+
+		switch ($estado) 
+		{
+			case 'abierto':
+				$listado = $this->ticket_model->get_ticket_usuario(
+												$usuario_id,null,$estado);
+				break;
+
+			case 'espera':
+				$listado = $this->ticket_model->get_ticket_usuario(
+												$usuario_id,null,$estado);
+				break;
+
+			case 'cerrado':
+				$listado = $this->ticket_model->get_ticket_usuario(
+												$usuario_id,null,$estado);
+				break;
+			
+			default:
+				$listado = $this->ticket_model->get_ticket_usuario(
+												$usuario_id);
+				break;
+		}
+
+		if ($listado == null)
+		{
+			$listado = array('Genere un ticket' => 'Usted no tiene tickets');
+			$this->table->add_row($listado);
+		}
+
+		$tmpl = array('table_open' => '<table border="0" cellpadding="4"
+				cellspacing="0" class="listado_table">');
+		$this->table->set_template($tmpl);
+
+		$data['SYS_MetaTitle'] = 'Tickets :: listado';
+		$data['SYS_metaKeyWords'] = 'sistema ticket n&g';
+		$data['SYS_metaDescription'] = 'Listado de tickets';
+		$data['modulo'] = 'public/ticket_lista_view';
+		$data['listado'] = $listado;
+
+		$this->load->view('public/main_tickets_view', $data);
+	}
+
 	public function entra_edita_ticket($ticketID, $error = null)
 	{
-		$this->load->library('table');
-
 		$ticket_id = $this->ticket_model->get_ticket_ticketID($ticketID);
 		$mensajes = $this->ticket_model->get_historial_mensaje(
 													$ticket_id);
@@ -383,13 +431,15 @@ class Tickets_usuario extends CI_Controller {
 										. $encabezado . '</div>';
 			if ($adjunto != null)
 			{
-				$historial['adjunto'] = $adjunto;
+				$historial['adjunto'] = '<div class="cuerpo">' . $adjunto
+										. '</div>';
 			}
 			else
 			{
 				$historial['adjunto'] = '';
 			}
-			$historial['mensaje'] = $mensaje;
+			$historial['mensaje'] = '<div class="cuerpo">' . $mensaje
+										. '</div>';
 
 			$bandera = false;
 
@@ -403,9 +453,9 @@ class Tickets_usuario extends CI_Controller {
 					$adjunto_completo_staff = $this->ticket_model->
 								get_adjunto_mensaje($respuesa_id, $ticket_id);
 					if ($adjunto_completo_staff != null)
-						$adjunto_staff = '<a href="' . base_url() 
+						$adjunto_staff = '<div class="cuerpo"><a href="' . base_url() 
 						. 'docs/tickets/' . $adjunto_completo_staff . '">' 
-						. substr($adjunto_completo, 18) . '</a>';
+						. substr($adjunto_completo, 18) . '</a></div>';
 					
 					$encabezado_staff = '<div class="encabezado_staff">' 
 										. $valor['created'] . ' ' . $valor[
@@ -421,7 +471,9 @@ class Tickets_usuario extends CI_Controller {
 					{
 						$historial['adjunto_staff'] = '';
 					}
-					$historial['mensaje_staff'] = $valor['response'];
+					$historial['mensaje_staff'] = '<div class="cuerpo">' 
+												. $valor['response']
+												. '</div>';
 					$bandera = true;
 				}
 				elseif (! $bandera)
@@ -439,12 +491,11 @@ class Tickets_usuario extends CI_Controller {
 		$arrDatos = $this->ticket_model->get_vista_ticket($ticketID);
 
 		$tmpl = array('table_open' => '<table class="historial_table"
-				 cellspacing="0" cellpadding="4" border="1">', );
+				 cellspacing="0" cellpadding="4" border="0">', );
 		$this->table->set_template($tmpl);
 
 		foreach ($arreglo_historial as $key => $value) 
 		{
-			$this->table->set_heading('Historial');
 			if ($value['encabezado'])
 				$this->table->add_row($value['encabezado']);
 			if ($value['adjunto'])
