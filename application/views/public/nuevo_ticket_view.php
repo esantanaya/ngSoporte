@@ -4,14 +4,6 @@
 </div>
 <div class="linea"></div>
 <div id="formContent">
-	<?php 
-		$this->load->model('usuario_model');
-		$datos = $this->usuario_model->get_departamentos_id();
-
-		foreach ($datos as $depas => $valor) {
-			$select[$valor['dept_id']] = $valor['dept_name'];
-		}	
-	?>
 	<form action="<?=base_url()?>tickets_usuario/crea_ticket" method="post" enctype="multipart/form-data">
 		<table>
 			<tr>

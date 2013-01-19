@@ -1,9 +1,9 @@
 <div class="subMenu">
 	<ul>
 		<li><a href="<?=BASE_URL()?>tickets_usuario/lista_ticket/abierto" class="abierto">ABIERTOS</a></li>
-		<li><a href="<?=BASE_URL()?>tickets_usuario/lista_ticket/espera" class="espera">ESPERA</a></li>
+		<li><a href="<?=BASE_URL()?>tickets_usuario/lista_ticket/esperando" class="espera">ESPERA</a></li>
 		<li><a href="<?=BASE_URL()?>tickets_usuario/lista_ticket/cerrado" class="cerrado">CERRADOS</a></li>
-		<li><a href="<?=base_url()?>tickets_usuario/lista_ticket" class="actualizar">ACTUALIZAR</a></li>
+		<li><a href="<?=base_url()?>tickets_usuario/lista_ticket" class="actualizar">TODOS</a></li>
 	</ul>
 </div>
 <div id="listaTitulo">

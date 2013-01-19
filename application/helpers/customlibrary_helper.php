@@ -10,9 +10,9 @@ if (!defined('BASEPATH'))
 if (!function_exists('is_logged')) {
 	function is_logged() {
 		$CI = &get_instance();
-		$CI -> load -> model('auth_model');
-		if ((!$CI -> auth_model -> isThatMySession())) {
-			if (!$CI -> auth_model -> isThatMyCookie()) {
+		$CI->load->model('auth_model');
+		if ((!$CI->auth_model->isThatMySession())) {
+			if (!$CI->auth_model->isThatMyCookie()) {
 				return false;
 			}
 		}
@@ -21,25 +21,36 @@ if (!function_exists('is_logged')) {
 
 }
 
-if (!function_exists('is_authorized')) {
-	function is_authorized($nivelesReq, $idPermiso, $nivelUsuario, $rolUsuario) {
-		//Función que verifica si un usuario está autorizado para visitar una sección
-		//$nivelesReq = array con los niveles requeridos para acceder a la sección
+if (!function_exists('is_authorized')) 
+{
+	function is_authorized($nivelesReq, $idPermiso, $nivelUsuario, $rolUsuario)
+ 	{
+		//Función que verifica si un usuario está autorizado para visitar una
+		// sección
+		//$nivelesReq = array con los niveles requeridos para acceder a la 
+		//sección
 		//idPermiso = el id del permiso para acceder a la sección
 		//nivelUsuario = el nivel que tiene el usuario
 		//rolUsuario = El rol que tiene el usuario
-		// si idPermiso y rolUsuario son nulos, el usuario accede con tan sólo cumplir el nivel	
+		// si idPermiso y rolUsuario son nulos, el usuario accede con tan sólo
+		// cumplir el nivel	
 		// si el usuario es nivel 0, accede porque accede
 		$CI = &get_instance();
-		$CI -> load -> model('rol_model');
+		$CI->load->model('rol_model');
 		if ($nivelUsuario == 0)
 			return true;
-		for ($i = 0; $i <= count($nivelesReq); $i++) {
-			if ($nivelesReq[$i] == $nivelUsuario) {
-				if ($idPermiso != null && $rolUsuario != null) {
-					if ($CI -> rol_model -> rol_tiene_permiso($idPermiso, $rolUsuario))
+		for ($i = 0; $i <= count($nivelesReq); $i++) 
+		{
+			if ($nivelesReq[$i] == $nivelUsuario) 
+			{
+				if ($idPermiso != null && $rolUsuario != null) 
+				{
+					if ($CI->rol_model->rol_tiene_permiso($idPermiso, 
+										$rolUsuario))
 						return true;
-				} else {
+				} 
+				else 
+				{
 					return true;
 				}
 			}
@@ -162,8 +173,8 @@ if (!function_exists('arma_menu')) {
 		$html = '';
 
 		$CI = &get_instance();
-		$CI -> load -> model('defaultdata_model');
-		$armaMenu = $CI -> defaultdata_model -> getMenu($idRol, $nivel);
+		$CI->load->model('defaultdata_model');
+		$armaMenu = $CI->defaultdata_model->getMenu($idRol, $nivel);
 
 		if($armaMenu != null):
 			foreach($armaMenu as  $row):
@@ -375,8 +386,8 @@ if (!function_exists('gTranslate')) {
 			$code = curl_exec($curl_handle);
 			curl_close($curl_handle);
 			/* La api nos devuelve los resultados en forma de objeto stdClass */
-			$json =    json_decode($code) -> responseData;
-			$traduccion = utf8_decode($json -> translatedText);
+			$json =    json_decode($code)->responseData;
+			$traduccion = utf8_decode($json->translatedText);
 			return utf8_decode($traduccion);
 		} else {
 			return $text;

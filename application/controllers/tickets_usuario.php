@@ -32,11 +32,18 @@ class Tickets_usuario extends CI_Controller {
 
 	public function nuevo()
 	{
+		$datos = $this->usuario_model->get_departamentos_id();
+
+		foreach ($datos as $depas => $valor) {
+			$select[$valor['dept_id']] = $valor['dept_name'];
+		}
+
 		$data['SYS_MetaTitle'] = 'Tickets :: Nuevo';
 		$data['SYS_metaKeyWords'] = 'nuevo ticket';
 		$data['SYS_metaDescription'] = 'Generar nuevo ticket';
 		$data['modulo'] = 'public/nuevo_ticket_view';
 		$data['error'] = '';
+		$data['select'] = $select;
 
 		$this->load->view('public/main_tickets_view', $data);
 	}
@@ -131,6 +138,7 @@ class Tickets_usuario extends CI_Controller {
 		$mensaje['usuario_id'] = $this->session->userdata('idUsuario');
 
 		$mensaje_id = $this->ticket_model->insert_mensaje($mensaje);
+		$this->ticket_model->cambia_estado_ticket($ticketID, 'esperando');
 
 		if ($envio)
 		{
@@ -340,6 +348,7 @@ class Tickets_usuario extends CI_Controller {
 							 								'idUsuario'),
 							 'created' => $date_string);
 		$mensaje_id = $this->ticket_model->insert_mensaje($respuesta);
+		$this->ticket_model->cambia_estado_ticket($ticketID, 'esperando');
 
 		if ($envio)
 		{
@@ -365,7 +374,7 @@ class Tickets_usuario extends CI_Controller {
 												$usuario_id,null,$estado);
 				break;
 
-			case 'espera':
+			case 'esperando':
 				$listado = $this->ticket_model->get_ticket_usuario(
 												$usuario_id,null,$estado);
 				break;

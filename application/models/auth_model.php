@@ -153,7 +153,8 @@ class Auth_model extends CI_Model {
 			'nombre' => $result->nombre_usuario,
 			'apellidoPaterno' => $result->apellido_paterno,
 			'apellidoMaterno' => $result->apellido_materno,
-			'nivel' => $result->id_tipo_usuario,
+			'rol' => $result->id_rol_usuario,
+			'nivel' => $result->id_nivel_usuario,
 			'grupo' => $result->id_grupo_usuario,
 			'authKey' => $authKey
 		));

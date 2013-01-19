@@ -32,8 +32,6 @@ class Pruebas_controller extends CI_Controller {
 	public function manda_dato()
 	{
 
-		$this->load->library('usuario');
-
 		$id_usuario = $this->usuario_model->get_current_id_usuario();
 		$id_usuario = intval($id_usuario) + 1;
 		$clave_usuario = $this->input->post('usuario');
@@ -47,40 +45,7 @@ class Pruebas_controller extends CI_Controller {
 		}
 		else
 		{
-			$this->usuario->id_usuario = $id_usuario;
-			$this->usuario->id_tipo_usuario = $this->input->post('
-															tipo_usuario');
-			$this->usuario->cod_usuario = $clave_usuario;
-			$this->usuario->nombre_usuario = $this->input->post('nombre');
-			$this->usuario->apellido_paterno = $this->input->post(
-													'apellido_paterno');
-			$this->usuario->apellido_materno = $this->input->post(
-													'apellido_materno');
-			$this->usuario->pass_usuario = $this->input->post('password');
-			$this->usuario->email_usuario = $this->input->post('mail');
-			$this->usuario->tel_usuario = $this->input->post('tel');
-			$this->usuario->movil_usuario = $this->input->post('movil');
-			$this->usuario->firma_usuario = $this->input->post('firma');
-			$datestring = "%Y%m%d %h:%i:%s";
-			$time = time();
-			$this->usuario->creado = mdate($datestring, $time);
-
-			/*
-			$this->usuario->set_id_usuario($id_usuario);
-			$this->usuario->set_tipo_usuario($this->input->post('
-															tipo_usuario'));
-			$this->usuario->set_cod_usuario($clave_usuario);
-			$this->usuario->set_nombre($this->input->post('nombre'));
-			$this->usuario->set_apellido_paterno($this->input->post(
-													'apellido_paterno'));
-			$this->usuario->set_apellido_materno($this->input->post(
-													'apellido_materno'));
-			$this->usuario->set_pass($this->input->post('password'));
-			$this->usuario->set_mail($this->input->post('mail'));
-			$this->usuario->set_tel($this->input->post('tel'));
-			$this->usuario->set_movil($this->input->post('movil'));
-			$this->usuario->set_firma($this->input->post('firma'));
-			*/
+			
 
 			$data = array('id_usuario' => $id_usuario, 
 				'id_tipo_usuario' => $this->input->post('tipo_usuario'),

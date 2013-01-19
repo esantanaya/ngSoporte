@@ -392,7 +392,7 @@ a.cerrado {
 }
 
 a.actualizar {
-	background: transparent url('../imagenes/iconos/tickets/ic_refresh.png') center top no-repeat;
+	background: transparent url('../imagenes/iconos/tickets/ic_todos.png') center top no-repeat;
 }
 
 a.espera {

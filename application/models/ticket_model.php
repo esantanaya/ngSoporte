@@ -258,6 +258,15 @@ class Ticket_model extends CI_Model {
 		}
 		return null;
 	}
+
+	public function cambia_estado_ticket($ticketID, $estado)
+	{
+		$data = array('status' => $estado);	
+		$this->db->where('ticketID', $ticketID);
+		$this->db->update($this->tablas['ticket'], $data);
+	}
+
+
 }
 
 /* End of file ticket_model.php */

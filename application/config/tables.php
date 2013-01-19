@@ -16,6 +16,9 @@ $config['tablas']['email'] = 'us_email';
 $config['tablas']['grupos'] = 'us_grupos';
 $config['tablas']['tipos'] = 'us_tipos_usuarios';
 $config['tablas']['usuarios'] = 'us_usuarios';
+$config['tablas']['rol'] = 'rol';
+$config['tablas']['permiso'] = 'permiso';
+$config['tablas']['roltienepermiso'] = 'rolpermiso';
 
 /* End of file tables.php */
 /* Location: ./application/config/tables.php */

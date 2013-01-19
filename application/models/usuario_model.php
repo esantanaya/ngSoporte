@@ -283,6 +283,16 @@ class Usuario_model extends CI_Model {
 
 		return $query->result_array();
 	}
+
+	//****NIVELES****
+
+	public function get_roles()
+	{
+		$this->db->select('idRol, nombreRol');
+		$query = $this->db->get($this->tablas['rol']);
+
+		return $query->result_array();
+	}
 }
 
 /* End of file usuario_model.php */
