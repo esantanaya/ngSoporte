@@ -156,7 +156,8 @@ class Auth_model extends CI_Model {
 			'rol' => $result->id_rol_usuario,
 			'nivel' => $result->id_nivel_usuario,
 			'grupo' => $result->id_grupo_usuario,
-			'authKey' => $authKey
+			'authKey' => $authKey,
+			'empresa' => $result->id_empresa
 		));
 		// obtenemos un nuevo authKey
 		if ($cookie == 'true') 
