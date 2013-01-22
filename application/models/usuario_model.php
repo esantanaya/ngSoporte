@@ -45,9 +45,9 @@ class Usuario_model extends CI_Model {
 	public function get_usuario_tipo($tipo)
 	{
 		$this->db->where('id_tipo_usuario', $tipo);
-		$query = $this->db->get($this->tablas['usuarios']);
+		$query = $this->db->get($this->tablas['usuarios'], 1);
 
-		if ($query->num_rows() >= 1) 
+		if ($query->num_rows() > 0) 
 		{
 		 	return $query->result();
 		 }
@@ -57,11 +57,13 @@ class Usuario_model extends CI_Model {
 	public function get_usuario_clave($clave)
 	{
 		$this->db->where('cod_usuario', $clave);
-		$query = $this->db->get($this->tablas['usuarios']);
+		$query = $this->db->get($this->tablas['usuarios'], 1);
 
-		if ($query->num_rows() >= 1)
+		if ($query->num_rows() > 0)
 		{
-			return $query->result();
+			$row = $query->row();
+			$data = $row->cod_usuario;
+		 	return $data;
 		}
 		return null;
 	}

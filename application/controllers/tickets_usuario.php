@@ -138,7 +138,7 @@ class Tickets_usuario extends CI_Controller {
 		$mensaje['usuario_id'] = $this->session->userdata('idUsuario');
 
 		$mensaje_id = $this->ticket_model->insert_mensaje($mensaje);
-		$this->ticket_model->cambia_estado_ticket($ticketID, 'esperando');
+		$this->ticket_model->cambia_estado_ticket($ticketID, 'abierto');
 
 		if ($envio)
 		{
@@ -348,7 +348,7 @@ class Tickets_usuario extends CI_Controller {
 							 								'idUsuario'),
 							 'created' => $date_string);
 		$mensaje_id = $this->ticket_model->insert_mensaje($respuesta);
-		$this->ticket_model->cambia_estado_ticket($ticketID, 'esperando');
+		$this->ticket_model->cambia_estado_ticket($ticketID, 'abierto');
 
 		if ($envio)
 		{
