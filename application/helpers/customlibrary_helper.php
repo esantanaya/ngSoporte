@@ -7,7 +7,8 @@ if (!defined('BASEPATH'))
  * 	FUNCIONES DE CONTROL DE SESIONES	*
  * ************************************** */
 
-if (!function_exists('is_logged')) {
+if (! function_exists('is_logged')) 
+{
 	function is_logged() {
 		$CI = &get_instance();
 		$CI->load->model('auth_model');
@@ -18,7 +19,24 @@ if (!function_exists('is_logged')) {
 		}
 		return true;
 	}
+}
 
+if (! function_exists('is_empresa'))
+{
+	function is_empresa($ticketID, $id_empresa, $nivel_usuario)
+	{
+		$CI =& get_instance();
+		$CI->load->model('ticket_model');
+
+		if ($nivel_usuario < 3)
+			return true;
+
+		$empresa_ticket = $CI->ticket_model->get_ticketID_empresa($ticketID);
+		if ($empresa_ticket == $id_empresa)
+			return true;
+
+		return false;
+	}
 }
 
 if (!function_exists('is_authorized')) 
@@ -97,7 +115,6 @@ if(!function_exists('uploadThis')){
 	function uploadThis(){
 		$CI = &get_instance();
 		$CI->load->model('upload_model');
-		
 	}
 }
 

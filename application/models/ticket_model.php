@@ -239,11 +239,15 @@ class Ticket_model extends CI_Model {
 				. 'tickets_usuario/entra_edita_ticket/\', A.ticketID,\'">\', 
 				A.ticketID, \'</a>\') AS TICKETS, 
 				SUBSTR(A.created, 1, 10) AS FECHAS, 
-				A.status AS ESTADO, A.subject AS ASUNTO, 
+				A.status AS ESTADO, CONCAT(\'<a href=" '. base_url() 
+				. 'tickets_usuario/entra_edita_ticket/\', A.ticketID,\'">\', 
+				A.subject, \'</a>\') AS ASUNTO, 
 				CONCAT(B.nombre_usuario, \' \', B.apellido_paterno) AS STAFF
 				FROM tk_ticket A
 				INNER JOIN us_usuarios B ON A.cod_staff = B.cod_usuario
-				WHERE usuario_id = ' . $usuario_id;
+				INNER JOIN us_usuarios C ON A.usuario_id = C.id_usuario
+				WHERE C.id_empresa = (SELECT id_empresa FROM us_usuarios 
+				WHERE id_usuario = ' . $usuario_id . ')';
 
 		if ($estado != null)
 			$cadena_query .= ' AND status = \'' . $estado . '\'';
@@ -266,7 +270,74 @@ class Ticket_model extends CI_Model {
 		$this->db->update($this->tablas['ticket'], $data);
 	}
 
+	public function get_ticketID_empresa($ticketID)
+	{
+		$query = $this->db->query('SELECT C.empresa_id AS empresa_id
+				FROM tk_ticket A
+				INNER JOIN us_usuarios B ON (A.usuario_id = B.id_usuario)
+				INNER JOIN sop_empresas C ON (B.id_empresa = C.empresa_id)
+				WHERE A.ticketId = ' . $ticketID);
 
+		if ($query->num_rows() > 0)
+		{
+			$row = $query->row();
+			$data = $row->empresa_id;
+			return $data;
+		}
+
+		return null;
+	}
+
+	public function get_listado_staff($num_order = 1, $estado = null, 
+									  $atrasado = false)
+	{
+		switch ($num_order) 
+		{
+			case 1:
+				$order = 'FECHAS';
+				break;
+
+			case 2:
+				$order = 'TICKETS';
+				break;
+
+			case 3:
+				$order = 'ESTADO';
+				break;
+			
+			default:
+				$order = 'FECHAS';
+				break;
+		}
+
+		$cadena_query = 'SELECT CONCAT(\'<a href=" '. base_url() 
+				. 'tickets_usuario/entra_edita_ticket/\', A.ticketID,\'">\', 
+				A.ticketID, \'</a>\') AS TICKETS, 
+				SUBSTR(A.created, 1, 10) AS FECHAS, 
+				A.status AS ESTADO, CONCAT(\'<a href=" '. base_url() 
+				. 'tickets_usuario/entra_edita_ticket/\', A.ticketID,\'">\', 
+				A.subject, \'</a>\') AS ASUNTO, 
+				C.nombre_empresa AS EMPRESA
+				FROM tk_ticket A
+				INNER JOIN us_usuarios B ON A.usuario_id = B.id_usuario
+				INNER JOIN sop_empresas C ON B.id_empresa = C.empresa_id';
+
+		if ($estado != null)
+			$cadena_query .= ' WHERE status = \'' . $estado . '\'';
+
+		if ($atrasado AND $estado == null)
+			$cadena_query .= ' WHERE isoverdue = 1';
+
+		$cadena_query .= ' ORDER BY ' . $order;
+
+		$query = $this->db->query($cadena_query);
+
+		if ($query->num_rows() > 0)
+		{
+			return $query;
+		}
+		return null;
+	}
 }
 
 /* End of file ticket_model.php */

@@ -296,9 +296,23 @@ div#titNewUser {
 	line-height: 70px;
 	height: 50px;
 	display: block;
-	margin: 8px 50px 0;
+	margin: 8px 30px 0;
 	width: 85px;
 
+}
+
+/*
+ * LISTADO TICKETS STAFF
+ */
+
+
+.listado_table th {
+    background-color: #A6A4A4;
+    color: white;
+}
+
+#listado {
+	width: 90%;
 }
 
 /*

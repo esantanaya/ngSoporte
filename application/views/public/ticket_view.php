@@ -1,8 +1,20 @@
 <div id="tabla_resumen">
 	<p>Ticket #<?=$ticketID?> 
-		<a href="<?=base_url()?>tickets_usuario/entra_edita_ticket/<?=$ticketID?>" title="Reload"> 
-			<img src="<?=base_url()?>imagenes/iconos/tickets/ic_refresh.png" alt="Reload">
+		<a href="<?=base_url()?>tickets_usuario/entra_edita_ticket/<?=$ticketID?>" title="Recargar"> 
+			<img src="<?=base_url()?>imagenes/iconos/tickets/ic_refresh.png" alt="Recargar">
 		</a>
+		<?php 
+			if ($reabrir)
+			{
+				$cadena = base_url() . 'tickets_usuario/reabre/' . $ticketID;
+				$icono = '<a href="' . $cadena . '" title="Reabrir">' 
+						. '<img src="' . base_url() 
+						. 'imagenes/iconos/tickets/ic_resueltos.png"' 
+						. 'alt="re-abrir"></a>';
+
+				echo '&nbsp;' . $icono;
+			}
+		?>
 	</p>
 	<div class="contenedor_resumen">
 		<table class="resumen_ticket">

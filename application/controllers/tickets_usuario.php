@@ -5,10 +5,9 @@ class Tickets_usuario extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		if (!is_logged())
-		{
+
+		if (! is_logged())
 			redirect(base_url() . 'login');
-		}
 
 		error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 
@@ -17,6 +16,10 @@ class Tickets_usuario extends CI_Controller {
 		$this->load->model('file_model');
 		$this->load->helper('date');
 		$this->load->library('table');
+
+		if ($this->usuario_model->get_cambia_pass($this->session->userdata(
+			'idUsuario')))
+			redirect(base_url() . 'cambia_pass');
 	}
 
 	public function index()
@@ -367,27 +370,15 @@ class Tickets_usuario extends CI_Controller {
 	{
 		$usuario_id = $this->session->userdata('idUsuario');
 
-		switch ($estado) 
+		if ($estado != null)
 		{
-			case 'abierto':
-				$listado = $this->ticket_model->get_ticket_usuario(
+			$listado = $this->ticket_model->get_ticket_usuario(
 												$usuario_id,null,$estado);
-				break;
-
-			case 'esperando':
-				$listado = $this->ticket_model->get_ticket_usuario(
-												$usuario_id,null,$estado);
-				break;
-
-			case 'cerrado':
-				$listado = $this->ticket_model->get_ticket_usuario(
-												$usuario_id,null,$estado);
-				break;
-			
-			default:
-				$listado = $this->ticket_model->get_ticket_usuario(
+		}
+		else
+		{
+			$listado = $this->ticket_model->get_ticket_usuario(
 												$usuario_id);
-				break;
 		}
 
 		if ($listado == null)
@@ -409,8 +400,24 @@ class Tickets_usuario extends CI_Controller {
 		$this->load->view('public/main_tickets_view', $data);
 	}
 
+	public function reabre($ticketID)
+	{
+		$this->ticket_model->cambia_estado_ticket($ticketID, 'abierto');
+		$this->entra_edita_ticket($ticketID);
+	}
+
 	public function entra_edita_ticket($ticketID, $error = null)
 	{
+		$id_empresa = $this->usuario_model->get_empresa($this->session->
+											userdata('idUsuario'));
+		$id_ticketID = $this->ticket_model->get_ticketID_empresa($ticketID);
+		
+		if (! is_empresa($ticketID, $id_empresa, 
+			$this->session->userdata('nivel')))
+			redirect(base_url());
+
+		$date_string = "%Y-%m-%d %h:%i:%s";
+		$time = time();
 		$ticket_id = $this->ticket_model->get_ticket_ticketID($ticketID);
 		$mensajes = $this->ticket_model->get_historial_mensaje(
 													$ticket_id);
@@ -499,6 +506,11 @@ class Tickets_usuario extends CI_Controller {
 		}
 		$arrDatos = $this->ticket_model->get_vista_ticket($ticketID);
 
+		$creado = new DateTime($arrDatos[0]['created']);
+		$hoy = new DateTime(mdate($date_string, $time));
+		$intervalo = date_diff($creado, $hoy);
+		$estado = $arrDatos[0]['status'];
+
 		$tmpl = array('table_open' => '<table class="historial_table"
 				 cellspacing="0" cellpadding="4" border="0">', );
 		$this->table->set_template($tmpl);
@@ -529,7 +541,7 @@ class Tickets_usuario extends CI_Controller {
 			$data['error'] = $error;
 
 		$data['ticketID'] = $ticketID;
-		$data['estado_ticket'] = $arrDatos[0]['status'];
+		$data['estado_ticket'] = $estado;
 		$data['departamento_ticket'] = $arrDatos[0]['dept_name'];
 		$data['creacion_ticket'] = $arrDatos[0]['created'];
 		$data['staff_name'] = $arrDatos[0]['nombre_usuario'] . ' ' 
@@ -537,8 +549,11 @@ class Tickets_usuario extends CI_Controller {
 		$data['staff_correo'] = $arrDatos[0]['email_usuario'];
 		$data['staff_tel'] = $arrDatos[0]['tel_usuario'];
 		$data['asunto'] = $arrDatos[0]['subject'];
-
+		$data['re-abrir'] = false;
 		$data['tabla'] = $arreglo_historial;
+
+		if ($estado == 'cerrado' AND $intervalo->days < 15)
+			$data['reabrir'] = true;
 
 		$this->load->view('public/main_tickets_view', $data);
 	}

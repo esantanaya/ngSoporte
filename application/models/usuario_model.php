@@ -21,8 +21,6 @@ class Usuario_model extends CI_Model {
 
 		if ($query->num_rows() > 0)
 		{
-			//$row = $query->result_array();
-			//$data = $row[0]['id_usuario'];
 			$row = $query->row();
 			$data = $row->id_usuario;
 
@@ -101,15 +99,21 @@ class Usuario_model extends CI_Model {
 		return false;
 	}
 
-	public function update_password_usuario($id, $new_password)
+	public function update_password_usuario($id_usuario, $new_password)
 	{
-		$this->db->where('id_usuario', $id);
+		$this->db->where('id_usuario', $id_usuario);
 		$query = $this->db->get($this->tablas['usuarios']);
 
 		if ($query->num_rows() >= 1)
 		{
-			$this->db->where('id_usuario', $id);
-			$this->db->update($this->tablas['usuarios'], $new_password);
+			$new_password = $this->auth_model->hashPassword($new_password, 
+															null);
+
+			$data = array('pass_usuario' => $new_password, 
+						  'cambia_pass' => 0);
+
+			$this->db->where('id_usuario', $id_usuario);
+			$this->db->update($this->tablas['usuarios'], $data);
 
 			return true;
 		}
@@ -185,6 +189,42 @@ class Usuario_model extends CI_Model {
 			return $mail;
 		}
 		return null;
+	}
+
+	public function get_empresa($id_usuario)
+	{
+		$this->db->select('id_empresa');
+		$this->db->where('id_usuario', $id_usuario);
+		$query = $this->db->get($this->tablas['usuarios'], 1);
+
+		if ($query->num_rows() > 0)
+		{
+			$row = $query->row();
+			$id_empresa = $row->id_empresa;
+			return $id_empresa;
+		}
+
+		return null;
+	}
+
+	public function get_cambia_pass($id_usuario)
+	{
+		$this->db->select('cambia_pass');
+		$this->db->where('id_usuario', $id_usuario);
+		$query = $this->db->get($this->tablas['usuarios'], 1);
+
+		if ($query->num_rows() > 0)
+		{
+			$row = $query->row();
+			$cambio = $row->cambia_pass;
+
+			if ($cambio == 0)
+				return false;
+			if ($cambio == 1)
+				return true;
+		}
+
+		return null;	
 	}
 
 	//****GRUPOS****

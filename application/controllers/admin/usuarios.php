@@ -6,9 +6,10 @@ class Usuarios extends CI_Controller {
 	{
 		parent::__construct();
 		if (!is_logged())
-		{
 			redirect(base_url() . 'login');
-		}
+		if (! is_authorized(array(0, 1), null, $this->session->userdata(
+			'nivel'), $this->session->userdata('rol')))
+			redirect(base_url() . 'login');
 
 		$this->load->model('usuario_model');
 	}
@@ -125,6 +126,9 @@ class Usuarios extends CI_Controller {
 		}
 		else
 		{
+			if (empty($clave))
+				$clave = '123';
+
 			$data = array('cod_usuario' =>  $cod_usuario,
 				'id_departamento_usuario' => 
 										$this->input->post('departamento'),
@@ -150,7 +154,7 @@ class Usuarios extends CI_Controller {
 			$id_usuario = 'Se cre&oacute; el usuario con el ID ' . $id_usuario;
 			
 			$this->nuevo(null, null, $id_usuario);
-		}	
+		}
 	}
 
 }
