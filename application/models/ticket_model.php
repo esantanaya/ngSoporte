@@ -313,12 +313,12 @@ class Ticket_model extends CI_Model {
 		$cadena_query = 'SELECT CONCAT(\'<input type="checkbox" ' 
 				. 'name="ticket" value="\', A.ticketID, \'">\') AS \'\', ' 
 				. 'CONCAT(\'<a href=" ' . base_url() 
-				. 'tickets_usuario/entra_edita_ticket/\', '
+				. 'staff/tickets/responde_ticket/\', '
 				. 'A.ticketID,\'">\', 
 				A.ticketID, \'</a>\') AS TICKETS, 
 				SUBSTR(A.created, 1, 10) AS FECHAS, 
 				A.status AS ESTADO, CONCAT(\'<a href=" '. base_url() 
-				. 'tickets_usuario/entra_edita_ticket/\', A.ticketID,\'">\', 
+				. 'staff/tickets/responde_ticket/\', A.ticketID,\'">\', 
 				A.subject, \'</a>\') AS ASUNTO, 
 				C.nombre_empresa AS EMPRESA
 				FROM tk_ticket A
@@ -339,6 +339,22 @@ class Ticket_model extends CI_Model {
 		{
 			return $query;
 		}
+		return null;
+	}
+
+	public function get_vista_asigna($ticketID)
+	{
+		$query = $this->db->query('SELECT C.nombre_empresa, A.lastresponse, 
+					A.duedate, B.nombre_usuario, B.apellido_paterno, 
+					B.email_usuario, B.tel_usuario, A.subject
+					FROM tk_ticket A
+					INNER JOIN us_usuarios B ON A.usuario_id = B.id_usuario
+					INNER JOIN sop_empresas C ON B.id_empresa = C.empresa_id
+					WHERE A.ticketID = ' . $ticketID . '  LIMIT 1');
+
+		if ($query->num_rows() > 0)
+			return $query->result_array();
+
 		return null;
 	}
 }

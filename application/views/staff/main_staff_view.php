@@ -26,7 +26,7 @@
 							if ($nivel_usuario == 1 AND $m_usuario == 'Staff')
 							{
 								$cambio_nivel = '<a href="' . base_url() 
-												. 'admin/principal">Admin</a>';
+												. 'admin/usuarios/nuevo">Admin</a>';
 							}	
 							
 							echo $cambio_nivel;
@@ -48,6 +48,7 @@
 			</div>
 			<div id="content">
 				<?php 
+					$this->load->view($subMenu);
 					$this->load->view($modulo);
 				?>
 			</div>

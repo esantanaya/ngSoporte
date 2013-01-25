@@ -319,6 +319,63 @@ div#titNewUser {
 	width: 90%;
 }
 
+a.abierto {
+	background: transparent url('../imagenes/iconos/tickets/ic_abierto.png') center top no-repeat;
+}
+
+a.cerrado {
+	background: transparent url('../imagenes/iconos/tickets/ic_cerrados.png') center top no-repeat;	
+}
+
+a.actualizar {
+	background: transparent url('../imagenes/iconos/tickets/ic_todos.png') center top no-repeat;
+}
+
+a.espera {
+	background: transparent url('../imagenes/iconos/tickets/espera.png') center top no-repeat;
+}
+
+a.nuevo {
+	background: transparent url('../imagenes/iconos/tickets/ic_nuevoticket.png') center top no-repeat;
+}
+
+a.atrasado {
+	background: transparent url('../imagenes/iconos/tickets/atrasados.png') center top no-repeat;
+}
+
+/*
+ *VISTA TICKET
+ */
+
+ #tabla_estado p {
+	margin: 10px 0 0 10px;
+}
+
+
+.contenedor_resumen {
+    float: left;
+    width: 401px;
+}
+
+#historial {
+    margin: 15px 0;
+    clear: both;
+}
+
+.historial_table div {
+    padding-left: 5px;
+}
+
+.encabezado {
+    background-color: #A6A4A4;
+    color: white;
+}
+
+.encabezado_staff {
+    background-color: #313131;
+    color: white;
+}
+
 /*
  * FUENTES
  */
