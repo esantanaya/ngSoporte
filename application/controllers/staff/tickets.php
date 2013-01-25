@@ -56,6 +56,16 @@ class Tickets extends CI_Controller {
 
 		$this->load->view('staff/main_staff_view', $data);
 	}
+
+	public function atrasa()
+	{
+		//TODO arregla esto!
+		$arreglo = array($this->input->post('ticket'));
+		var_dump($arreglo);
+		foreach ($variable as $key => $value) {
+			# code...
+		}
+	}
 }
 
 /* End of file tickets.php */

@@ -288,7 +288,7 @@ class Ticket_model extends CI_Model {
 		return null;
 	}
 
-	public function get_listado_staff($num_order = 1, $estado = null, 
+	public function get_listado_staff($num_order = 1, $estado = 'abierto', 
 									  $atrasado = false)
 	{
 		switch ($num_order) 
@@ -310,8 +310,11 @@ class Ticket_model extends CI_Model {
 				break;
 		}
 
-		$cadena_query = 'SELECT CONCAT(\'<a href=" '. base_url() 
-				. 'tickets_usuario/entra_edita_ticket/\', A.ticketID,\'">\', 
+		$cadena_query = 'SELECT CONCAT(\'<input type="checkbox" ' 
+				. 'name="ticket" value="\', A.ticketID, \'">\') AS \'\', ' 
+				. 'CONCAT(\'<a href=" ' . base_url() 
+				. 'tickets_usuario/entra_edita_ticket/\', '
+				. 'A.ticketID,\'">\', 
 				A.ticketID, \'</a>\') AS TICKETS, 
 				SUBSTR(A.created, 1, 10) AS FECHAS, 
 				A.status AS ESTADO, CONCAT(\'<a href=" '. base_url() 
