@@ -376,6 +376,14 @@ a.atrasado {
     color: white;
 }
 
+div#respuesta {
+    margin-bottom: 50px;
+}
+
+#respuesta div {
+	margin-top: 10px;
+}
+
 /*
  * FUENTES
  */

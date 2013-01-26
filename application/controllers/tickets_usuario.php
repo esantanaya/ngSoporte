@@ -506,6 +506,7 @@ class Tickets_usuario extends CI_Controller {
 			foreach ($respuestas as $fila => $valor) 
 			{
 				$respuesa_mensaje = $valor['msg_id'];
+				$adjunto_staff = null;
 
 				if ($respuesa_mensaje == $mensaje_id)
 				{

@@ -82,7 +82,9 @@
 		</table>
 	</div>
 </div>
-<div id="acciones"></div>
+<div id="acciones">
+	
+</div>
 <div id="notas"></div>
 <div id="historial">
 	<?php
@@ -100,7 +102,9 @@
 	<?php echo '<span class="error">' . $error . '</span>'; ?>
 	<input type="file" name="adjunto" size="20" id="adjunto">
 	<br>
-	<input type="submit" value="RESPUESTA" class="boton">
-	<input type="reset" value="RESET" class="boton">
-	<input type="button" value="CANCELAR" class="boton">
+	<div id="espacio_botones">
+		<input type="submit" value="ENVIAR" class="boton">
+		<input type="reset" value="RESET" class="boton">
+		<input type="button" value="CANCELAR" class="boton">
+	</div>
 </div>
