@@ -310,7 +310,32 @@ class Tickets extends CI_Controller {
 
 		$usuario_id = $this->ticket_model->get_usuario_ticket($ticketID);
 		$this->send_mail_usuario($usuario_id, $ticketID);
-		$this->responde_ticket($ticketID);
+		redirect(base_url() . 'staff/tickets/responde_ticket/' . $ticketID);
+	}
+
+	public function busqueda()
+	{
+		$query = $this->input->post('query');
+		$listado = $this->ticket_model->get_tickets_query($query);
+
+		if ($listado == null)
+		{
+			$listado = array('Genere un ticket' => 'Usted no tiene tickets');
+			$this->table->add_row($listado);
+		}
+
+		$tmpl = array('table_open' => '<table border="0" cellpadding="4"
+				cellspacing="0" class="listado_table">');
+		$this->table->set_template($tmpl);
+
+		$data['SYS_MetaTitle'] = 'Tickets :: listado';
+		$data['SYS_metaKeyWords'] = 'sistema ticket n&g';
+		$data['SYS_metaDescription'] = 'Listado de tickets';
+		$data['subMenu'] = 'staff/submenu_view';
+		$data['modulo'] = 'staff/tickets_listado_view';
+		$data['listado'] = $listado;
+
+		$this->load->view('staff/main_staff_view', $data);
 	}
 
 	public function send_mail_usuario($usuario_id, $ticketID)

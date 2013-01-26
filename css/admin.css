@@ -384,6 +384,10 @@ div#respuesta {
 	margin-top: 10px;
 }
 
+#listaTitulo {
+    margin: 20px 0 10px 40px;
+}
+
 /*
  * FUENTES
  */

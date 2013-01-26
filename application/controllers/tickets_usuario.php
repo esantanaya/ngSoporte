@@ -403,11 +403,12 @@ class Tickets_usuario extends CI_Controller {
 		$respuesta = true;
 		$cod_staff = $this->ticket_model->get_cod_staff_ticket($ticketID);
 
-		$this->entra_edita_ticket($ticketID);
 		$this->send_mail_usuario($usuario_id, $cod_staff, $ticketID, 
 								 $respuesta);
 		$this->send_mail_staff( $cod_staff, $usuario_id, $ticketID, 
 								 $respuesta);
+		redirect(base_url() . 'tickets_usuario/entra_edita_ticket/' 
+				  . $ticketID);
 	}
 
 	public function lista_ticket($estado = null)
@@ -424,6 +425,30 @@ class Tickets_usuario extends CI_Controller {
 			$listado = $this->ticket_model->get_ticket_usuario(
 												$usuario_id);
 		}
+
+		if ($listado == null)
+		{
+			$listado = array('Genere un ticket' => 'Usted no tiene tickets');
+			$this->table->add_row($listado);
+		}
+
+		$tmpl = array('table_open' => '<table border="0" cellpadding="4"
+				cellspacing="0" class="listado_table">');
+		$this->table->set_template($tmpl);
+
+		$data['SYS_MetaTitle'] = 'Tickets :: listado';
+		$data['SYS_metaKeyWords'] = 'sistema ticket n&g';
+		$data['SYS_metaDescription'] = 'Listado de tickets';
+		$data['modulo'] = 'public/ticket_lista_view';
+		$data['listado'] = $listado;
+
+		$this->load->view('public/main_tickets_view', $data);
+	}
+
+	public function busqueda()
+	{
+		$query = $this->input->post('query');
+		$listado = $this->ticket_model->get_tickets_query($query);
 
 		if ($listado == null)
 		{

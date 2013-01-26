@@ -111,7 +111,7 @@ class Ticket_model extends CI_Model {
 		{
 			$miembro_actual = $miembro['cod_usuario'];
 			$this->db->where('cod_staff', $miembro_actual);
-			$this->db->where('status', 'abierto');
+			$this->db->where('status !=', 'cerrado');
 			$this->db->select('cod_staff');
 			$query = $this->db->get($this->tablas['ticket']);
 
@@ -412,6 +412,55 @@ class Ticket_model extends CI_Model {
 			return $cod_staff;
 		}
 
+		return null;
+	}
+
+	public function get_tickets_query($query, $order = 1)
+	{
+		switch ($num_order) 
+		{
+			case 1:
+				$order = 'FECHAS';
+				break;
+
+			case 2:
+				$order = 'TICKETS';
+				break;
+
+			case 3:
+				$order = 'ESTADO';
+				break;
+			
+			default:
+				$order = 'FECHAS';
+				break;
+		}
+
+		$cadena_query = 'SELECT CONCAT(\'<input type="checkbox" ' 
+				. 'name="ticket" value="\', A.ticketID, \'">\') AS \'\', ' 
+				. 'CONCAT(\'<a href=" ' . base_url() 
+				. 'staff/tickets/responde_ticket/\', '
+				. 'A.ticketID,\'">\', 
+				A.ticketID, \'</a>\') AS TICKETS, 
+				SUBSTR(A.created, 1, 10) AS FECHAS, 
+				A.status AS ESTADO, CONCAT(\'<a href=" '. base_url() 
+				. 'staff/tickets/responde_ticket/\', A.ticketID,\'">\', 
+				A.subject, \'</a>\') AS ASUNTO, 
+				C.nombre_empresa AS EMPRESA
+				FROM tk_ticket A
+				INNER JOIN us_usuarios B ON A.usuario_id = B.id_usuario
+				INNER JOIN sop_empresas C ON B.id_empresa = C.empresa_id
+				WHERE A.ticketID LIKE \'%' . $query . '%\' 
+				OR A.subject LIKE \'%' . $query . '%\'';
+
+		$cadena_query .= ' ORDER BY ' . $order;
+
+		$query = $this->db->query($cadena_query);
+
+		if ($query->num_rows() > 0)
+		{
+			return $query;
+		}
 		return null;
 	}
 }
