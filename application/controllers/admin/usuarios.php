@@ -12,6 +12,10 @@ class Usuarios extends CI_Controller {
 			redirect(base_url() . 'login');
 
 		$this->load->model('usuario_model');
+
+		if ($this->usuario_model->get_cambia_pass($this->session->userdata(
+			'idUsuario')))
+			redirect(base_url() . 'cambia_pass');
 	}
 
 	public function index($value='')

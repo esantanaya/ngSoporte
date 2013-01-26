@@ -19,6 +19,10 @@ class Tickets extends CI_Controller {
 		$this->load->library('table');
 		$this->load->helper('date');
 		$this->load->model('file_model');
+
+		if ($this->usuario_model->get_cambia_pass($this->session->userdata(
+			'idUsuario')))
+			redirect(base_url() . 'cambia_pass');
 	}
 
 	public function index()
@@ -122,11 +126,13 @@ class Tickets extends CI_Controller {
 				{
 					$respuesta_id = $valor['response_id'];
 					$adjunto_completo_staff = $this->ticket_model->
-								get_adjunto_mensaje($respuesa_id, $ticket_id);
+								get_adjunto_mensaje($respuesta_id, $ticket_id,
+													'R');
 					if ($adjunto_completo_staff != null)
-						$adjunto_staff = '<div class="cuerpo"><a href="' . base_url() 
-						. 'docs/tickets/' . $adjunto_completo_staff . '">' 
-						. substr($adjunto_completo, 18) . '</a></div>';
+						$adjunto_staff = '<div class="cuerpo"><a href="' 
+						. base_url() . 'docs/tickets/' 
+						. $adjunto_completo_staff . '">' 
+						. substr($adjunto_completo_staff, 18) . '</a></div>';
 					
 					$encabezado_staff = '<div class="encabezado_staff">' 
 										. $valor['created'] . ' ' . $valor[
@@ -273,7 +279,7 @@ class Tickets extends CI_Controller {
 			$data['staff_tel'] = $arrDatos[0]['tel_usuario'];
 			$data['asunto'] = $arrDatos[0]['subject'];
 
-			$this->entra_edita_ticket($ticketID, $data['error']);
+			$this->responde_ticket($ticketID, $data['error']);
 			return false;
 		}
 
@@ -288,12 +294,13 @@ class Tickets extends CI_Controller {
 							 'msg_id' => $msg_id,
 							 'created' => $date_string);
 		$mensaje_id = $this->ticket_model->insert_respuesta($respuesta);
-		$this->ticket_model->cambia_estado_ticket($ticketID, 'abierto');
+		$this->ticket_model->cambia_estado_ticket($ticketID, 'esperando');
 
 		if ($envio)
 		{
 			$arrInsert = array('ticket_id' => $ticket_id, 
 						'ref_id' => $mensaje_id,
+						'ref_type' => 'R',
 						'file_name' => $archivo,
 						'file_key' => substr($archivo, 12, 5),
 						'created' => $date_string);

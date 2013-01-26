@@ -186,11 +186,10 @@ class Ticket_model extends CI_Model {
 	public function get_historial_respuesta($ticket_id)
 	{
 		$query = $this->db->query('SELECT A.msg_id, A.created, 
-				C.nombre_usuario, C.apellido_paterno, A.response,
+				B.nombre_usuario, B.apellido_paterno, A.response,
 				A.response_id
 				FROM tk_respuesta A
-				INNER JOIN tk_ticket B ON A.ticket_id = B.ticket_id
-				INNER JOIN us_usuarios C ON B.usuario_id = C.id_usuario
+				INNER JOIN us_usuarios B ON A.staff_id = B.id_usuario
 				WHERE A.ticket_id = ' . $ticket_id . ' 
 				ORDER BY A.msg_id ASC;');
 
@@ -202,11 +201,12 @@ class Ticket_model extends CI_Model {
 		return null;
 	}
 
-	public function get_adjunto_mensaje($mensaje_id, $ticket_id)
+	public function get_adjunto_mensaje($ref_id, $ticket_id, $tipo = 'M')
 	{
 		$this->db->select('file_name');
-		$this->db->where('ref_id', $mensaje_id);
+		$this->db->where('ref_id', $ref_id);
 		$this->db->where('ticket_id', $ticket_id);
+		$this->db->where('ref_type', $tipo);
 		$query = $this->db->get($this->tablas['adjuntos'], 1);
 
 		if ($query->num_rows() > 0)

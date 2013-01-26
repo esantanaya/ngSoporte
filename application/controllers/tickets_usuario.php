@@ -511,11 +511,12 @@ class Tickets_usuario extends CI_Controller {
 				{
 					$respuesta_id = $valor['response_id'];
 					$adjunto_completo_staff = $this->ticket_model->
-								get_adjunto_mensaje($respuesa_id, $ticket_id);
+								get_adjunto_mensaje($respuesta_id, $ticket_id, 
+													'R');
 					if ($adjunto_completo_staff != null)
 						$adjunto_staff = '<div class="cuerpo"><a href="' . base_url() 
 						. 'docs/tickets/' . $adjunto_completo_staff . '">' 
-						. substr($adjunto_completo, 18) . '</a></div>';
+						. substr($adjunto_completo_staff, 18) . '</a></div>';
 					
 					$encabezado_staff = '<div class="encabezado_staff">' 
 										. $valor['created'] . ' ' . $valor[
