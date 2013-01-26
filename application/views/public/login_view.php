@@ -1,3 +1,4 @@
+<!-- SE LIBERA LA PRIMERA VERSION Y SE ABRE DESARROLLO -->
 <html>
 	<head>
 		<title><?=$SYS_MetaTitle?></title>
