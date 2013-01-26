@@ -90,7 +90,7 @@
 	?>
 </div>
 <div id="respuesta">
-	<form action="<?=base_url()?>tickets_usuario/agrega_mensaje" method="post" enctype="multipart/form-data">
+	<form action="<?=base_url()?>staff/tickets/agrega_respuesta" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="ticketID" value="<?=$ticketID?>">
 	<label for="mensaje">Mensaje: <span class="rojo">*</span></label>
 	<?php echo form_error('mensaje'); ?>

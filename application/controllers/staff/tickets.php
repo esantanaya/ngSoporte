@@ -15,7 +15,10 @@ class Tickets extends CI_Controller {
 		error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 
 		$this->load->model('ticket_model');
+		$this->load->model('usuario_model');
 		$this->load->library('table');
+		$this->load->helper('date');
+		$this->load->model('file_model');
 	}
 
 	public function index()
@@ -62,7 +65,6 @@ class Tickets extends CI_Controller {
 	{
 		//TODO arregla esto!
 		$arreglo = array($this->input->post('ticket'));
-		var_dump($arreglo);
 		foreach ($variable as $key => $value) {
 			# code...
 		}
@@ -211,6 +213,127 @@ class Tickets extends CI_Controller {
 		$data['tabla'] = $arreglo_historial;
 
 		$this->load->view('staff/main_staff_view', $data);
+	}
+
+	public function agrega_respuesta()
+	{
+		$date_string = "%Y-%m-%d %h:%i:%s";
+		$time = time();
+		$date_string = mdate($date_string, $time);
+
+		$mensaje = $this->input->post('mensaje');
+		$ticketID = $this->input->post('ticketID');
+		$ticket_id = $this->ticket_model->get_ticket_ticketID($ticketID);
+
+		$envio = false;
+
+		if ($_FILES['adjunto']['name'] != '') 
+			$envio = true;
+
+		$info = array('date' => true,
+						'random' => true,
+						'user_id' => null);
+
+		$archivo = $this->file_model->uploadNonImage('tickets', $info, 
+														'adjunto', $envio);
+
+		$this->form_validation->set_rules('mensaje', 'Mensaje', 
+			'trim|required|xss_clean');
+		$this->form_validation->set_message('required', 
+			'Ingrese su "%s" por favor');
+		$this->form_validation->set_message('xss_clean', 
+			'El campo "%s" contiene un posible ataque XSS');
+		$this->form_validation->set_error_delimiters('<span class="error">', 
+			'</span>');
+
+		if (! $this->form_validation->run() || is_array($archivo))
+		{
+			$arrDatos = $this->ticket_model->get_vista_ticket($ticketID);
+
+			$data['SYS_MetaTitle'] = 'Tickets :: Estado';
+			$data['SYS_metaKeyWords'] = 'sistema ticket n&g';
+			$data['SYS_metaDescription'] = 'Estado de un ticket';
+			$data['modulo'] = 'public/ticket_view';
+			if (is_array($archivo))
+			{
+				$data['error'] = $archivo['error'];
+			}
+			else
+			{
+				$data['error'] = '';
+			}
+
+			$data['ticketID'] = $ticketID;
+			$data['estado_ticket'] = $arrDatos[0]['status'];
+			$data['departamento_ticket'] = $arrDatos[0]['dept_name'];
+			$data['creacion_ticket'] = $arrDatos[0]['created'];
+			$data['staff_name'] = $arrDatos[0]['nombre_usuario'] . ' ' 
+									. $arrDatos[0]['apellido_paterno'];
+			$data['staff_correo'] = $arrDatos[0]['email_usuario'];
+			$data['staff_tel'] = $arrDatos[0]['tel_usuario'];
+			$data['asunto'] = $arrDatos[0]['subject'];
+
+			$this->entra_edita_ticket($ticketID, $data['error']);
+			return false;
+		}
+
+		$msg_id = $this->ticket_model->get_msg_id($ticket_id);
+
+		$respuesta = array('ticket_id' => $ticket_id,
+							 'response' => $mensaje,
+							 'staff_id' => $this->session->userdata(
+							 								'idUsuario'),
+							 'staff_name' => 
+							 			$this->session->userdata('nombre'),
+							 'msg_id' => $msg_id,
+							 'created' => $date_string);
+		$mensaje_id = $this->ticket_model->insert_respuesta($respuesta);
+		$this->ticket_model->cambia_estado_ticket($ticketID, 'abierto');
+
+		if ($envio)
+		{
+			$arrInsert = array('ticket_id' => $ticket_id, 
+						'ref_id' => $mensaje_id,
+						'file_name' => $archivo,
+						'file_key' => substr($archivo, 12, 5),
+						'created' => $date_string);
+			$this->ticket_model->insert_adjunto($arrInsert);
+		}
+
+		$usuario_id = $this->ticket_model->get_usuario_ticket($ticketID);
+		$this->send_mail_usuario($usuario_id, $ticketID);
+		$this->responde_ticket($ticketID);
+	}
+
+	public function send_mail_usuario($usuario_id, $ticketID)
+	{
+		$this->load->model('email_model');
+		$arr_nombre = $this->usuario_model->get_usuario_nombre(null, 
+						$usuario_id);
+		$nombre = $arr_nombre[0]['nombre_usuario'];
+		$apellido = $arr_nombre[0]['apellido_paterno'];
+		$correo = $this->usuario_model->get_usuario_mail(null, $usuario_id);
+
+		$asunto = 'Sistema de Tickets N&G Ticket #' . $ticketID;
+
+		$mensaje = 	'
+					<br/>
+					Hola <strong>' . $nombre . '<span> </span> ' . $apellido .
+					 ':</strong>
+					<br />
+					<p>
+						Su ticket <strong><a href="' . base_url() 
+						. 'tickets_usuario/entra_edita_ticket/' . $ticketID 
+						. '">#' . $ticketID 
+						. '</a></strong> fue actualizado, verifique!!
+					</p>
+					<br />
+					';
+
+		$enviado = $this->email_model->send_email(null, $correo, $asunto, 
+									$mensaje);
+		
+		return $enviado;
 	}
 }
 

@@ -335,6 +335,19 @@ class Usuario_model extends CI_Model {
 
 		return $query->result_array();
 	}
+
+	//****EMPRESAS****
+
+	public function get_empresas()
+	{
+		$this->db->select('empresa_id, nombre_empresa');
+		$query = $this->db->get($this->tablas['empresas']);
+
+		if ($query->num_rows() > 0)
+			return $query->result_array();
+
+		return null;
+	}
 }
 
 /* End of file usuario_model.php */

@@ -20,6 +20,9 @@ class Tickets_usuario extends CI_Controller {
 		if ($this->usuario_model->get_cambia_pass($this->session->userdata(
 			'idUsuario')))
 			redirect(base_url() . 'cambia_pass');
+
+		if ($this->session->userdata('nivel') < 3)
+			redirect(base_url() . 'staff/tickets');
 	}
 
 	public function index()
@@ -102,9 +105,9 @@ class Tickets_usuario extends CI_Controller {
 
 			case 1:
 				$row = $miembros_staff->row();
-				$data = $row->cod_usuario;
+				$otro = $row->cod_usuario;
 
-				$ticket['cod_staff'] = $data;
+				$ticket['cod_staff'] = $otro;
 				break;
 			
 			default:
@@ -217,7 +220,8 @@ class Tickets_usuario extends CI_Controller {
 		}
 	}
 
-	public function send_mail_usuario($usuario_id, $nombre_staff, $ticketID)
+	public function send_mail_usuario($usuario_id, $nombre_staff, $ticketID, 
+									  $respuesta = false)
 	{
 		$this->load->model('email_model');
 		$arr_nombre = $this->usuario_model->get_usuario_nombre(null, 
@@ -244,13 +248,28 @@ class Tickets_usuario extends CI_Controller {
 					<br />
 					';
 
+		if ($respuesta)
+		{
+			$mensaje = 	'
+						<br>
+						Hola <strong>' . $nombre . '</strong> <span> </span>'
+						. $apellido . ':
+						<br />
+						<p>
+							Su ticket ' . $ticketID . ' actualizado ha sido
+							enviado correctamente!!
+						</p>
+						';
+		}
+
 		$enviado = $this->email_model->send_email(null, $correo, $asunto, 
 									$mensaje);
 		
 		return $enviado;
 	}
 
-	public function send_mail_staff($cod_staff, $usuario_id, $ticketID)
+	public function send_mail_staff($cod_staff, $usuario_id, $ticketID, 
+									$respuesta = false)
 	{
 		$this->load->model('email_model');
 		$arr_nombre = $this->usuario_model->get_usuario_nombre($cod_staff);
@@ -270,13 +289,31 @@ class Tickets_usuario extends CI_Controller {
 					 ':</strong>
 					<br />
 					<p>
-						Tienes un nuevo ticket con el ID: <strong>'
-						 . $ticketID . '</strong> asignado por <strong>'
-						 . $nombre_cliente . '<span> </span> '
-						 . $apellido_cliente . '</strong> por favor revisa los
-						  detalles en el Sistema
+						Tienes un nuevo ticket con el ID: <a href="' 
+						. base_url() . 'staff/tickets/responde_ticket/' 
+						. $ticketID . '">'
+						. $ticketID . '</a> asignado por <strong>'
+						. $nombre_cliente . '<span> </span> '
+						. $apellido_cliente . '</strong> por favor revisa los
+						detalles en el Sistema
 					</p>
 					';
+		if ($respuesta)
+		{
+			$mensaje = '
+					<br/>
+					Hola <strong>' . $nombre . '<span> </span> ' . $apellido .
+					 ':</strong>
+					<br />
+					<p>
+						El ticket con el ID: <a href="' 
+						. base_url() . 'staff/tickets/responde_ticket/' 
+						. $ticketID . '">'
+						. $ticketID . '</a> ya fue contestado por favor
+					  	revisa los detalles en el Sistema
+					</p>
+					';
+		}
 
 		$enviado = $this ->email_model->send_email(null, $correo, $asunto, 
 												$mensaje);
@@ -345,10 +382,11 @@ class Tickets_usuario extends CI_Controller {
 			return false;
 		}
 
+		$usuario_id = $this->session->userdata('idUsuario');
+
 		$respuesta = array('ticket_id' => $ticket_id,
 							 'message' => $mensaje,
-							 'usuario_id' => $this->session->userdata(
-							 								'idUsuario'),
+							 'usuario_id' => $usuario_id,
 							 'created' => $date_string);
 		$mensaje_id = $this->ticket_model->insert_mensaje($respuesta);
 		$this->ticket_model->cambia_estado_ticket($ticketID, 'abierto');
@@ -362,8 +400,14 @@ class Tickets_usuario extends CI_Controller {
 						'created' => $date_string);
 			$this->ticket_model->insert_adjunto($arrInsert);
 		}
+		$respuesta = true;
+		$cod_staff = $this->ticket_model->get_cod_staff_ticket($ticketID);
 
 		$this->entra_edita_ticket($ticketID);
+		$this->send_mail_usuario($usuario_id, $cod_staff, $ticketID, 
+								 $respuesta);
+		$this->send_mail_staff( $cod_staff, $usuario_id, $ticketID, 
+								 $respuesta);
 	}
 
 	public function lista_ticket($estado = null)

@@ -38,6 +38,7 @@ class Usuarios extends CI_Controller {
 		$data['SYS_MetaTitle'] = 'Tickets :: Usuarios';
 		$data['SYS_metaKeyWords'] = 'sistema ticket n&g';
 		$data['SYS_metaDescription'] = 'Panel de creación de usuarios';
+		$data['subMenu'] = 'admin/submenu_view';
 		$data['modulo'] = 'admin/nuevo_usuario_view';
 		$data['depts'] = $select;
 		$data['niveles'] = $niveles;
@@ -95,11 +96,13 @@ class Usuarios extends CI_Controller {
 		$this->form_validation->set_rules('apellido_materno', 
 			'Apellido Materno', 'trim|required|xss_clean');
 		$this->form_validation->set_rules('mail_usuario', 
-			'Correo', 'trim|required|xss_clean');
+			'Correo', 'trim|required|xss_clean|valid_email');
 		$this->form_validation->set_message('required', 
 			'Ingrese su "%s" por favor');
 		$this->form_validation->set_message('xss_clean', 
 			'El campo "%s" contiene un posible ataque XSS');
+		$this->form_validation->set_message('valid_email', 
+			'Ingrese un correo v&aacute;lido por favor');
 		$this->form_validation->set_error_delimiters('<span class="error">', 
 			'</span>');
 

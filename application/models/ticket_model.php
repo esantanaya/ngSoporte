@@ -74,6 +74,13 @@ class Ticket_model extends CI_Model {
 		return $this->db->insert_id();
 	}
 
+	public function insert_respuesta($mensaje)
+	{
+		$this->db->insert($this->tablas['respuesta'], $mensaje);
+
+		return $this->db->insert_id();
+	}
+
 	public function insert_adjunto($data)
 	{
 		$this->db->insert($this->tablas['adjuntos'], $data);
@@ -354,6 +361,56 @@ class Ticket_model extends CI_Model {
 
 		if ($query->num_rows() > 0)
 			return $query->result_array();
+
+		return null;
+	}
+
+	public function get_msg_id($ticket_id)
+	{
+		$query = $this->db->query('SELECT MAX(msg_id) AS msg_id
+									FROM tk_mensaje
+									WHERE ticket_id = ' . $ticket_id);
+
+		if ($query->num_rows() > 0)
+		{
+			$row = $query->row();
+			$data = $row->msg_id;
+			return $data;
+		} 
+
+		return null;
+	}
+
+	public function get_usuario_ticket($ticketID)
+	{
+		$this->db->select('usuario_id');
+		$this->db->where('ticketID', $ticketID);
+		$query = $this->db->get($this->tablas['ticket'], 1);
+
+		if ($query->num_rows() > 0)
+		{
+			$row = $query->row();
+			$usuario_id = $row->usuario_id;
+
+			return $usuario_id;
+		}
+
+		return null;
+	}
+
+	public function get_cod_staff_ticket($ticketID)
+	{
+		$this->db->select('cod_staff');
+		$this->db->where('ticketID', $ticketID);
+		$query = $this->db->get($this->tablas['ticket'], 1);
+
+		if ($query->num_rows() > 0)
+		{
+			$row = $query->row();
+			$cod_staff = $row->cod_staff;
+
+			return $cod_staff;
+		}
 
 		return null;
 	}

@@ -54,8 +54,6 @@ class Sesion extends CI_Controller {
 					else
 					{
 						$redirect = $redir;
-						if ($this->session->userdata('nivel') < 3)
-							$redirect = base_url() . 'staff/tickets';
 					}
 					redirect($redirect);
 				break;

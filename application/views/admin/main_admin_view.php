@@ -48,6 +48,7 @@
 			</div>
 			<div id="content">
 				<?php 
+					$this->load->view($subMenu);
 					$this->load->view($modulo);
 				?>
 			</div>

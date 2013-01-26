@@ -19,6 +19,7 @@ $config['tablas']['usuarios'] = 'us_usuarios';
 $config['tablas']['rol'] = 'rol';
 $config['tablas']['permiso'] = 'permiso';
 $config['tablas']['roltienepermiso'] = 'rolpermiso';
+$config['tablas']['empresas'] = 'sop_empresas';
 
 /* End of file tables.php */
 /* Location: ./application/config/tables.php */
