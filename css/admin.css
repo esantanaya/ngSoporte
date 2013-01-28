@@ -388,6 +388,37 @@ div#respuesta {
     margin: 20px 0 10px 40px;
 }
 
+#acciones {
+	border: 1px solid;
+	background-color: #A6A4A4;
+	margin-top: 106px;
+	padding: 5px 0 0 5px;
+	font-weight: bold;
+	height: 43px;
+}
+
+#acciones label {
+	float: left;
+	margin-top: 9px;
+}
+
+#acciones .select {
+	float: left;
+	margin-left: 14px;
+}
+
+.boton_chico {
+	height: 24px;
+	width: 50px;
+	text-align: center;
+	background: transparent url('../imagenes/boton_chico.png') no-repeat;
+	border: medium none;
+	font-family: 'PTSans';
+	font-size: 14px;
+	color: #9B9B9B;
+	margin: 5px 0 0 5px;
+}
+
 /*
  * FUENTES
  */

@@ -83,7 +83,15 @@
 	</div>
 </div>
 <div id="acciones">
-	
+	<?php echo form_open(base_url() . 'staff/tickets/accion_ticket'); ?>
+	<input type="hidden" value="<?=$ticketID?>">
+	<label for="acciones">Acciones:</label>
+	<div class="select">
+		<?php 
+			echo form_dropdown('acciones', $acciones, '1');
+		?>
+	</div>
+	<input type="submit" value="IR" class="boton_chico">
 </div>
 <div id="notas"></div>
 <div id="historial">

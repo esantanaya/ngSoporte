@@ -359,6 +359,7 @@ class Tickets_usuario extends CI_Controller {
 			$data['SYS_metaKeyWords'] = 'sistema ticket n&g';
 			$data['SYS_metaDescription'] = 'Estado de un ticket';
 			$data['modulo'] = 'public/ticket_view';
+			
 			if (is_array($archivo))
 			{
 				$data['error'] = $archivo['error'];
@@ -368,8 +369,10 @@ class Tickets_usuario extends CI_Controller {
 				$data['error'] = '';
 			}
 
+			$estado_ticket = $arrDatos[0]['status'];
+
 			$data['ticketID'] = $ticketID;
-			$data['estado_ticket'] = $arrDatos[0]['status'];
+			$data['estado_ticket'] = $estado_ticket;
 			$data['departamento_ticket'] = $arrDatos[0]['dept_name'];
 			$data['creacion_ticket'] = $arrDatos[0]['created'];
 			$data['staff_name'] = $arrDatos[0]['nombre_usuario'] . ' ' 
@@ -407,8 +410,11 @@ class Tickets_usuario extends CI_Controller {
 								 $respuesta);
 		$this->send_mail_staff( $cod_staff, $usuario_id, $ticketID, 
 								 $respuesta);
-		redirect(base_url() . 'tickets_usuario/entra_edita_ticket/' 
-				  . $ticketID);
+		
+		if ($estado_ticket != 'cerrado')
+			redirect(base_url() . 'tickets_usuario/entra_edita_ticket/' 
+				 	 . $ticketID);
+
 	}
 
 	public function lista_ticket($estado = null)

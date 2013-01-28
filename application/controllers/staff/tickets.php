@@ -219,6 +219,11 @@ class Tickets extends CI_Controller {
 
 		$data['tabla'] = $arreglo_historial;
 
+		$acciones = array('1' => 'SELECCIONA UNA ACCION',
+						  '2' => 'Cerrar');
+
+		$data['acciones'] = $acciones;
+
 		$this->load->view('staff/main_staff_view', $data);
 	}
 
@@ -367,6 +372,15 @@ class Tickets extends CI_Controller {
 									$mensaje);
 		
 		return $enviado;
+	}
+
+	public function accion_ticket()
+	{
+		$accion = $this->input->post('acciones');
+		$ticketID = $this->input->post('ticketID');
+		var_dump($accion);
+		if ($accion == '2')
+			$this->ticket_model->cambia_estado_ticket($ticketID, 'cerrado');
 	}
 }
 
