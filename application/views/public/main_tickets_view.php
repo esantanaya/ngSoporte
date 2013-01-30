@@ -4,7 +4,14 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
 		<meta name="keywords" content="<?=$SYS_metaKeyWords?>">
         <meta name="description" content="><?=$SYS_metaDescription?>">
-		<link rel="stylesheet" href="<?=base_url()?>css/tickets.css" type="text/css">
+        <?php
+        	$navegador = $this->input->user_agent();
+
+        	$estilo = 'tickets';
+        	if (strpos($navegador, 'MSIE'))
+        		$estilo = 'ie/tickets';
+        ?>
+		<link rel="stylesheet" href="<?=base_url()?>css/<?=$estilo?>.css" type="text/css">
 		<link rel="shortcut icon" href="<?=base_url()?>imagenes/iconos/logo.png">
 	</head>
 	<body>

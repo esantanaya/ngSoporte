@@ -23,9 +23,18 @@ class Cambia_pass extends CI_Controller {
 		$clave = $this->input->post('pass');
 		$confirma = $this->input->post('confirma');
 
-		if ($clave != $confirma)
+		$this->form_validation->set_rules('pass', 'Contrase&ntilde;a', 
+			'trim|required|xss_clean');
+		$this->form_validation->set_message('required', 
+			'Ingrese su "%s" por favor');
+		$this->form_validation->set_error_delimiters('<span class="error">', 
+			'</span>');
+
+		if (! $this->form_validation->run() || $clave != $confirma)
 		{
-			$data['error'] = 'Las contrase&ntilde;as no cinciden';
+			$data['error'] = '';
+			if ($clave != $confirma)
+				$data['error'] = 'Las contrase&ntilde;as no cinciden';
 
 			$this->load->view('public/cambia_pass_view', $data);
 			return false;

@@ -17,8 +17,14 @@
 					<?php echo form_open('cambia_pass/enviar'); ?>
 					<?php 
 						if (!empty($error))
+						{
 							echo '<span class="error">' . $error 
 								 . '</span><br />';
+						}
+						else
+						{
+							echo form_error('pass') . '<br />';
+						}
 					?>
 					<label for="pass">Nueva contrase&ntilde;a:</label>
 					<input type="password" name="pass" class="texto">
