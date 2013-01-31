@@ -378,9 +378,11 @@ class Tickets extends CI_Controller {
 	{
 		$accion = $this->input->post('acciones');
 		$ticketID = $this->input->post('ticketID');
-		var_dump($accion);
+		//var_dump($accion);
 		if ($accion == '2')
 			$this->ticket_model->cambia_estado_ticket($ticketID, 'cerrado');
+
+		redirect(base_url() . 'staff/tickets/responde_ticket/' . $ticketID);
 	}
 }
 

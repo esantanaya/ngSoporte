@@ -454,7 +454,9 @@ class Tickets_usuario extends CI_Controller {
 	public function busqueda()
 	{
 		$query = $this->input->post('query');
-		$listado = $this->ticket_model->get_tickets_query($query);
+		$usuario_id = $this->session->userdata('idUsuario');
+		$listado = $this->ticket_model->get_tickets_query_usuario($query, 
+																  $usuario_id);
 
 		if ($listado == null)
 		{

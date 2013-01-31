@@ -463,6 +463,54 @@ class Ticket_model extends CI_Model {
 		}
 		return null;
 	}
+
+	public function get_tickets_query_usuario($query, $usuario_id, $order = 1)
+	{
+		switch ($num_order) 
+		{
+			case 1:
+				$order = 'FECHAS';
+				break;
+
+			case 2:
+				$order = 'TICKETS';
+				break;
+
+			case 3:
+				$order = 'ESTADO';
+				break;
+			
+			default:
+				$order = 'FECHAS';
+				break;
+		}
+
+		$cadena_query = 'SELECT CONCAT(\'<a href=" '. base_url() 
+				. 'tickets_usuario/entra_edita_ticket/\', A.ticketID,\'">\', 
+				A.ticketID, \'</a>\') AS TICKETS, 
+				SUBSTR(A.created, 1, 10) AS FECHAS, 
+				A.status AS ESTADO, CONCAT(\'<a href=" '. base_url() 
+				. 'tickets_usuario/entra_edita_ticket/\', A.ticketID,\'">\', 
+				A.subject, \'</a>\') AS ASUNTO, 
+				CONCAT(B.nombre_usuario, \' \', B.apellido_paterno) AS STAFF
+				FROM tk_ticket A
+				INNER JOIN us_usuarios B ON A.cod_staff = B.cod_usuario
+				INNER JOIN us_usuarios C ON A.usuario_id = C.id_usuario
+				WHERE C.id_empresa = (SELECT id_empresa FROM us_usuarios 
+				WHERE id_usuario = ' . $usuario_id . ') 
+				AND (A.ticketID LIKE \'%' . $query . '%\' 
+				OR A.subject LIKE \'%' . $query . '%\')';
+
+		$cadena_query .= ' ORDER BY ' . $order;
+
+		$query = $this->db->query($cadena_query);
+
+		if ($query->num_rows() > 0)
+		{
+			return $query;
+		}
+		return null;
+	}
 }
 
 /* End of file ticket_model.php */

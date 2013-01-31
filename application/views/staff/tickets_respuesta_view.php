@@ -84,7 +84,7 @@
 </div>
 <div id="acciones">
 	<?php echo form_open(base_url() . 'staff/tickets/accion_ticket'); ?>
-	<input type="hidden" value="<?=$ticketID?>">
+	<input type="hidden" name="ticketID" value="<?=$ticketID?>">
 	<label for="acciones">Acciones:</label>
 	<div class="select">
 		<?php 
@@ -92,6 +92,7 @@
 		?>
 	</div>
 	<input type="submit" value="IR" class="boton_chico">
+</form>
 </div>
 <div id="notas"></div>
 <div id="historial">
