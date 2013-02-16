@@ -2,7 +2,7 @@
 $(function() {
 	$("#accionesSelect").change(function() {
 		var opcion = $("#accionesSelect").val();
-		if (opcion == "3") {
+		if (opcion == "4") {
 			$("#staffCont").removeClass("invisible");
 		}
 		else {

@@ -341,7 +341,7 @@ class Ticket_model extends CI_Model {
 		}
 		elseif ($cod_usuario != null)
 		{
-			$cadena_query .= ' AND cod_usuario = ' . $cod_usuario;	
+			$cadena_query .= ' AND cod_staff = \'' . $cod_usuario . '\'';	
 		}	
 
 		$cadena_query .= ' ORDER BY ' . $order;

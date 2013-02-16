@@ -32,16 +32,14 @@ class Tickets extends CI_Controller {
 
 	public function listado($estado = null, $cod_usuario = null)
 	{
-		if ($estado != null)
+		if ($cod_usuario == null)
 		{
 			$listado = $this->ticket_model->get_listado_staff(1,$estado);
-		}
+		} 
 		else
 		{
-			$listado = $this->ticket_model->get_listado_staff();
-			if ($cod_usuario != null)
-				$listado = $this->ticket_model->get_listado_staff(null, null, 
-																 $cod_usuario);
+			$listado = $this->ticket_model->get_listado_staff(1,$estado, 
+									$this->session->userdata('nombreUsuario'));
 		}
 
 		if ($listado == null)
