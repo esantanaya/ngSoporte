@@ -6,6 +6,7 @@
         <meta name="description" content="><?=$SYS_metaDescription?>">
 		<link rel="stylesheet" href="<?=base_url()?>css/admin.css" type="text/css">
 		<link rel="shortcut icon" href="<?=base_url()?>imagenes/iconos/logo.png">
+		<script src="<?=base_url()?>js/JQuery.js" type="text/javascript"></script>
 	</head>
 	<body>
 		<div id="wrapper">

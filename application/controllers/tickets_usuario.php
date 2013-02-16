@@ -98,9 +98,8 @@ class Tickets_usuario extends CI_Controller {
 
 		switch ($miembros_staff->num_rows()) 
 		{
-			case 0:
-				return 'error'; 
-				//TODO MANEJAR ESTE ERROR CUANDO NO ASIGNA USUARIO
+			case 0:	
+				$archivo = array('error' => 'No hay staff Disponible');
 				break;
 
 			case 1:
@@ -117,10 +116,18 @@ class Tickets_usuario extends CI_Controller {
 
 		if (! $this->form_validation->run() || is_array($archivo))
 		{
+			$datos = $this->usuario_model->get_departamentos_id();
+
+			foreach ($datos as $depas => $valor) 
+			{
+				$select[$valor['dept_id']] = $valor['dept_name'];
+			}
+
 			$data['SYS_MetaTitle'] = 'Tickets :: Nuevo';
 			$data['SYS_metaKeyWords'] = 'nuevo ticket';
 			$data['SYS_metaDescription'] = 'Generar nuevo ticket';
 			$data['modulo'] = 'public/nuevo_ticket_view';
+			$data['select'] = $select;
 			
 			if (is_array($archivo))
 			{

@@ -296,7 +296,7 @@ class Ticket_model extends CI_Model {
 	}
 
 	public function get_listado_staff($num_order = 1, $estado = 'abierto', 
-									  $atrasado = false)
+									  $cod_usuario = null)
 	{
 		switch ($num_order) 
 		{
@@ -335,8 +335,14 @@ class Ticket_model extends CI_Model {
 		if ($estado != null)
 			$cadena_query .= ' WHERE status = \'' . $estado . '\'';
 
-		if ($atrasado AND $estado == null)
-			$cadena_query .= ' WHERE isoverdue = 1';
+		if ($cod_usuario != null AND $estado == null)
+		{
+			$cadena_query .= ' WHERE cod_usuario = ' . $cod_usuario;
+		}
+		elseif ($cod_usuario != null)
+		{
+			$cadena_query .= ' AND cod_usuario = ' . $cod_usuario;	
+		}	
 
 		$cadena_query .= ' ORDER BY ' . $order;
 
@@ -510,6 +516,13 @@ class Ticket_model extends CI_Model {
 			return $query;
 		}
 		return null;
+	}
+
+	public function reasigna_ticket($ticketID, $cod_usuario)
+	{
+		$data = array('cod_staff' => $cod_usuario);
+		$this->db->where('ticketID', $ticketID);
+		$this->db->update($this->tablas['ticket'], $data);
 	}
 }
 

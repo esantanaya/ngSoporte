@@ -1,3 +1,16 @@
+<script>
+$(function() {
+	$("#accionesSelect").change(function() {
+		var opcion = $("#accionesSelect").val();
+		if (opcion == "3") {
+			$("#staffCont").removeClass("invisible");
+		}
+		else {
+			$("#staffCont").addClass("invisible");	
+		}
+	});
+});
+</script>
 <div id="tabla_estado">
 	<p>Ticket #<?=$ticketID?> 
 		<a href="<?=base_url()?>staff/tickets/responde_ticket/<?=$ticketID?>" title="Recargar"> 
@@ -88,8 +101,18 @@
 	<label for="acciones">Acciones:</label>
 	<div class="select">
 		<?php 
-			echo form_dropdown('acciones', $acciones, '1');
+			$js = 'id="accionesSelect"';
+			echo form_dropdown('acciones', $acciones, '1', $js);
 		?>
+	</div>
+	<div class="invisible" id="staffCont">
+		<label for="staffSelect">Staff:</label>
+		<div class="select">
+			<?php 
+				$js = 'id="staff"';
+				echo form_dropdown('staff', $miembros, '1', $js);
+			?>
+		</div>
 	</div>
 	<input type="submit" value="IR" class="boton_chico">
 </form>

@@ -138,6 +138,9 @@ class Usuario_model extends CI_Model {
 	public function get_miembros_staff($dept)
 	{
 		$this->db->where('id_departamento_usuario', $dept);
+		$this->db->where('vacacion', 0);
+		$this->db->where('id_nivel_usuario !=', 1);
+		$this->db->where('activo', 1);
 		$this->db->select('cod_usuario');
 		$staff = $this->db->get($this->tablas['usuarios']);
 
@@ -225,6 +228,19 @@ class Usuario_model extends CI_Model {
 		}
 
 		return null;	
+	}
+
+	public function get_usuarios_nivel($nivel)
+	{
+		$this->db->where('vacacion', 0);
+		$this->db->where('activo', 1);
+		$this->db->where('id_nivel_usuario', $nivel);
+		$query = $this->db->get($this->tablas['usuarios']);
+
+		if ($query->num_rows() > 0)
+			return $query->result_array();
+
+		return null;
 	}
 
 	//****GRUPOS****

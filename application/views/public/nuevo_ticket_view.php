@@ -44,7 +44,13 @@
 			<tr>
 				<td>Adjunto:</td>
 				<td>
-					<?php echo $error; ?>
+					<?php 
+						if ($error != '')
+						{
+							echo '<span class="error">' . $error . '</span>';
+							echo '<br />';
+						}
+					?>
 					<input type="file" name="adjunto" size="20">
 				</td>
 			</tr>

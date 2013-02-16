@@ -30,7 +30,7 @@ class Tickets extends CI_Controller {
 		redirect(base_url() . 'staff/tickets/listado');
 	}
 
-	public function listado($estado = null, $atrasado = false)
+	public function listado($estado = null, $cod_usuario = null)
 	{
 		if ($estado != null)
 		{
@@ -39,9 +39,9 @@ class Tickets extends CI_Controller {
 		else
 		{
 			$listado = $this->ticket_model->get_listado_staff();
-			if ($atrasado)
+			if ($cod_usuario != null)
 				$listado = $this->ticket_model->get_listado_staff(null, null, 
-																  true);
+																 $cod_usuario);
 		}
 
 		if ($listado == null)
@@ -63,15 +63,6 @@ class Tickets extends CI_Controller {
 		$data['error'] = '';
 
 		$this->load->view('staff/main_staff_view', $data);
-	}
-
-	public function atrasa()
-	{
-		//TODO arregla esto!
-		$arreglo = array($this->input->post('ticket'));
-		foreach ($variable as $key => $value) {
-			# code...
-		}
 	}
 
 	public function responde_ticket($ticketID)
@@ -220,9 +211,19 @@ class Tickets extends CI_Controller {
 		$data['tabla'] = $arreglo_historial;
 
 		$acciones = array('1' => 'SELECCIONA UNA ACCION',
-						  '2' => 'Cerrar');
+						  '2' => 'Abrir',
+						  '3' => 'Cerrar',
+						  '4' => 'Reasignar');
 
 		$data['acciones'] = $acciones;
+		
+		$miembros = $this->usuario_model->get_usuarios_nivel(2);
+
+		foreach ($miembros as $key => $value) {
+			$lista_miembros[$value['cod_usuario']] = $value['nombre_usuario'];
+		}
+
+		$data['miembros'] = $lista_miembros;
 
 		$this->load->view('staff/main_staff_view', $data);
 	}
@@ -378,9 +379,28 @@ class Tickets extends CI_Controller {
 	{
 		$accion = $this->input->post('acciones');
 		$ticketID = $this->input->post('ticketID');
-		//var_dump($accion);
-		if ($accion == '2')
-			$this->ticket_model->cambia_estado_ticket($ticketID, 'cerrado');
+		$staff = $this->input->post('staff');
+		
+		switch ($accion) 
+		{
+			case '2':
+				$this->ticket_model->cambia_estado_ticket($ticketID, 
+														  'abierto');
+				break;
+
+			case '3':
+				$this->ticket_model->cambia_estado_ticket($ticketID, 
+														  'cerrado');
+				break;
+
+			case '4':
+				$this->ticket_model->reasigna_ticket($ticketID, $staff);
+				break;
+
+			default:
+				# code...
+				break;
+		}
 
 		redirect(base_url() . 'staff/tickets/responde_ticket/' . $ticketID);
 	}

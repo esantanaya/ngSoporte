@@ -340,7 +340,7 @@ a.nuevo {
 }
 
 a.atrasado {
-	background: transparent url('../imagenes/iconos/tickets/atrasados.png') center top no-repeat;
+	background: transparent url('../imagenes/iconos/tickets/mistickets.png') center top no-repeat;
 }
 
 /*
@@ -400,6 +400,7 @@ div#respuesta {
 #acciones label {
 	float: left;
 	margin-top: 9px;
+	padding-left: 5px;
 }
 
 #acciones .select {
@@ -417,6 +418,11 @@ div#respuesta {
 	font-size: 14px;
 	color: #9B9B9B;
 	margin: 5px 0 0 5px;
+}
+
+.invisible {
+	visibility: hidden;
+	display: none;
 }
 
 /*
