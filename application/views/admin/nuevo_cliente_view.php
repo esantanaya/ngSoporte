@@ -1,5 +1,5 @@
 <div id="titNewUser">	
-	<h1><span class="rojo">>></span>NUEVO USUARIO</h1>
+	<h1><span class="rojo">>></span>NUEVO CLIENTE</h1>
 </div>
 <div class="linea"></div>
 <?php 
@@ -10,7 +10,7 @@
 		echo $mensaje;
 ?>
 <div id="form_container">
-	<?php echo form_open('admin/usuarios/crea_usuario'); ?>
+	<?php echo form_open('admin/usuarios/crea_cliente'); ?>
 	<table cellspacing="0" cellpadding="0" border="0" class="ticket_form">
 		<tbody>
 			<tr>
@@ -32,26 +32,13 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="table_title">Departamento:</td>
+				<td class="table_title">Empresa:</td>
 				<td>
 					<div class="alarga_celda">
 						<div class="select">
 							<?php 
-								echo form_dropdown('departamento', $depts,
-									 '1'); 
+								echo form_dropdown('empresas', $empresas, '1');
 							?>
-						</div>	
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td class="table_title">Nivel:</td>
-				<td>
-					<div class="alarga_celda">
-						<div class="select">
-							<?php 
-								echo form_dropdown('nivel', $niveles, '1'); 
-							?>	
 						</div>
 					</div>
 				</td>
@@ -145,18 +132,6 @@
 					&nbsp;
 					<input type="radio" class="circulo" name="activo" id="bloqueado" value="bloqueado">
 					<strong>Bloqueado</strong>
-				</td>
-			</tr>
-			<tr>
-				<td class="table_title">Listado:</td>
-				<td>
-					<input type="checkbox" name="listado" checked> El usuario es mostrado en el directorio
-				</td>
-			</tr>
-			<tr>
-				<td class="table_title curva_derecha">Modo Inactivo</td>
-				<td>
-					<input type="checkbox" name="vacacion"> El usuario no recibirá asignación
 				</td>
 			</tr>
 			<tr>

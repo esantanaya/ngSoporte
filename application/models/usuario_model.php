@@ -344,9 +344,10 @@ class Usuario_model extends CI_Model {
 
 	//****NIVELES****
 
-	public function get_roles()
+	public function get_roles_staff()
 	{
 		$this->db->select('idRol, nombreRol');
+		$this->db->where('idRol <', 3);
 		$query = $this->db->get($this->tablas['rol']);
 
 		return $query->result_array();

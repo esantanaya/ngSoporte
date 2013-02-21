@@ -274,6 +274,21 @@ div#titNewUser {
 	margin: 20px 40px;
 }
 
+a.miembros {
+	background: transparent url('../imagenes/iconos/staff/ic_usergroups.png')center top no-repeat;
+	width: 200px !important;
+}
+
+a.nuevo_usuario {
+	background: transparent url('../imagenes/iconos/staff/ic_addnewuser.png')center top no-repeat;
+	width: 200px !important;
+}
+
+a.nuevo_cliente {
+	background: transparent url('../imagenes/iconos/staff/nuevocliente.png')center top no-repeat;
+	width: 200px !important;
+}
+
 /*
  * SUBMENU
  */
