@@ -441,6 +441,33 @@ div#respuesta {
 }
 
 /*
+ * CUENTAS
+ */
+
+a.perfil {
+	width: 160px !important;
+	background: url("../imagenes/iconos/myaccount/id_Myprofile.png") no-repeat scroll center top transparent;
+}
+
+a.pref {
+	width: 160px !important;
+	background: url("../imagenes/iconos/myaccount/ic_preferencias.png") no-repeat scroll center top transparent;
+}
+
+a.pass {
+	width: 160px !important;
+	background: url("../imagenes/iconos/myaccount/ic_changepasswords.png") no-repeat scroll center top transparent;
+}
+
+table.noAdorno {
+    border: none;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    margin: 20px 0;
+    width: 100%;
+}
+
+/*
  * FUENTES
  */
 
