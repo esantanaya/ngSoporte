@@ -27,10 +27,10 @@
 						}
 					?>
 					<label for="pass">Nueva contrase&ntilde;a:</label>
-					<input type="password" name="pass" class="texto">
+					<input type="password" name="pass" class="texto" id="pass">
 					<br>
 					<label for="confirma">Repetir contrase&ntilde;a:</label>
-					<input type="password" name="confirma" class="texto">
+					<input type="password" name="confirma" class="texto" id="confirma">
 					<br>
 					<input type="submit" value="CAMBIAR" class="boton" name="envia">
 				</div>

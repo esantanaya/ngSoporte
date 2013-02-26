@@ -467,6 +467,23 @@ table.noAdorno {
     width: 100%;
 }
 
+div.titulo {
+    margin: 20px 10px;
+}
+
+#formularioPerfil {
+    margin-left: 10px;
+}
+
+td.titulo {
+	width: 150px;
+} 
+
+
+#formPass {
+    margin-left: 10px;
+}
+
 /*
  * FUENTES
  */

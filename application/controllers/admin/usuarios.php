@@ -18,11 +18,27 @@ class Usuarios extends CI_Controller {
 			redirect(base_url() . 'cambia_pass');
 
 		$this->load->helper('date');
+		$this->load->library('table');
 	}
 
 	public function index($value='')
 	{
-		# code...
+		$this->lista();
+	}
+
+	public function lista()
+	{
+
+		$listado = $this->usuario_model->get_usuarios_listado();
+
+		$data['SYS_MetaTitle'] = 'Tickets :: Usuarios';
+		$data['SYS_metaKeyWords'] = 'sistema ticket n&g';
+		$data['SYS_metaDescription'] = 'Listado de Usuario del sistema';
+		$data['subMenu'] = 'admin/submenu_view';
+		$data['modulo'] = 'admin/lista_usuario_view';
+		$data['listado'] = $listado;
+
+		$this->load->view('admin/main_admin_view', $data);
 	}
 
 	public function nuevo($cod_usuario = null, $clave = null, $id = null)

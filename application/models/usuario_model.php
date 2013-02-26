@@ -99,6 +99,21 @@ class Usuario_model extends CI_Model {
 		return false;
 	}
 
+	public function update_usuario_cuenta($cod_usuario, $valores)
+	{
+		$this->db->where('cod_usuario', $cod_usuario);
+		$query = $this->db->get($this->tablas['usuarios']);
+
+		if ($query->num_rows() >=  1) 
+		{
+			$this->db->where('cod_usuario', $cod_usuario);
+			$this->db->update($this->tablas['usuarios'], $valores);
+
+			return true;
+		}
+		return false;
+	}
+
 	public function update_password_usuario($id_usuario, $new_password)
 	{
 		$this->db->where('id_usuario', $id_usuario);
@@ -152,15 +167,15 @@ class Usuario_model extends CI_Model {
 		if ($id_usuario == null)
 		{
 			$this->db->where('cod_usuario', $cod_usuario);
-			$this->db->select('nombre_usuario, apellido_paterno');
-			$query = $this->db->get($this->tablas['usuarios'], 1);
 		}
 		elseif($cod_usuario == null)
 		{
 			$this->db->where('id_usuario', $id_usuario);
-			$this->db->select('nombre_usuario, apellido_paterno');
-			$query = $this->db->get($this->tablas['usuarios'], 1);	
 		}
+
+		$this->db->select('nombre_usuario, apellido_paterno, 
+						   apellido_materno');
+		$query = $this->db->get($this->tablas['usuarios'], 1);	
 		
 		if ($query->num_rows() > 0)
 		{
@@ -174,16 +189,14 @@ class Usuario_model extends CI_Model {
 		if ($id_usuario == null)
 		{
 			$this->db->where('cod_usuario', $cod_usuario);
-			$this->db->select('email_usuario');
-			$query = $this->db->get($this->tablas['usuarios'], 1);	
 		}
 		elseif ($cod_usuario == null)
 		{
 			$this->db->where('id_usuario', $id_usuario);
-			$this->db->select('email_usuario');
-			$query = $this->db->get($this->tablas['usuarios'], 1);	
 		}
 		
+		$this->db->select('email_usuario');
+		$query = $this->db->get($this->tablas['usuarios'], 1);
 
 		if ($query->num_rows() > 0)
 		{
@@ -191,6 +204,78 @@ class Usuario_model extends CI_Model {
 			$mail = $row->email_usuario;
 			return $mail;
 		}
+		return null;
+	}
+
+	public function get_usuario_tel($cod_usuario, $id_usuario = null)
+	{
+		if ($id_usuario == null)
+		{
+			$this->db->where('cod_usuario', $cod_usuario);
+		}
+		elseif ($cod_usuario == null)
+		{
+			$this->db->where('id_usuario', $id_usuario);
+		}
+
+		$this->db->select('tel_usuario');
+		$query = $this->db->get($this->tablas['usuarios'], 1);
+
+		if ($query->num_rows() > 0)
+		{
+			$row = $query->row();
+			$tel = $row->tel_usuario;
+			return $tel;
+		}
+
+		return null;
+	}
+
+	public function get_usuario_ext($cod_usuario, $id_usuario = null)
+	{
+		if ($id_usuario == null)
+		{
+			$this->db->where('cod_usuario', $cod_usuario);
+		}
+		elseif ($cod_usuario == null)
+		{
+			$this->db->where('id_usuario', $id_usuario);
+		}
+
+		$this->db->select('ext_usuario');
+		$query = $this->db->get($this->tablas['usuarios'], 1);
+
+		if ($query->num_rows() > 0)
+		{
+			$row = $query->row();
+			$ext = $row->ext_usuario;
+			return $ext;
+		}
+
+		return null;
+	}
+
+	public function get_usuario_firma($cod_usuario, $id_usuario = null)
+	{
+		if ($id_usuario == null)
+		{
+			$this->db->where('cod_usuario', $cod_usuario);
+		}
+		elseif ($cod_usuario == null)
+		{
+			$this->db->where('id_usuario', $id_usuario);
+		}
+
+		$this->db->select('firma_usuario');
+		$query = $this->db->get($this->tablas['usuarios'], 1);
+
+		if ($query->num_rows() > 0)
+		{
+			$row = $query->row();
+			$firma = $row->firma_usuario;
+			return $firma;
+		}
+
 		return null;
 	}
 
@@ -239,6 +324,23 @@ class Usuario_model extends CI_Model {
 
 		if ($query->num_rows() > 0)
 			return $query->result_array();
+
+		return null;
+	}
+
+	public function get_usuario_hashed_pass($cod_usuario)
+	{
+		$this->db->where('cod_usuario', $cod_usuario);
+		$this->db->select('pass_usuario');
+		$query = $this->db->get($this->tablas['usuarios'], 1);
+
+		if ($query->num_rows() == 1)
+		{
+			$row = $query->row();
+			$pass = $row->pass_usuario;
+
+			return $pass;
+		}
 
 		return null;
 	}
@@ -325,6 +427,25 @@ class Usuario_model extends CI_Model {
 			return true;
 		}
 		return false;
+	}
+
+	public function get_usuarios_listado()
+	{
+		$cadena = 'SELECT CONCAT( \'<a href="'
+			. 'lista/\', us.cod_usuario, \'">\', CONCAT('
+			. 'us.nombre_usuario, \' \', us.apellido_paterno, \' \', '
+			. 'us.apellido_materno ) , \'</a>\' ) AS Nombre, rl.nombreRol, '
+			. 'em.nombre_empresa, dp.dept_name FROM us_usuarios us INNER JOIN '
+			. 'rol rl ON us.id_nivel_usuario = rl.idRol INNER JOIN '
+			. 'sop_empresas em ON us.id_empresa = em.empresa_id INNER JOIN '
+			. 'us_departamentos dp ON us.id_departamento_usuario = dp.dept_id '
+			. 'ORDER BY rl.nombreRol ASC';
+		$query = $this->db->query($cadena);
+
+		if ($query->num_rows() > 0)
+			return $query;
+
+		return null;
 	}
 
 	//****DEPARTAMENTOS****
