@@ -30,6 +30,9 @@ class Usuarios extends CI_Controller {
 	{
 
 		$listado = $this->usuario_model->get_usuarios_listado();
+		$tmpl = array('table_open' => '<table border="0" cellpadding="4"
+				cellspacing="0" class="listado_table">');
+		$this->table->set_template($tmpl);
 
 		$data['SYS_MetaTitle'] = 'Tickets :: Usuarios';
 		$data['SYS_metaKeyWords'] = 'sistema ticket n&g';
@@ -78,6 +81,83 @@ class Usuarios extends CI_Controller {
 			$data['id_usuario'] = $id;
 
 		$this->load->view('admin/main_admin_view', $data);
+	}
+
+	public function edita($cod_usuario)
+	{
+		$generales = $this->usuario_model->get_edita_usuario($cod_usuario);
+		$nivel = $generales->id_nivel_usuario;
+
+		if ($nivel <= 2)
+		{
+			$this->edita_usuario($cod_usuario);
+		}
+		else
+		{
+			$this->edita_cliente($cod_usuario);	
+		}
+
+	}
+
+	public function edita_usuario($cod_usuario, $clave = null, $id = null)
+	{
+		$generales = $this->usuario_model->get_edita_usuario($cod_usuario);
+		$datos = $this->usuario_model->get_departamentos_id();
+
+		foreach ($datos as $depas => $valor) 
+		{
+			$select[$valor['dept_id']] = $valor['dept_name'];
+		}
+
+		$datos = $this->usuario_model->get_roles_staff();
+
+		foreach ($datos as $key => $value) 
+		{
+			$niveles[$value['idRol']] = $value['nombreRol'];
+		}
+
+		$data['SYS_MetaTitle'] = 'Tickets :: Usuarios';
+		$data['SYS_metaKeyWords'] = 'sistema ticket n&g';
+		$data['SYS_metaDescription'] = 'Panel de edición de usuarios';
+		$data['subMenu'] = 'admin/submenu_view';
+		$data['modulo'] = 'admin/edita_usuario_view';
+		$data['depts'] = $select;
+		$data['niveles'] = $niveles;
+		$data['deptActual'] = $generales->id_departamento_usuario;
+		$data['nivelActual'] = $generales->id_nivel_usuario;
+		$data['nombre'] = $generales->nombre_usuario;
+		$data['apPaterno'] = $generales->apellido_paterno;
+		$data['apMaterno'] = $generales->apellido_materno;
+		$data['correo'] = $generales->email_usuario;
+		$data['nombre'] = $generales->nombre_usuario;
+		$data['tel'] = $generales->tel_usuario;
+		$data['ext'] = $generales->ext_usuario;
+		$data['cel'] = $generales->movil_usuario;
+		$data['firma'] = $generales->firma_usuario;
+		$data['cambioPass'] = ($generales->cambia_pass == 1) ? 'checked' : '' ;
+		$data['activoCheck'] = ($generales->activo == 1) ? 'checked': '';
+		$data['bloqueadoCheck'] = ($generales->activo == 0) ? 'checked': '';
+		$data['listadoCheck'] = ($generales->visible == 1) ? 'checked' : '';
+		$data['vacacionCheck'] = ($generales->vacacion == 1) ? 'checked' : '';
+		$data['cod_usuario'] = '';
+		$data['clave'] = '';
+		$data['id_usuario'] = '';
+
+		if ($cod_usuario != null)
+			$data['cod_usuario'] = $cod_usuario;
+		
+		if ($clave != null)
+			$data['clave'] = $clave;
+
+		if ($id != null)
+			$data['id_usuario'] = $id;
+
+		$this->load->view('admin/main_admin_view', $data);
+	}
+
+	public function edita_cliente($cod_usuario)
+	{
+		# code...
 	}
 
 	public function cliente($cod_usuario = null, $clave = null, $id = null)

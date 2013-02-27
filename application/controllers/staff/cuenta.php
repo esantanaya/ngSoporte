@@ -113,6 +113,30 @@ class Cuenta extends CI_Controller {
 	public function guarda_cambios()
 	{
 		$cod_usuario = $this->session->userdata('nombreUsuario');
+
+		$this->form_validation->set_rules('nombre_usuario', 
+			'Nombre', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('apellido_paterno', 'Apellido', 
+			'trim|required|xss_clean');
+		$this->form_validation->set_rules('apellido_materno', 'Apellido', 
+			'trim|required|xss_clean');
+		$this->form_validation->set_rules('mail_usuario', 'Correo', 
+			'trim|required|xss_clean|valid_email');
+		$this->form_validation->set_message('required', 
+			'Ingrese su "%s" por favor');
+		$this->form_validation->set_message('xss_clean', 
+			'El campo "%s" contiene un posible ataque XSS');
+		$this->form_validation->set_message('valid_email', 
+			'Ingrese un correo v&aacute;lido por favor');
+		$this->form_validation->set_error_delimiters('<span class="error">', 
+			'</span>');
+
+		if (! $this->form_validation->run())
+		{
+			$this->mi_cuenta();
+			return false;
+		}
+
 		$valores = array('nombre_usuario' => 
 				   		  $this->input->post('nombre_usuario'), 
 				   		  'apellido_paterno' => 

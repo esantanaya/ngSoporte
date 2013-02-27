@@ -8,19 +8,29 @@
 		<tbody>
 			<tr>
 				<td>Nombre(s):</td>
-				<td><input type="text" class="texto" name="nombre_usuario" value="<?=$datos['nombre']?>"><span class="rojo">*</span></td>
+				<td>
+					<input type="text" class="texto" name="nombre_usuario" value="<?=$datos['nombre']?>"><span class="rojo">*</span>
+					<?=form_error('nombre_usuario')?>
+				</td>
 			</tr>
 			<tr>
 				<td>Apellido Paterno:</td>
-				<td><input type="text" class="texto" name="apellido_paterno" value="<?=$datos['apPaterno']?>"><span class="rojo">*</span></td>
+				<td>
+					<input type="text" class="texto" name="apellido_paterno" value="<?=$datos['apPaterno']?>"><span class="rojo">*</span><?=form_error('apellido_paterno')?>
+				</td>
 			</tr>
 			<tr>
 				<td>Apellido Materno:</td>
-				<td><input type="text" class="texto" name="apellido_materno" value="<?=$datos['apMaterno']?>"><span class="rojo">*</span></td>
+				<td>
+					<input type="text" class="texto" name="apellido_materno" value="<?=$datos['apMaterno']?>"><span class="rojo">*</span><?=form_error('apellido_materno')?>
+				</td>
 			</tr>
 			<tr>
 				<td>Correo:</td>
-				<td><input type="text" class="texto" name="mail_usuario" value="<?=$datos['correo']?>"><span class="rojo">*</span></td>
+				<td>
+					<input type="text" class="texto" name="mail_usuario" value="<?=$datos['correo']?>"><span class="rojo">*</span>
+					<?=form_error('mail_usuario')?>
+				</td>
 			</tr>
 			<tr>
 				<td>Tel&eacute;fono:</td>

@@ -432,11 +432,12 @@ class Usuario_model extends CI_Model {
 	public function get_usuarios_listado()
 	{
 		$cadena = 'SELECT CONCAT( \'<a href="'
-			. 'lista/\', us.cod_usuario, \'">\', CONCAT('
+			. 'edita/\', us.cod_usuario, \'">\', CONCAT('
 			. 'us.nombre_usuario, \' \', us.apellido_paterno, \' \', '
-			. 'us.apellido_materno ) , \'</a>\' ) AS Nombre, rl.nombreRol, '
-			. 'em.nombre_empresa, dp.dept_name FROM us_usuarios us INNER JOIN '
-			. 'rol rl ON us.id_nivel_usuario = rl.idRol INNER JOIN '
+			. 'us.apellido_materno ) , \'</a>\' ) AS Usuario, rl.nombreRol AS '
+			. 'Nivel, em.nombre_empresa AS Empresa, dp.dept_name AS '
+			. 'Departamento FROM us_usuarios us INNER JOIN rol rl ON '
+			. 'us.id_nivel_usuario = rl.idRol INNER JOIN '
 			. 'sop_empresas em ON us.id_empresa = em.empresa_id INNER JOIN '
 			. 'us_departamentos dp ON us.id_departamento_usuario = dp.dept_id '
 			. 'ORDER BY rl.nombreRol ASC';
@@ -444,6 +445,21 @@ class Usuario_model extends CI_Model {
 
 		if ($query->num_rows() > 0)
 			return $query;
+
+		return null;
+	}
+
+	public function get_edita_usuario($cod_usuario)
+	{
+		$this->db->select('id_departamento_usuario, id_nivel_usuario, 
+			nombre_usuario, apellido_paterno, apellido_materno, email_usuario, 
+			tel_usuario, ext_usuario, movil_usuario, firma_usuario, 
+			cambia_pass, activo, visible, vacacion');
+		$this->db->where('cod_usuario', $cod_usuario);
+		$query = $this->db->get($this->tablas['usuarios'], 1);
+
+		if ($query->num_rows() == 1)
+			return $query->row();
 
 		return null;
 	}
