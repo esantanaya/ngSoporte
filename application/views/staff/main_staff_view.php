@@ -27,7 +27,7 @@
 							if ($nivel_usuario == 1 AND $m_usuario == 'Staff')
 							{
 								$cambio_nivel = '<a href="' . base_url() 
-												. 'admin/usuarios/nuevo">Admin</a>';
+												. 'admin/usuarios/">Admin</a>';
 							}	
 							
 							echo $cambio_nivel;

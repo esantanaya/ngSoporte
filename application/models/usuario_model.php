@@ -30,6 +30,23 @@ class Usuario_model extends CI_Model {
 		return 1;
 	}
 
+	public function get_id_usuario($cod_usuario)
+	{
+		$this->db->select('id_usuario');
+		$this->db->where('cod_usuario', $cod_usuario);
+		$query = $this->db->get($this->tablas['usuarios'], 1);
+
+		if ($query->num_rows() == 1)
+		{
+			$row = $query->row();
+			$id = $row->id_usuario;
+
+			return $id;
+		}
+
+		return null;
+	}
+
 	public function insert_usuario($data) 
 	{
 		$data['pass_usuario'] = $this->auth_model->hashPassword(

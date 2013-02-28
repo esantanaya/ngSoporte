@@ -6,6 +6,8 @@ class Cuenta extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model('usuario_model');
+
+		error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 	}
 
 	public function index()

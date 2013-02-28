@@ -289,6 +289,10 @@ a.nuevo_cliente {
 	width: 200px !important;
 }
 
+#listadoUsuarios {
+	width:90%;
+}
+
 /*
  * SUBMENU
  */
@@ -468,7 +472,7 @@ table.noAdorno {
 }
 
 div.titulo {
-    margin: 20px 10px;
+    margin: 20px 40px;
 }
 
 #formularioPerfil {

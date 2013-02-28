@@ -10,7 +10,8 @@
 		echo $mensaje;
 ?>
 <div id="form_container">
-	<?php echo form_open('admin/usuarios/crea_usuario'); ?>
+	<?php echo form_open('admin/usuarios/guarda_cambios'); ?>
+	<input type="hidden" name="cod_usuario" value="<?=$cod_usuario?>">
 	<table cellspacing="0" cellpadding="0" border="0" class="ticket_form">
 		<tbody>
 			<tr>
@@ -117,7 +118,7 @@
 			<tr>
 				<td class="table_title">Forzar cambio de contrase&ntilde;a:</td>
 				<td class="centrado">
-					<input type="checkbox" name="cambia_pass" value="Requerir cambio de contrase&ntilde;a" <?=$cambioPass?>>
+					<input type="checkbox" name="cambia_pass" <?=$cambioPass?>>
 				</td>
 			</tr>
 			<tr>
