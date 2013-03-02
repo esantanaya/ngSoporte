@@ -257,7 +257,15 @@ class Ticket_model extends CI_Model {
 				WHERE id_usuario = ' . $usuario_id . ')';
 
 		if ($estado != null)
+		{
 			$cadena_query .= ' AND status = \'' . $estado . '\'';
+			if ($estado == 'cerrado')
+				$cadena_query .= ' AND updated >= ADDDATE(CURDATE(), -7)';
+		}
+		else
+		{
+			$cadena_query .= ' AND status <> \'cerrado\'';
+		}
 
 		$cadena_query .= ' ORDER BY ' . $order;
 
@@ -272,7 +280,11 @@ class Ticket_model extends CI_Model {
 
 	public function cambia_estado_ticket($ticketID, $estado)
 	{
-		$data = array('status' => $estado);	
+		$date_string = "%Y-%m-%d %h:%i:%s";
+		$time = time();
+		$date_string = mdate($date_string, $time);
+		$data = array('status' => $estado,
+					  'updated' => $date_string);
 		$this->db->where('ticketID', $ticketID);
 		$this->db->update($this->tablas['ticket'], $data);
 	}
@@ -333,7 +345,11 @@ class Ticket_model extends CI_Model {
 				INNER JOIN sop_empresas C ON B.id_empresa = C.empresa_id';
 
 		if ($estado != null)
+		{
 			$cadena_query .= ' WHERE status = \'' . $estado . '\'';
+			/*if ($estado == 'cerrado')
+				$cadena_query .= ' AND updated >= ADDDATE(CURDATE(), -7)';*/
+		}
 
 		if ($cod_usuario != null AND $estado == null)
 		{

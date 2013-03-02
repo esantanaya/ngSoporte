@@ -491,6 +491,7 @@ class Usuario_model extends CI_Model {
 	public function get_departamentos_id()
 	{
 		$this->db->select('dept_id, dept_name');
+		$this->db->where('dept_id >=', 1);
 		$query = $this->db->get($this->tablas['departamentos']);
 
 		return $query->result_array();
