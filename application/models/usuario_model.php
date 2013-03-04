@@ -173,6 +173,7 @@ class Usuario_model extends CI_Model {
 		$this->db->where('vacacion', 0);
 		$this->db->where('id_nivel_usuario !=', 1);
 		$this->db->where('activo', 1);
+		$this->db->where('CURTIME( ) < salida OR CURTIME( ) > entrada');
 		$this->db->select('cod_usuario');
 		$staff = $this->db->get($this->tablas['usuarios']);
 
@@ -360,6 +361,30 @@ class Usuario_model extends CI_Model {
 		}
 
 		return null;
+	}
+
+	public function get_usuario_horario($cod_usuario)
+	{
+		$this->db->where('cod_usuario', $cod_usuario);
+		$this->db->select('salida, entrada');
+		$query = $this->db->get($this->tablas['usuarios'], 1);
+
+		if ($query == 1)
+		{
+			$row = $query->row();
+
+			return $row;
+		}
+
+		return null;
+	}
+
+	public function update_usuario_horario($cod_usuario, $horario)
+	{
+		$this->db->where('cod_usuario', $cod_usuario);
+		$this->db->update($this->tablas['usuarios'], $horario);
+
+		return true;
 	}
 
 	//****GRUPOS****

@@ -20,6 +20,7 @@ $config['tablas']['rol'] = 'rol';
 $config['tablas']['permiso'] = 'permiso';
 $config['tablas']['roltienepermiso'] = 'rolpermiso';
 $config['tablas']['empresas'] = 'sop_empresas';
+$config['tablas']['asignaciones'] = 'bt_asignaciones';
 
 /* End of file tables.php */
 /* Location: ./application/config/tables.php */

@@ -62,6 +62,40 @@ class Cuenta extends CI_Controller {
 		$this->load->view('staff/main_staff_view', $data);
 	}
 
+	public function preferencias()
+	{
+		$cod_usuario = $this->session->userdata('nombreUsuario');
+		$comida = $this->usuario_model->get_usuario_horario($cod_usuario);
+
+		$uno = ($comida->salida == '13:00:00') ? 'checked' : '';
+		$dos = ($comida->salida == '15:00:00') ? 'checked' : '';
+
+		$horario = array('uno' => $uno, 
+						 'dos' => $dos);
+		
+		$data['SYS_MetaTitle'] = 'Staff :: Cambia Preferencias';
+		$data['SYS_metaKeyWords'] = 'sistema cuentas staff n&g';
+		$data['SYS_metaDescription'] = 'Preferencias Staff';
+		$data['subMenu'] = 'staff/cuenta_submenu_view.php';
+		$data['modulo'] = 'staff/cuenta_preferencias_view.php';
+		$data['horario'] = $horario;
+
+		$this->load->view('staff/main_staff_view', $data);
+	}
+
+	public function guarda_preferencias()
+	{
+		$horario = $this->input->post('horario');
+		$salida = ($horario == '13') ? '13:00:00' : '15:00:00';
+		$entrada = ($horario == '13') ? '15:00:00' : '17:00:00';
+		$cod_usuario = $this->session->userdata('nombreUsuario');
+		$data = array('salida' => $salida,
+					  'entrada' => $entrada);
+
+		$this->usuario_model->update_usuario_horario($cod_usuario, $data);
+		$this->preferencias();
+	}
+
 	public function guarda_pass()
 	{
 		$this->load->model('auth_model');
