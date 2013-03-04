@@ -289,6 +289,10 @@ a.nuevo_cliente {
 	width: 200px !important;
 }
 
+#listadoUsuarios {
+	width:90%;
+}
+
 /*
  * SUBMENU
  */
@@ -438,6 +442,50 @@ div#respuesta {
 .invisible {
 	visibility: hidden;
 	display: none;
+}
+
+/*
+ * CUENTAS
+ */
+
+a.perfil {
+	width: 160px !important;
+	background: url("../imagenes/iconos/myaccount/id_Myprofile.png") no-repeat scroll center top transparent;
+}
+
+a.pref {
+	width: 160px !important;
+	background: url("../imagenes/iconos/myaccount/ic_preferencias.png") no-repeat scroll center top transparent;
+}
+
+a.pass {
+	width: 160px !important;
+	background: url("../imagenes/iconos/myaccount/ic_changepasswords.png") no-repeat scroll center top transparent;
+}
+
+table.noAdorno {
+    border: none;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    margin: 20px 0;
+    width: 100%;
+}
+
+div.titulo {
+    margin: 20px 40px;
+}
+
+#formularioPerfil {
+    margin-left: 10px;
+}
+
+td.titulo {
+	width: 150px;
+} 
+
+
+#formPass {
+    margin-left: 10px;
 }
 
 /*

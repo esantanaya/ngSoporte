@@ -255,9 +255,19 @@ class Ticket_model extends CI_Model {
 				INNER JOIN us_usuarios C ON A.usuario_id = C.id_usuario
 				WHERE C.id_empresa = (SELECT id_empresa FROM us_usuarios 
 				WHERE id_usuario = ' . $usuario_id . ')';
-
+		
 		if ($estado != null)
+		{
 			$cadena_query .= ' AND status = \'' . $estado . '\'';
+			if ($estado == 'cerrado')
+				$cadena_query .= ' AND updated >= ADDDATE(CURDATE(), -7)';
+		}
+		else
+		{
+			$cadena_query .= ' AND updated >= ADDDATE( CURDATE( ) , -7 )
+						   AND STATUS = \'cerrado\'';
+			$cadena_query .= ' OR status <> \'cerrado\'';
+		}
 
 		$cadena_query .= ' ORDER BY ' . $order;
 
@@ -272,7 +282,11 @@ class Ticket_model extends CI_Model {
 
 	public function cambia_estado_ticket($ticketID, $estado)
 	{
-		$data = array('status' => $estado);	
+		$date_string = "%Y-%m-%d %h:%i:%s";
+		$time = time();
+		$date_string = mdate($date_string, $time);
+		$data = array('status' => $estado,
+					  'updated' => $date_string);
 		$this->db->where('ticketID', $ticketID);
 		$this->db->update($this->tablas['ticket'], $data);
 	}
@@ -333,7 +347,11 @@ class Ticket_model extends CI_Model {
 				INNER JOIN sop_empresas C ON B.id_empresa = C.empresa_id';
 
 		if ($estado != null)
+		{
 			$cadena_query .= ' WHERE status = \'' . $estado . '\'';
+			/*if ($estado == 'cerrado')
+				$cadena_query .= ' AND updated >= ADDDATE(CURDATE(), -7)';*/
+		}
 
 		if ($cod_usuario != null AND $estado == null)
 		{
@@ -523,6 +541,27 @@ class Ticket_model extends CI_Model {
 		$data = array('cod_staff' => $cod_usuario);
 		$this->db->where('ticketID', $ticketID);
 		$this->db->update($this->tablas['ticket'], $data);
+	}
+
+	public function insert_bitacora_asignacion($data)
+	{
+		$this->db->insert($this->tablas['asignaciones'], $data);
+
+		return $this->db->insert_id();
+	}
+	public function get_Allticket_ticketID($ticketID)
+	{
+		$this->db->where('ticketID', $ticketID);
+		$query = $this->db->get($this->tablas['ticket'], 1);
+
+		if ($query->num_rows() == 1)
+		{
+			$row = $query->row();
+
+			return $row;
+		}
+
+		return null;
 	}
 }
 

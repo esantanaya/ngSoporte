@@ -1,5 +1,5 @@
 <div id="titNewUser">	
-	<h1><span class="rojo">>></span>NUEVO USUARIO</h1>
+	<h1><span class="rojo">>></span>EDICI&Oacute;N USUARIOS</h1>
 </div>
 <div class="linea"></div>
 <?php 
@@ -10,7 +10,8 @@
 		echo $mensaje;
 ?>
 <div id="form_container">
-	<?php echo form_open('admin/usuarios/crea_usuario'); ?>
+	<?php echo form_open('admin/usuarios/guarda_cambios'); ?>
+	<input type="hidden" name="cod_usuario" value="<?=$cod_usuario?>">
 	<table cellspacing="0" cellpadding="0" border="0" class="ticket_form">
 		<tbody>
 			<tr>
@@ -20,25 +21,13 @@
 				<td colspan="2" class="subHeader">Informaci&oacute;n</td>
 			</tr>
 			<tr>
-				<td class="table_title">Usuario:</td>
-				<td>
-					<input type="text" class="texto" name="cod_usuario">
-					<span class="rojo">*</span>
-					<?php 
-						echo '&nbsp;<span class="error">' . $cod_usuario 
-							. '</span>';
-						echo form_error('cod_usuario');
-					?>
-				</td>
-			</tr>
-			<tr>
 				<td class="table_title">Departamento:</td>
 				<td>
 					<div class="alarga_celda">
 						<div class="select">
 							<?php 
 								echo form_dropdown('departamento', $depts,
-									 '1'); 
+									 				$deptActual); 
 							?>
 						</div>	
 					</div>
@@ -50,7 +39,8 @@
 					<div class="alarga_celda">
 						<div class="select">
 							<?php 
-								echo form_dropdown('nivel', $niveles, '1'); 
+								echo form_dropdown('nivel', $niveles, 
+													$nivelActual); 
 							?>	
 						</div>
 					</div>
@@ -59,14 +49,14 @@
 			<tr>
 				<td class="table_title">Nombre(s):</td>
 				<td>
-					<input type="text" class="texto" name="nombre_usuario">
+					<input type="text" class="texto" name="nombre_usuario" value="<?=$nombre?>">
 					<span class="rojo">*</span>
 					<?php echo form_error('nombre_usuario'); ?>
 			</tr>
 			<tr>
 				<td class="table_title">Apellido Paterno:</td>
 				<td>
-					<input type="text" class="texto" name="apellido_paterno">
+					<input type="text" class="texto" name="apellido_paterno" value="<?=$apPaterno?>">
 					<span class="rojo">*</span>
 					<?php echo form_error('apellido_paterno'); ?>
 				</td>
@@ -74,7 +64,7 @@
 			<tr>
 				<td class="table_title">Apellido Materno:</td>
 				<td>
-					<input type="text" class="texto" name="apellido_materno">
+					<input type="text" class="texto" name="apellido_materno" value="<?=$apMaterno?>">
 					<span class="rojo">*</span>
 					<?php echo form_error('apellido_materno'); ?>
 				</td>
@@ -82,7 +72,7 @@
 			<tr>
 				<td class="table_title">Correo:</td>
 				<td>
-					<input type="text" class="texto" name="mail_usuario">
+					<input type="text" class="texto" name="mail_usuario" value="<?=$correo?>">
 					<span class="rojo">*</span>
 					<?php echo form_error('mail_usuario') ?>
 				</td>
@@ -90,22 +80,22 @@
 			<tr>
 				<td class="table_title">Tel&eacute;fono:</td>
 				<td>
-					<input type="text" class="texto" name="tel_usuario">
+					<input type="text" class="texto" name="tel_usuario" value="<?=$tel?>">
 					&nbsp; 
 					<label for="ext_tel">Ext</label>
-					<input type="text" class="texto_chico" name="ext_tel">
+					<input type="text" class="texto_chico" name="ext_tel" value="<?=$ext?>">
 				</td>
 			</tr>
 			<tr>
 				<td class="table_title">Movil:</td>
 				<td>
-					<input type="text" class="texto" name="cel_usuario">
+					<input type="text" class="texto" name="cel_usuario" value="<?=$cel?>">
 				</td>
 			</tr>
 			<tr>
 				<td class="table_title">Firma:</td>
 				<td>
-					<textarea name="firma_usuario" class="mensaje"></textarea>
+					<textarea name="firma_usuario" class="mensaje"><?=$firma?></textarea>
 				</td>
 			</tr>
 			<tr>
@@ -128,7 +118,7 @@
 			<tr>
 				<td class="table_title">Forzar cambio de contrase&ntilde;a:</td>
 				<td class="centrado">
-					<input type="checkbox" name="cambia_pass" value="Requerir cambio de contrase&ntilde;a" checked>
+					<input type="checkbox" name="cambia_pass" <?=$cambioPass?>>
 				</td>
 			</tr>
 			<tr>
@@ -140,23 +130,23 @@
 			<tr>
 				<td class="table_title">Estado:</td>
 				<td class="centrado">
-					<input type="radio" class="circulo" name="activo" id="activo" value="activo" checked>
+					<input type="radio" class="circulo" name="activo" id="activo" value="activo" <?=$activoCheck?>>
 					<strong>Activo</strong>
 					&nbsp;
-					<input type="radio" class="circulo" name="activo" id="bloqueado" value="bloqueado">
+					<input type="radio" class="circulo" name="activo" id="bloqueado" value="bloqueado" <?=$bloqueadoCheck?>>
 					<strong>Bloqueado</strong>
 				</td>
 			</tr>
 			<tr>
 				<td class="table_title">Listado:</td>
 				<td>
-					<input type="checkbox" name="listado" checked> El usuario es mostrado en el directorio
+					<input type="checkbox" name="listado" <?=$listadoCheck?>> El usuario es mostrado en el directorio
 				</td>
 			</tr>
 			<tr>
 				<td class="table_title curva_derecha">Modo Inactivo</td>
 				<td>
-					<input type="checkbox" name="vacacion"> El usuario no recibirá asignación
+					<input type="checkbox" name="vacacion" <?=$vacacionCheck?>> El usuario no recibirá asignación
 				</td>
 			</tr>
 			<tr>

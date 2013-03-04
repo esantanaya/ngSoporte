@@ -218,7 +218,10 @@ class Tickets extends CI_Controller {
 		$miembros = $this->usuario_model->get_usuarios_nivel(2);
 
 		foreach ($miembros as $key => $value) {
-			$lista_miembros[$value['cod_usuario']] = $value['nombre_usuario'];
+			if ($this->ticket_model->get_cod_staff_ticket($ticketID) != 
+				$value['cod_usuario'])
+				$lista_miembros[$value['cod_usuario']] = 
+				$value['nombre_usuario'];
 		}
 
 		$data['miembros'] = $lista_miembros;
@@ -375,8 +378,15 @@ class Tickets extends CI_Controller {
 
 	public function accion_ticket()
 	{
+		$date_string = "%Y-%m-%d %h:%i:%s";
+		$time = time();
+		$date_string = mdate($date_string, $time);
 		$accion = $this->input->post('acciones');
 		$ticketID = $this->input->post('ticketID');
+		$ticket_id = $this->ticket_model->get_ticket_ticketID($ticketID);
+		$status = 
+		$this->ticket_model->get_Allticket_ticketID($ticketID)->status;
+
 		$staff = $this->input->post('staff');
 		
 		switch ($accion) 
@@ -392,7 +402,12 @@ class Tickets extends CI_Controller {
 				break;
 
 			case '4':
+				$reasignacion = array('id_ticket' => $ticket_id,
+									  'cod_usuario' => $staff,
+									  'status' => $status,
+									  'realizado' => $date_string);
 				$this->ticket_model->reasigna_ticket($ticketID, $staff);
+				$this->ticket_model->insert_bitacora_asignacion($reasignacion);
 				break;
 
 			default:

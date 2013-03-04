@@ -150,8 +150,14 @@ class Tickets_usuario extends CI_Controller {
 		$mensaje['created'] = $date_string;
 		$mensaje['usuario_id'] = $this->session->userdata('idUsuario');
 
+		$reasignacion = array('id_ticket' => $ticket_id,
+							  'cod_usuario' => $ticket['cod_staff'],
+							  'status' => 'abierto',
+							  'realizado' => $date_string);
+
 		$mensaje_id = $this->ticket_model->insert_mensaje($mensaje);
 		$this->ticket_model->cambia_estado_ticket($ticketID, 'abierto');
+		$this->ticket_model->insert_bitacora_asignacion($reasignacion);
 
 		if ($envio)
 		{
