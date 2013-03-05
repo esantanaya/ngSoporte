@@ -449,17 +449,17 @@ div#respuesta {
  */
 
 a.perfil {
-	width: 160px !important;
-	background: url("../imagenes/iconos/myaccount/id_Myprofile.png") no-repeat scroll center top transparent;
+	width: 161px !important;
+	background: url("../imagenes/iconos/myaccount/id_MyProfile.png") no-repeat scroll center top transparent;
 }
 
 a.pref {
-	width: 160px !important;
+	width: 161px !important;
 	background: url("../imagenes/iconos/myaccount/ic_preferencias.png") no-repeat scroll center top transparent;
 }
 
 a.pass {
-	width: 160px !important;
+	width: 161px !important;
 	background: url("../imagenes/iconos/myaccount/ic_changepasswords.png") no-repeat scroll center top transparent;
 }
 
