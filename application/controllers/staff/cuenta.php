@@ -72,7 +72,7 @@ class Cuenta extends CI_Controller {
 
 		$horario = array('uno' => $uno, 
 						 'dos' => $dos);
-		
+
 		$data['SYS_MetaTitle'] = 'Staff :: Cambia Preferencias';
 		$data['SYS_metaKeyWords'] = 'sistema cuentas staff n&g';
 		$data['SYS_metaDescription'] = 'Preferencias Staff';
@@ -86,12 +86,13 @@ class Cuenta extends CI_Controller {
 	public function guarda_preferencias()
 	{
 		$horario = $this->input->post('horario');
+		
 		$salida = ($horario == '13') ? '13:00:00' : '15:00:00';
 		$entrada = ($horario == '13') ? '15:00:00' : '17:00:00';
 		$cod_usuario = $this->session->userdata('nombreUsuario');
 		$data = array('salida' => $salida,
 					  'entrada' => $entrada);
-
+		
 		$this->usuario_model->update_usuario_horario($cod_usuario, $data);
 		$this->preferencias();
 	}
@@ -188,6 +189,11 @@ class Cuenta extends CI_Controller {
 
 		$this->usuario_model->update_usuario_cuenta($cod_usuario, $valores);
 		$this->mi_cuenta();
+	}
+
+	public function regulariza()
+	{
+		$this->usuario_model->regulariza();
 	}
 
 }
