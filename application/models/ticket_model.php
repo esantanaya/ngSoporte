@@ -563,6 +563,13 @@ class Ticket_model extends CI_Model {
 
 		return null;
 	}
+
+	public function ahora()
+	{
+		$query = $this->db->query('SELECT NOW()');
+
+		return $query->row();
+	}
 }
 
 /* End of file ticket_model.php */

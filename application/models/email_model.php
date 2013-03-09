@@ -10,24 +10,24 @@ class Email_model extends CI_Model {
 
 	function send_email($from = null, $to, $asunto, $mensaje, $adjunto = null)
 	{
-		// $config = array(
-		// 			'mailtype' => 'html',
-		// 			'protocol' => 'smtp',
-		// 			'smtp_host' => 'mail.nygconsulting.com.mx',
-		// 			'smtp_user' => 'enrique.santana@nygconsulting.com.mx',
-		// 			'smtp_pass' => '3691012',
-		// 			'smtp_port' => '26',
-		// 			'smtp_timeout' => '60'
-		// 			);
 		$config = array(
 					'mailtype' => 'html',
 					'protocol' => 'smtp',
-					'smtp_host' => 'mail.simbank.mx',
-					'smtp_user' => 'notificaciones@simbank.mx',
-					'smtp_pass' => 'Rocco@Jack@Camila',
+					'smtp_host' => 'mail.nygconsulting.com.mx',
+					'smtp_user' => 'enrique.santana@nygconsulting.com.mx',
+					'smtp_pass' => '3691012',
 					'smtp_port' => '26',
 					'smtp_timeout' => '60'
 					);
+		// $config = array(
+		// 			'mailtype' => 'html',
+		// 			'protocol' => 'smtp',
+		// 			'smtp_host' => 'mail.simbank.mx',
+		// 			'smtp_user' => 'notificaciones@simbank.mx',
+		// 			'smtp_pass' => 'Rocco@Jack@Camila',
+		// 			'smtp_port' => '26',
+		// 			'smtp_timeout' => '60'
+		// 			);
 		$this->email->initialize($config);
 		if ($from != null)
 		{

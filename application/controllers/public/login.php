@@ -13,6 +13,8 @@ class Login extends CI_Controller {
 
 	public function index()
 	{
+		$this->load->model('ticket_model');
+		$data['hora'] = $this->ticket_model->ahora();
 		$data['SYS_MetaTitle'] = 'Login :: Sistema de Tickets';
 		$data['mensaje_login'] = 'Ingrese al sistema';
 

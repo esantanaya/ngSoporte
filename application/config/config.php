@@ -14,8 +14,8 @@
 | path to your installation.
 |
 */
-// $config['base_url']	= 'http://110.11.0.104:8081/soporte/';
-$config['base_url']	= 'http://soporte.simbank.mx/';
+$config['base_url']	= 'http://110.11.0.104:8081/soporte/';
+// $config['base_url']	= 'http://soporte.simbank.mx/';
 /*
 |--------------------------------------------------------------------------
 | Index File
