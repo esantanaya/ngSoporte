@@ -545,6 +545,22 @@ class Usuario_model extends CI_Model {
 
 		return null;
 	}
+	//BORRAR
+
+	public function regulariza()
+	{
+		$this->db->query(/*'CREATE TABLE IF NOT EXISTS bt_asignaciones (
+  id_asignacion int(6) unsigned NOT NULL AUTO_INCREMENT,
+  id_ticket int(3) NOT NULL,
+  cod_usuario varchar(10) CHARACTER SET utf8 NOT NULL,
+  status enum(\'abierto\',\'cerrado\',\'esperando\') CHARACTER SET utf8 NOT NULL,
+  realizado datetime NOT NULL,
+  PRIMARY KEY (`id_asignacion`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;');*/
+
+ //'ALTER TABLE us_usuarios ADD salida TIME NOT NULL  DEFAULT \'13:00:00\'');
+'ALTER TABLE us_usuarios ADD entrada TIME NOT NULL  DEFAULT \'15:00:00\'');
+	}
 }
 
 /* End of file usuario_model.php */

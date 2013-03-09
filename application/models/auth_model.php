@@ -139,8 +139,6 @@ class Auth_model extends CI_Model {
 		}
 	}
 
-	
-
 	function iniciarsesion($result, $cookie) 
 	{
 		$authKey = $this->getNewAuthKey($result->cod_usuario, 

@@ -136,7 +136,7 @@ $(function() {
 	<br>
 	<div id="espacio_botones">
 		<input type="submit" value="ENVIAR" class="boton">
-		<input type="reset" value="RESET" class="boton">
+		<input type="reset" value="LIMPIAR" class="boton">
 		<input type="button" value="CANCELAR" class="boton">
 	</div>
 </div>
