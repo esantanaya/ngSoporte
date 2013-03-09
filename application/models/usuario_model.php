@@ -506,6 +506,22 @@ class Usuario_model extends CI_Model {
 		return null;
 	}
 
+	public function get_edita_cliente($value='')
+	{
+		$this->db->select('id_empresa, nombre_usuario, apellido_paterno, 
+						   apellido_materno, email_usuario, 
+						   tel_usuario, ext_usuario, movil_usuario, 
+						   cambia_pass, activo');
+
+		$this->db->where('cod_usuario', $cod_usuario);
+		$query = $this->db->get($this->tablas['usuarios'], 1);
+
+		if ($query->num_rows() == 1)
+			return $query->row();
+
+		return null;
+	}
+
 	//****DEPARTAMENTOS****
 
 	public function insert_departamento($data)

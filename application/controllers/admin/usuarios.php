@@ -158,7 +158,46 @@ class Usuarios extends CI_Controller {
 
 	public function edita_cliente($cod_usuario)
 	{
-		# code...
+		$generales = $this->usuario_model->get_edita_cliente($cod_usuario);
+		$empresas = $this->usuario_model->get_empresas();
+
+		foreach ($empresas as $depas => $valor) 
+		{
+			$select[$valor['dept_id']] = $valor['dept_name'];
+		}
+
+		$data['SYS_MetaTitle'] = 'Tickets :: Usuarios';
+		$data['SYS_metaKeyWords'] = 'sistema ticket n&g';
+		$data['SYS_metaDescription'] = 'Panel de edición de usuarios';
+		$data['subMenu'] = 'admin/submenu_view';
+		$data['modulo'] = 'admin/edita_cliente_view';
+		$data['empresas'] = $select;
+		$dtata['empresaActual'] = $generales->id_empresa;
+		$data['nombre'] = $generales->nombre_usuario;
+		$data['apPaterno'] = $generales->apellido_paterno;
+		$data['apMaterno'] = $generales->apellido_materno;
+		$data['correo'] = $generales->email_usuario;
+		$data['nombre'] = $generales->nombre_usuario;
+		$data['tel'] = $generales->tel_usuario;
+		$data['ext'] = $generales->ext_usuario;
+		$data['cel'] = $generales->movil_usuario;
+		$data['cambioPass'] = ($generales->cambia_pass == 1) ? 'checked' : '' ;
+		$data['activoCheck'] = ($generales->activo == 1) ? 'checked': '';
+		$data['bloqueadoCheck'] = ($generales->activo == 0) ? 'checked': '';
+		$data['cod_usuario'] = '';
+		$data['clave'] = '';
+		$data['id_usuario'] = '';
+
+		if ($cod_usuario != null)
+			$data['cod_usuario'] = $cod_usuario;
+		
+		if ($clave != null)
+			$data['clave'] = $clave;
+
+		if ($id != null)
+			$data['id_usuario'] = $id;
+
+		$this->load->view('admin/main_admin_view', $data);
 	}
 
 	public function cliente($cod_usuario = null, $clave = null, $id = null)
