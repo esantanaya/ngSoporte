@@ -53,7 +53,9 @@ class Usuario_model extends CI_Model {
 			$data['pass_usuario'], null);
 		$data['authKey'] = $this->auth_model->getNewAuthKey(
 			$data['cod_usuario'], 20);
+		$this->db->trans_start(true);
 		$this->db->insert($this->tablas['usuarios'], $data);
+		$this->db->trans_complete();
 		return $this->db->insert_id();
 	}
 
@@ -478,8 +480,8 @@ class Usuario_model extends CI_Model {
 			. 'us.nombre_usuario, \' \', us.apellido_paterno, \' \', '
 			. 'us.apellido_materno ) , \'</a>\' ) AS Usuario, rl.nombreRol AS '
 			. 'Nivel, em.nombre_empresa AS Empresa, dp.dept_name AS '
-			. 'Departamento FROM us_usuarios us INNER JOIN rol rl ON '
-			. 'us.id_nivel_usuario = rl.idRol INNER JOIN '
+			. 'Departamento, us.activo AS ESTADO FROM us_usuarios us '
+			. 'INNER JOIN rol rl ON us.id_nivel_usuario = rl.idRol INNER JOIN '
 			. 'sop_empresas em ON us.id_empresa = em.empresa_id INNER JOIN '
 			. 'us_departamentos dp ON us.id_departamento_usuario = dp.dept_id '
 			. 'ORDER BY rl.nombreRol ASC';
@@ -506,7 +508,7 @@ class Usuario_model extends CI_Model {
 		return null;
 	}
 
-	public function get_edita_cliente($value='')
+	public function get_edita_cliente($cod_usuario)
 	{
 		$this->db->select('id_empresa, nombre_usuario, apellido_paterno, 
 						   apellido_materno, email_usuario, 

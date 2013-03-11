@@ -156,14 +156,14 @@ class Usuarios extends CI_Controller {
 		$this->load->view('admin/main_admin_view', $data);
 	}
 
-	public function edita_cliente($cod_usuario)
+	public function edita_cliente($cod_usuario, $clave = null, $id = null)
 	{
 		$generales = $this->usuario_model->get_edita_cliente($cod_usuario);
 		$empresas = $this->usuario_model->get_empresas();
 
 		foreach ($empresas as $depas => $valor) 
 		{
-			$select[$valor['dept_id']] = $valor['dept_name'];
+			$select[$valor['empresa_id']] = $valor['nombre_empresa'];
 		}
 
 		$data['SYS_MetaTitle'] = 'Tickets :: Usuarios';
@@ -177,7 +177,6 @@ class Usuarios extends CI_Controller {
 		$data['apPaterno'] = $generales->apellido_paterno;
 		$data['apMaterno'] = $generales->apellido_materno;
 		$data['correo'] = $generales->email_usuario;
-		$data['nombre'] = $generales->nombre_usuario;
 		$data['tel'] = $generales->tel_usuario;
 		$data['ext'] = $generales->ext_usuario;
 		$data['cel'] = $generales->movil_usuario;
@@ -425,9 +424,7 @@ class Usuarios extends CI_Controller {
 
 			);
 
-			$this->db->trans_start(true);
 			$id_usuario = $this->usuario_model->insert_usuario($data);
-			$this->db->trans_complete();
 			$id_usuario = 'Se cre&oacute; el usuario con el ID ' . $id_usuario;
 			
 			$this->nuevo(null, null, $id_usuario);

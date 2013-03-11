@@ -561,8 +561,9 @@ class Tickets_usuario extends CI_Controller {
 								get_adjunto_mensaje($respuesta_id, $ticket_id, 
 													'R');
 					if ($adjunto_completo_staff != null)
-						$adjunto_staff = '<div class="cuerpo"><a href="' . base_url() 
-						. 'docs/tickets/' . $adjunto_completo_staff . '">' 
+						$adjunto_staff = '<div class="cuerpo"><a href="' 
+						. base_url() . 'docs/tickets/' 
+						. $adjunto_completo_staff . '">' 
 						. substr($adjunto_completo_staff, 18) . '</a></div>';
 					
 					$encabezado_staff = '<div class="encabezado_staff">' 
@@ -573,13 +574,13 @@ class Tickets_usuario extends CI_Controller {
 					$historial['encabezado_staff'] = $encabezado_staff;
 					if ($adjunto_staff != null)
 					{
-						$historial['adjunto_staff'] = $adjunto_staff;
+						$historial['adjunto_staff'] .= $adjunto_staff;
 					}
 					else
 					{
-						$historial['adjunto_staff'] = '';
+						$historial['adjunto_staff'] .= '';
 					}
-					$historial['mensaje_staff'] = '<div class="cuerpo">' 
+					$historial['mensaje_staff'] .= '<div class="cuerpo">' 
 												. $valor['response']
 												. '</div>';
 					$bandera = true;
@@ -622,7 +623,7 @@ class Tickets_usuario extends CI_Controller {
 			if ($value['mensaje_staff'])
 				$this->table->add_row($value['mensaje_staff']);
 		}
-
+		#var_dump($arreglo_historial);
 
 		$data['SYS_MetaTitle'] = 'Tickets :: Estado';
 		$data['SYS_metaKeyWords'] = 'sistema ticket n&g';
