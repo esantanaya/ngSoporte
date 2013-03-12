@@ -264,9 +264,9 @@ class Ticket_model extends CI_Model {
 		}
 		else
 		{
-			$cadena_query .= ' AND updated >= ADDDATE( CURDATE( ) , -7 )
+			$cadena_query .= ' AND (updated >= ADDDATE( CURDATE( ) , -7 )
 						   AND STATUS = \'cerrado\'';
-			$cadena_query .= ' OR status <> \'cerrado\'';
+			$cadena_query .= ' OR status <> \'cerrado\')';
 		}
 
 		$cadena_query .= ' ORDER BY ' . $order;

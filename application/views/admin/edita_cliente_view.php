@@ -10,7 +10,7 @@
 		echo $mensaje;
 ?>
 <div id="form_container">
-	<?php echo form_open('admin/usuarios/guarda_cambios'); ?>
+	<?php echo form_open('admin/usuarios/guarda_cambios_cliente'); ?>
 	<input type="hidden" name="cod_usuario" value="<?=$cod_usuario?>">
 	<table cellspacing="0" cellpadding="0" border="0" class="ticket_form">
 		<tbody>

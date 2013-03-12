@@ -53,9 +53,7 @@ class Usuario_model extends CI_Model {
 			$data['pass_usuario'], null);
 		$data['authKey'] = $this->auth_model->getNewAuthKey(
 			$data['cod_usuario'], 20);
-		$this->db->trans_start(true);
 		$this->db->insert($this->tablas['usuarios'], $data);
-		$this->db->trans_complete();
 		return $this->db->insert_id();
 	}
 
@@ -173,9 +171,9 @@ class Usuario_model extends CI_Model {
 	{
 		$this->db->where('id_departamento_usuario', $dept);
 		$this->db->where('vacacion', 0);
-		$this->db->where('id_nivel_usuario !=', 1);
+		$this->db->where('id_nivel_usuario', 2);
 		$this->db->where('activo', 1);
-		$this->db->where('CURTIME( ) < salida OR CURTIME( ) > entrada');
+		$this->db->where('(CURTIME( ) < salida OR CURTIME( ) > entrada)');
 		$this->db->select('cod_usuario');
 		$staff = $this->db->get($this->tablas['usuarios']);
 

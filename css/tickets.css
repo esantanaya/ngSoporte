@@ -3,6 +3,10 @@
 	padding: 0;
 }
 
+a:visited, a:link {
+	color: #B81315;
+}
+
 #wrapper {
 	width: 802px;
 	height: auto;

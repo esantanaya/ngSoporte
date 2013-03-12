@@ -132,13 +132,13 @@ class Tickets extends CI_Controller {
 					$historial['encabezado_staff'] = $encabezado_staff;
 					if ($adjunto_staff != null)
 					{
-						$historial['adjunto_staff'] = $adjunto_staff;
+						$historial['adjunto_staff'] .= $adjunto_staff;
 					}
 					else
 					{
-						$historial['adjunto_staff'] = '';
+						$historial['adjunto_staff'] .= '';
 					}
-					$historial['mensaje_staff'] = '<div class="cuerpo">' 
+					$historial['mensaje_staff'] .= '<div class="cuerpo">' 
 												. $valor['response']
 												. '</div>';
 					$bandera = true;
@@ -386,6 +386,7 @@ class Tickets extends CI_Controller {
 		$ticket_id = $this->ticket_model->get_ticket_ticketID($ticketID);
 		$status = 
 		$this->ticket_model->get_Allticket_ticketID($ticketID)->status;
+		$usuario_id = $this->ticket_model->get_usuario_ticket($ticketID);
 
 		$staff = $this->input->post('staff');
 		
@@ -394,11 +395,13 @@ class Tickets extends CI_Controller {
 			case '2':
 				$this->ticket_model->cambia_estado_ticket($ticketID, 
 														  'abierto');
+				$this->send_mail_usuario($usuario_id, $ticketID);
 				break;
 
 			case '3':
 				$this->ticket_model->cambia_estado_ticket($ticketID, 
 														  'cerrado');
+				$this->send_mail_usuario($usuario_id, $ticketID);
 				break;
 
 			case '4':

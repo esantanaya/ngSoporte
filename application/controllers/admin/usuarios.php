@@ -442,9 +442,28 @@ class Usuarios extends CI_Controller {
 		$visible = ($this->input->post('listado') == 'on') ? 1 : 0;
 		$vacacion = ($this->input->post('vacacion') == 'on') ? 1 : 0;
 
-		if ($pass_usuario != $confirma_pass)
+		$this->form_validation->set_rules('nombre_usuario', 
+			'Nombre', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('apellido_paterno', 
+			'Apellido Paterno', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('apellido_materno', 
+			'Apellido Materno', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('mail_usuario', 
+			'Correo', 'trim|required|xss_clean|valid_email');
+		$this->form_validation->set_message('required', 
+			'Ingrese su "%s" por favor');
+		$this->form_validation->set_message('xss_clean', 
+			'El campo "%s" contiene un posible ataque XSS');
+		$this->form_validation->set_message('valid_email', 
+			'Ingrese un correo v&aacute;lido por favor');
+		$this->form_validation->set_error_delimiters('<span class="error">', 
+			'</span>');
+
+		if (! $this->form_validation->run() || $pass_usuario != $confirma_pass)
 		{
-			$badPass = 'Las Contrase&ntilde;as no coinciden';
+			$badPass = '';
+			if ($pass_usuario != $confirma_pass)
+				$badPass = 'Las Contrase&ntilde;as no coinciden';
 			$this->edita_usuario($cod_usuario, $badPass);
 			return false;
 		}
@@ -475,6 +494,65 @@ class Usuarios extends CI_Controller {
 		
 		$this->usuario_model->update_usuario_cuenta($cod_usuario, $data);
 		$this->edita_usuario($cod_usuario);
+	}
+
+	public function guarda_cambios_cliente()
+	{
+		$cod_usuario = $this->input->post('cod_usuario');
+		$id_usuario = $this->usuario_model->get_id_usuario($cod_usuario);
+		$pass_usuario = $this->input->post('pass_usuario');
+		$confirma_pass = $this->input->post('confirma_pass');
+		$cambia_pass = ($this->input->post('cambia_pass') == 'on') ? 1 : 0;
+		$activo = ($this->input->post('activo') == 'activo') ? 1 : 0;
+
+		$this->form_validation->set_rules('nombre_usuario', 
+			'Nombre', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('apellido_paterno', 
+			'Apellido Paterno', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('apellido_materno', 
+			'Apellido Materno', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('mail_usuario', 
+			'Correo', 'trim|required|xss_clean|valid_email');
+		$this->form_validation->set_message('required', 
+			'Ingrese su "%s" por favor');
+		$this->form_validation->set_message('xss_clean', 
+			'El campo "%s" contiene un posible ataque XSS');
+		$this->form_validation->set_message('valid_email', 
+			'Ingrese un correo v&aacute;lido por favor');
+		$this->form_validation->set_error_delimiters('<span class="error">', 
+			'</span>');
+
+		if (! $this->form_validation->run() || $pass_usuario != $confirma_pass)
+		{
+			$badPass = '';
+			if ($pass_usuario != $confirma_pass)
+				$badPass = 'Las Contrase&ntilde;as no coinciden';
+
+			$this->edita_cliente($cod_usuario, $badPass);
+			return false;
+		}
+		
+		$data = array('id_empresa' => $this->input->post('empresa'), 
+				  'nombre_usuario' => $this->input->post('nombre_usuario'),
+				  'apellido_paterno' => $this->input->post(
+				  						 'apellido_paterno'),
+				   'apellido_materno' => $this->input->post(
+				   						 'apellido_materno'),
+				   'email_usuario' => $this->input->post('mail_usuario'),
+				   'tel_usuario' => $this->input->post('tel_usuario'),
+				   'ext_usuario' => $this->input->post('ext_tel'),
+				   'movil_usuario' => $this->input->post('cel_usuario'),
+				   'cambia_pass' => $cambia_pass,
+				   'activo' => $activo);
+
+		if (! empty($pass_usuario))
+		{
+			$this->usuario_model->update_password_usuario($id_usuario, 
+														  $pass_usuario);
+		}
+		
+		$this->usuario_model->update_usuario_cuenta($cod_usuario, $data);
+		$this->edita_cliente($cod_usuario);
 	}
 
 }
