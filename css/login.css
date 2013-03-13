@@ -22,7 +22,7 @@ body {
 }
 
 #label_login {
-	color: red;
+	color: #B81315;
 }
 
 #formulario {
@@ -63,8 +63,43 @@ body {
 	font-family: 'PTSans';
 }
 
+#navegadores {
+	width: 802px;
+	color: #B81315;
+}
+
+#chrome, #firefox {
+	width: 50%;
+	float: left;
+}
+
+#navegadores a {
+	text-decoration: none;
+	color: #B81315;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 350px;
+	height: 200px;
+	display: block;
+	margin: 10px 30px -150px 30px;
+	width: 150px;
+}
+
+a.chrome {
+	background: transparent url('../imagenes/Chrome_Logo.svg.png') center top no-repeat;
+}
+
+a.firefox {
+	background: transparent url('../imagenes/150px-Mozilla_Firefox_3.5_logo_256.png') center top no-repeat;
+}
+
+.invisible {
+	visibility: none;
+	display: none;
+}
+
 .error {
-	color: red;
+	color: #B81315;
 }
 
 .clear {

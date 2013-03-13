@@ -1,4 +1,3 @@
-<!-- SE LIBERA LA PRIMERA VERSION Y SE ABRE DESARROLLO -->
 <html>
 	<head>
 		<title><?=$SYS_MetaTitle?></title>
@@ -6,6 +5,13 @@
 		<link rel="shortcut icon" href="<?=base_url()?>imagenes/iconos/logo.png">
 	</head>
 	<body>
+		<?php
+        	$navegador = $this->input->user_agent();
+
+        	$estilo = 'invisible';
+        	if (strpos($navegador, 'MSIE'))
+        		$estilo = '';
+        ?>
 		<div id="wrapper">
 			<div id="logo">
 			</div>
@@ -49,7 +55,17 @@
 				</div>
 			</div>
 		</div>
-		<div style="height: 250px;"></div>
+		<div style="height: 250px;">
+			<div id="navegadores" class="<?=$estilo?>">
+				<h1>El Sistema de Soporte funciona mejor en:</h1>
+				<div id="chrome">
+					<a href="https://www.google.com/intl/es/chrome/business/browser/" class="chrome">Chrome</a>
+				</div>
+				<div id="firefox">
+					<a href="http://www.mozilla.org/es-MX/firefox/fx/" class="firefox">Firefox</a>
+				</div>
+			</div>
+		</div>
 		<div class="clear"></div>
 		<div id="footer">
 			Copyright &copy; 2013 N&G  All Rights Reserved.

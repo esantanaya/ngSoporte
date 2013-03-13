@@ -9,6 +9,9 @@ $(function() {
 			$("#staffCont").addClass("invisible");	
 		}
 	});
+	$("#btnCancelar").click(function() {
+		document.location.href='<?=base_url()?>';
+	});
 });
 </script>
 <div id="tabla_estado">
@@ -137,6 +140,6 @@ $(function() {
 	<div id="espacio_botones">
 		<input type="submit" value="ENVIAR" class="boton">
 		<input type="reset" value="LIMPIAR" class="boton">
-		<input type="button" value="CANCELAR" class="boton">
+		<input type="button" value="CANCELAR" class="boton" id="btnCancelar">
 	</div>
 </div>

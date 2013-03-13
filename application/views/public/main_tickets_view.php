@@ -13,6 +13,8 @@
         ?>
 		<link rel="stylesheet" href="<?=base_url()?>css/<?=$estilo?>.css" type="text/css">
 		<link rel="shortcut icon" href="<?=base_url()?>imagenes/iconos/logo.png">
+		<script src="<?=base_url()?>js/jQuery.js" type="text/javascript">
+		</script>
 	</head>
 	<body>
 		<div id="wrapper">

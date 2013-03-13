@@ -74,7 +74,7 @@
 	<input type="file" name="adjunto" size="20" id="adjunto">
 	<br>
 	<input type="submit" value="ENVIAR" class="boton">
-	<input type="reset" value="RESET" class="boton">
+	<input type="reset" value="LIMPIAR" class="boton">
 	<input type="button" value="CANCELAR" class="boton">
 </div>
 <div class="clear"></div>

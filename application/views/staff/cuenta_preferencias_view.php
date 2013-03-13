@@ -1,4 +1,4 @@
-<div id="tituloPreferencias">
+<div id="tituloPreferencias" class="titulo">
 	<h1><span class="rojo">>></span>PREFERENCIAS</h1>
 </div>
 <div class="linea"></div>
@@ -9,6 +9,9 @@
 	<br>
 	<input type="radio" class="horario" name="horario" id="35" value="35"
 	<?=$horario['dos']?>><strong>15:00:00 a 17:00:00</strong>
+	<br>
+	<input type="radio" class="horario" name="horario" id="no" value="no"
+	<?=$horario['no']?>><strong>Yo no como >:0</strong>
 	<br>
 	<input type="submit" class="boton" value="GUARDAR">
 	<br>

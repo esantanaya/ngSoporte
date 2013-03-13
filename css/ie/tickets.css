@@ -1,6 +1,7 @@
 * {
 	margin: 0 auto;
 	padding: 0;
+	behavior: url(ie-css3.htc);
 }
 
 body {
@@ -106,22 +107,45 @@ h3 {
 }
 
 .select {
+	width: 268px;
+	height: 39px;
 	overflow: hidden;
-	width: 266;
+	background: url('../../imagenes/flechacombobox.png') no-repeat right #ccc;
+	border: 1px solid #000;
+	border-radius: 10px;
+	behavior: url(ie-css3.htc);
+	/*
+	overflow: hidden;
+	width: 266px;
 	height: 39px;
 	background: url('../../imagenes/combobox.png') no-repeat;
+	border: 1px none #ccc;
+	background-origin: padding-box;
+	background-clip: border-box;
+	*/
 }
 
 select {
 	background: transparent;
-	filter: alpha(opacity = 0);
-	zoom: 1;
-	width: 266px;
+	width: 284px;
+	padding: 5px;
+	font-size: 16px;
+	line-height: 1;
+	border: 0;
+	height: 40px;
+   -webkit-appearance: none;
+/*
+	position: absolute;
+	background: transparent;
+	width: 282px;
 	height: 39px;
 	padding: 10px;
-	border: none;
+	border: 0;
+	border-radius: 0;
+	line-height: 1;
 	-webkit-appearance: none;
 	margin-bottom: 5px;
+	display: inline-block;*/
 }
 
 .texto {

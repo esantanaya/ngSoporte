@@ -1,3 +1,10 @@
+<script>
+$(function() {
+	$("#btnCancelar").click(function() {
+		document.location.href='<?=base_url()?>';
+	});
+});
+</script>
 <div id="nuevoTitulo">
 	<h1><span class="rojo">>></span>NUEVO TICKET</h1>
 	<p>Por favor ingrese en el formuario los datos de su ticket</p>
@@ -11,9 +18,10 @@
 				<td>
 					<div id="alargaCelda">
 						<div class="select">
-							<?php 
+							<?php
+								$js = 'id="departamento"';
 								echo form_dropdown('departamento', $select, 
-									'1'); 
+									'1', $js); 
 							?>
 						</div>
 					</div>
@@ -58,8 +66,8 @@
 				<td><div id="espacio"></div></td>
 				<td>
 					<input type="submit" value="ENVIAR TICKET" class="boton">
-					<input type="reset" value="RESET" class="boton">
-					<input type="button" value="CANCELAR" class="boton">
+					<input type="reset" value="LIMPIAR" class="boton">
+					<input type="button" value="CANCELAR" class="boton" id="btnCancelar">
 				</td>
 			</tr>
 		</table>
