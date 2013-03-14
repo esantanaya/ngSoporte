@@ -43,7 +43,7 @@
 				<ul>
 					<li><a href="#">PANEL</a></li>
 					<li><a href="#">CONFIGURACI&Oacute;N</a></li>
-					<li><a href="<?=base_url()?>admin/usuarios">USUARIOS</a></li>
+					<li><a href="<?=base_url()?>admin/usuarios/lista">USUARIOS</a></li>
 				</ul>
 			</div>
 			<div id="content">
