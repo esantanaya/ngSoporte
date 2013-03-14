@@ -63,7 +63,7 @@ class Tickets extends CI_Controller {
 		$this->load->view('staff/main_staff_view', $data);
 	}
 
-	public function responde_ticket($ticketID)
+	public function responde_ticket($ticketID, $error = null)
 	{
 
 		$ticket_id = $this->ticket_model->get_ticket_ticketID($ticketID);
@@ -262,32 +262,17 @@ class Tickets extends CI_Controller {
 
 		if (! $this->form_validation->run() || is_array($archivo))
 		{
-			$arrDatos = $this->ticket_model->get_vista_ticket($ticketID);
-
-			$data['SYS_MetaTitle'] = 'Tickets :: Estado';
-			$data['SYS_metaKeyWords'] = 'sistema ticket n&g';
-			$data['SYS_metaDescription'] = 'Estado de un ticket';
-			$data['modulo'] = 'public/ticket_view';
 			if (is_array($archivo))
 			{
-				$data['error'] = $archivo['error'];
+				$error = $archivo['error'];
 			}
 			else
 			{
-				$data['error'] = '';
+				$error = '';
 			}
+			
 
-			$data['ticketID'] = $ticketID;
-			$data['estado_ticket'] = $arrDatos[0]['status'];
-			$data['departamento_ticket'] = $arrDatos[0]['dept_name'];
-			$data['creacion_ticket'] = $arrDatos[0]['created'];
-			$data['staff_name'] = $arrDatos[0]['nombre_usuario'] . ' ' 
-									. $arrDatos[0]['apellido_paterno'];
-			$data['staff_correo'] = $arrDatos[0]['email_usuario'];
-			$data['staff_tel'] = $arrDatos[0]['tel_usuario'];
-			$data['asunto'] = $arrDatos[0]['subject'];
-
-			$this->responde_ticket($ticketID, $data['error']);
+			$this->responde_ticket($ticketID, $error);
 			return false;
 		}
 

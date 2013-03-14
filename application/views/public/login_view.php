@@ -61,7 +61,7 @@
 			Copyright &copy; 2013 N&G  All Rights Reserved.
 		</div>
 		<div id="navegadores" class=<?=$estilo?>>
-			<h6>Optimizado para <a href="">Google Chrome</a> y <a href="">Firefox</a></h6>
+			<h6>Optimizado para <a href="https://www.google.com/intl/es/chrome/business/browser/">Google Chrome</a> y <a href="http://www.mozilla.org/es-MX/firefox/fx/">Firefox</a></h6>
 		</div>
 	</body>
 </html>

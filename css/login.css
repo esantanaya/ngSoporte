@@ -69,6 +69,11 @@ body {
 	text-align: left;
 }
 
+.invisible {
+	visibility: none;
+	display: none;
+}
+
 @font-face {
 	font-family: 'Gisha';
 	src: url('fonts/Gisha/ufontscomgisha.eot');

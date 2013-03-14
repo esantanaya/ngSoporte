@@ -11,7 +11,7 @@
 	<?=$horario['dos']?>><strong>15:00:00 a 17:00:00</strong>
 	<br>
 	<input type="radio" class="horario" name="horario" id="no" value="no"
-	<?=$horario['no']?>><strong>Yo no como >:0</strong>
+	<?=$horario['no']?>><strong>Corrido</strong>
 	<br>
 	<input type="submit" class="boton" value="GUARDAR">
 	<br>

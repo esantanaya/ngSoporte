@@ -173,7 +173,8 @@ class Usuario_model extends CI_Model {
 		$this->db->where('vacacion', 0);
 		$this->db->where('id_nivel_usuario', 2);
 		$this->db->where('activo', 1);
-		$this->db->where('(CURTIME( ) < salida OR CURTIME( ) > entrada)');
+		$this->db->where(
+			'(CURTIME() < salida OR CURTIME() > entrada OR corrido = 1)');
 		$this->db->select('cod_usuario');
 		$staff = $this->db->get($this->tablas['usuarios']);
 
@@ -366,7 +367,7 @@ class Usuario_model extends CI_Model {
 	public function get_usuario_horario($cod_usuario)
 	{
 		$this->db->where('cod_usuario', $cod_usuario);
-		$this->db->select('salida, entrada');
+		$this->db->select('salida, entrada, corrido');
 		$query = $this->db->get($this->tablas['usuarios'], 1);
 
 		if ($query == 1)

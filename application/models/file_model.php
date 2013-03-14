@@ -100,8 +100,8 @@ class File_model extends CI_Model {
 		{
 			$ori_name = $_FILES[$file]['name'];
 			$config['upload_path'] = $this->path . $target;
-			$config['allowed_types'] = '*';
-			// $config['allowed_types'] = '*';
+			$config['allowed_types'] = 
+			'doc|docx|xls|xlsx|pdf|jpg|jpeg|png|rar|zip|gif|bmp|xps|ppt|pptx';
 
 			// $config['encrypt_name'] = 'TRUE';
 			$config['max_size'] = '5120';
