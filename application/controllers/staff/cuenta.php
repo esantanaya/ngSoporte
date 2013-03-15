@@ -5,6 +5,12 @@ class Cuenta extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+		if (!is_logged())
+			redirect(base_url() . 'login');
+		if (! is_authorized(array(0, 1, 2), null, $this->session->userdata(
+			'nivel'), $this->session->userdata('rol')))
+			redirect(base_url() . 'login');
+		
 		$this->load->model('usuario_model');
 
 		error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
@@ -193,7 +199,6 @@ class Cuenta extends CI_Controller {
 		$this->usuario_model->update_usuario_cuenta($cod_usuario, $valores);
 		$this->mi_cuenta();
 	}
-
 }
 
 /* End of file cuenta.php */
