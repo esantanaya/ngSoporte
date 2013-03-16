@@ -7,9 +7,14 @@ class Cuenta extends CI_Controller {
 		parent::__construct();
 		if (!is_logged())
 			redirect(base_url() . 'login');
+		
 		if (! is_authorized(array(0, 1, 2), null, $this->session->userdata(
 			'nivel'), $this->session->userdata('rol')))
 			redirect(base_url() . 'login');
+
+		if ($this->usuario_model->get_cambia_pass($this->session->userdata(
+			'idUsuario')))
+			redirect(base_url() . 'cambia_pass');
 		
 		$this->load->model('usuario_model');
 

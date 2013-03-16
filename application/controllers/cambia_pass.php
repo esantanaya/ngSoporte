@@ -8,6 +8,12 @@ class Cambia_pass extends CI_Controller {
 
 		if (! is_logged())
 			redirect(base_url() . 'login');
+
+		$this->load->model('usuario_model');
+
+		if (! $this->usuario_model->get_cambia_pass($this->session->userdata(
+			'idUsuario')))
+			redirect(base_url());
 	}
 
 	public function index()
