@@ -5,6 +5,7 @@ class Cuenta extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+
 		if (!is_logged())
 			redirect(base_url() . 'login');
 		
@@ -12,11 +13,11 @@ class Cuenta extends CI_Controller {
 			'nivel'), $this->session->userdata('rol')))
 			redirect(base_url() . 'login');
 
+		$this->load->model('usuario_model');
+
 		if ($this->usuario_model->get_cambia_pass($this->session->userdata(
 			'idUsuario')))
 			redirect(base_url() . 'cambia_pass');
-		
-		$this->load->model('usuario_model');
 
 		error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 	}
