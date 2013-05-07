@@ -320,8 +320,7 @@ a.nuevo_cliente {
 	height: 50px;
 	display: block;
 	margin: 8px 30px 0;
-	width: 85px;
-
+	width: 86px;
 }
 
 /*
@@ -453,17 +452,17 @@ div#respuesta {
  */
 
 a.perfil {
-	width: 161px !important;
+	width: 167px !important;
 	background: url("../imagenes/iconos/myaccount/id_MyProfile.png") no-repeat scroll center top transparent;
 }
 
 a.pref {
-	width: 161px !important;
+	width: 167px !important;
 	background: url("../imagenes/iconos/myaccount/ic_preferencias.png") no-repeat scroll center top transparent;
 }
 
 a.pass {
-	width: 161px !important;
+	width: 167px !important;
 	background: url("../imagenes/iconos/myaccount/ic_changepasswords.png") no-repeat scroll center top transparent;
 }
 

@@ -2,12 +2,26 @@
 $(function() {
 	$("#accionesSelect").change(function() {
 		var opcion = $("#accionesSelect").val();
-		if (opcion == "4") {
+		switch (opcion)
+		{
+			case "4":
+				$("#deptCont").addClass("invisible");
+				$("#staffCont").removeClass("invisible");
+				break;
+			case "5":
+				$("#staffCont").addClass("invisible");
+				$("#deptCont").removeClass("invisible");
+				break;
+			default:
+				$("#staffCont").addClass("invisible");
+				$("#deptCont").addClass("invisible");
+		}
+		/*if (opcion == "4") {
 			$("#staffCont").removeClass("invisible");
 		}
 		else {
 			$("#staffCont").addClass("invisible");	
-		}
+		}*/
 	});
 	$("#btnCancelar").click(function() {
 		document.location.href='<?=base_url()?>';
@@ -101,7 +115,7 @@ $(function() {
 <div id="acciones">
 	<?php echo form_open(base_url() . 'staff/tickets/accion_ticket'); ?>
 	<input type="hidden" name="ticketID" value="<?=$ticketID?>">
-	<label for="acciones">Acciones:</label>
+	<label for="accionesSelect">Acciones:</label>
 	<div class="select">
 		<?php 
 			$js = 'id="accionesSelect"';
@@ -109,11 +123,20 @@ $(function() {
 		?>
 	</div>
 	<div class="invisible" id="staffCont">
-		<label for="staffSelect">Staff:</label>
+		<label for="staff">Staff:</label>
 		<div class="select">
 			<?php 
 				$js = 'id="staff"';
 				echo form_dropdown('staff', $miembros, '1', $js);
+			?>
+		</div>
+	</div>
+	<div class="invisible" id="deptCont">
+		<label for="depts">&Aacute;rea:</label>
+		<div class="select">
+			<?php
+				$js1 = 'id="depts"';
+				echo form_dropdown('depts', $departamentos, '2', $js1);
 			?>
 		</div>
 	</div>
@@ -129,6 +152,9 @@ $(function() {
 <div id="respuesta">
 	<form action="<?=base_url()?>staff/tickets/agrega_respuesta" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="ticketID" value="<?=$ticketID?>">
+	<input type="checkbox" value="cerrar" name="cerrar">
+	<label for="cerrar">Cerrar</label>
+    <br>
 	<label for="mensaje">Mensaje: <span class="rojo">*</span></label>
 	<?php echo form_error('mensaje'); ?>
 	<br>

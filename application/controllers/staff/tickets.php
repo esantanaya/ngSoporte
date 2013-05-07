@@ -211,20 +211,29 @@ class Tickets extends CI_Controller {
 		$acciones = array('1' => 'SELECCIONA UNA ACCION',
 						  '2' => 'Abrir',
 						  '3' => 'Cerrar',
-						  '4' => 'Reasignar');
+						  '4' => 'Reasignar (usuario)',
+						  '5' => 'Reasignar (departamento)');
 
 		$data['acciones'] = $acciones;
 		
 		$miembros = $this->usuario_model->get_usuarios_nivel(2);
-
-		foreach ($miembros as $key => $value) {
+		foreach ($miembros as $key => $value) 
+		{
 			if ($this->ticket_model->get_cod_staff_ticket($ticketID) != 
 				$value['cod_usuario'])
 				$lista_miembros[$value['cod_usuario']] = 
 				$value['nombre_usuario'];
 		}
 
+		$departamentos = $this->usuario_model->get_departamentos_id();
+		
+		foreach ($departamentos as $depas => $valor) 
+		{
+			$select[$valor['dept_id']] = $valor['dept_name'];
+		}
+
 		$data['miembros'] = $lista_miembros;
+		$data['departamentos'] = $select;
 
 		$this->load->view('staff/main_staff_view', $data);
 	}
@@ -237,6 +246,7 @@ class Tickets extends CI_Controller {
 
 		$mensaje = $this->input->post('mensaje');
 		$ticketID = $this->input->post('ticketID');
+		$cerrar = $this->input->post('cerrar');
 		$ticket_id = $this->ticket_model->get_ticket_ticketID($ticketID);
 
 		$envio = false;
@@ -301,7 +311,17 @@ class Tickets extends CI_Controller {
 		}
 
 		$usuario_id = $this->ticket_model->get_usuario_ticket($ticketID);
-		$this->send_mail_usuario($usuario_id, $ticketID);
+
+		if ($cerrar == 'cerrar')
+		{
+			$this->ticket_model->cambia_estado_ticket($ticketID, 'cerrado');
+			$this->send_mail_usuario($usuario_id, $ticketID);
+		}
+		else
+		{
+			$this->send_mail_usuario($usuario_id, $ticketID);
+		}
+		
 		redirect(base_url() . 'staff/tickets/responde_ticket/' . $ticketID);
 	}
 
