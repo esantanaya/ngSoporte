@@ -394,6 +394,7 @@ class Tickets extends CI_Controller {
 		$usuario_id = $this->ticket_model->get_usuario_ticket($ticketID);
 
 		$staff = $this->input->post('staff');
+		$dept = $this->input->post('depts');
 		
 		switch ($accion) 
 		{
@@ -417,7 +418,16 @@ class Tickets extends CI_Controller {
 				$this->ticket_model->reasigna_ticket($ticketID, $staff);
 				$this->ticket_model->insert_bitacora_asignacion($reasignacion);
 				break;
-
+				
+			case '5':
+				$staff = $this->ticket_model->get_elegido($dept);
+				$reasignacion = array('id_ticket' => $ticket_id,
+									  'cod_usuario' => $staff,
+									  'status' => $status,
+									  'realizado' => $date_string);
+				$this->ticket_model->reasigna_ticket($ticketID, $staff);
+				$this->ticket_model->insert_bitacora_asignacion($reasignacion);
+				break;
 			default:
 				# code...
 				break;
