@@ -388,6 +388,23 @@ class Usuario_model extends CI_Model {
 		return true;
 	}
 
+	public function get_nivel_usuario($id_usuario)
+	{
+		$this->db->select('id_nivel_usuario');
+		$this->db->where('id_usuario', $id_usuario);
+		$query = $this->db->get($this->tablas['usuarios']);
+
+		if ($query == 1)
+		{
+			$row = $query->row();
+			$nivel = $row->id_nivel_usuario;
+
+			return $nivel;
+		}
+
+		return null;
+	}
+
 	//****GRUPOS****
 
 	public function get_current_grupo()
@@ -559,6 +576,23 @@ class Usuario_model extends CI_Model {
 
 		if ($query->num_rows() > 0)
 			return $query->result_array();
+
+		return null;
+	}
+
+	public function get_correo_empresa($empresa_id)
+	{
+		$this->db->select('correo');
+		$this->db->where('empresa_id', $empresa_id);
+		$query =$this->db->get($this->tablas['empresas']);
+
+		if ($query->num_rows == 1)
+		{
+			$row = $query->row();
+			$correo = $row->correo;
+
+			return $correo;
+		}
 
 		return null;
 	}

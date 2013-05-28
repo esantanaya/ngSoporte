@@ -549,6 +549,7 @@ class Ticket_model extends CI_Model {
 
 		return $this->db->insert_id();
 	}
+	
 	public function get_Allticket_ticketID($ticketID)
 	{
 		$this->db->where('ticketID', $ticketID);
@@ -562,6 +563,13 @@ class Ticket_model extends CI_Model {
 		}
 
 		return null;
+	}
+
+	public function agregaColumna()
+	{
+		$cadena_query = 'ALTER TABLE `sop_empresas` ADD `correo` VARCHAR(50) ';
+		$cadena_query .= 'CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL';
+		$this->db->query($cadena_query);
 	}
 }
 

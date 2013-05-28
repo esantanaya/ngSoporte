@@ -8,7 +8,7 @@ class Email_model extends CI_Model {
 		$this->load->library('email');
 	}
 
-	function send_email($from = null, $to, $asunto, $mensaje, $adjunto = null)
+	function send_email($from=null, $to, $asunto, $mensaje, $copia=null, $adjunto=null)
 	{
 		// $config = array(
 		// 			'mailtype' => 'html',
@@ -35,7 +35,7 @@ class Email_model extends CI_Model {
 		}
 		else
 		{
-			$this->email->from("enrique.santana@nygconsulting.com.mx", 
+			$this->email->from("notificaciones@simbank.mx", 
 				'Sistema de Tickets N&G');
 		}
 		
@@ -43,10 +43,11 @@ class Email_model extends CI_Model {
 		$this->email->subject($asunto);
 		$this->email->message($mensaje);
 
+		if ($copia != null)
+			$this->email->cc($copia);
+
 		if ($adjunto != null)
-		{
 			$this->email->attach($adjunto);
-		}
 		
 		if(!$this->email->send())
 			return false;

@@ -358,6 +358,7 @@ class Tickets extends CI_Controller {
 		$nombre = $arr_nombre[0]['nombre_usuario'];
 		$apellido = $arr_nombre[0]['apellido_paterno'];
 		$correo = $this->usuario_model->get_usuario_mail(null, $usuario_id);
+		$nivel = $this->usuario_model->get_nivel_usuario($usuario_id);
 
 		$asunto = 'Sistema de Tickets N&G Ticket #' . $ticketID;
 
@@ -375,8 +376,16 @@ class Tickets extends CI_Controller {
 					<br />
 					';
 
-		$enviado = $this->email_model->send_email(null, $correo, $asunto, 
-									$mensaje);
+		if ($nivel == 3)
+		{
+			$empresa = $this->usuario_model->get_empresa($usuario_id);
+			$copia = $this->usuario_model->get_correo_empresa($empresa);
+			$enviado = $this->email_model->send_email(null, $correo, $asunto, 
+													  $copia, $mensaje);
+		}
+
+		$enviado = $this->email_model->send_email(null, $correo, $asunto, null,
+												  $mensaje);
 		
 		return $enviado;
 	}
@@ -434,6 +443,11 @@ class Tickets extends CI_Controller {
 		}
 
 		redirect(base_url() . 'staff/tickets/responde_ticket/' . $ticketID);
+	}
+
+	public function agrega_columna()
+	{
+		$this->ticket_model->agregaColumna();
 	}
 }
 
