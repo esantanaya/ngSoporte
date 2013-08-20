@@ -4,3 +4,8 @@
     RewriteRule ^(.*)$ ./index.php/$1 [L]
     
 </IfModule>  
+
+RewriteCond %{HTTP_HOST} ^soporte\.simbank\.mx$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.soporte\.simbank\.mx$
+RewriteRule ^/?$ "https\:\/\/simbank\.mx\/soporte" [R=301,L]
+

@@ -38,16 +38,16 @@
 		<table class="resumen_ticket">
 			<tbody>
 				<tr>
+					<th>Fecha Creaci&oacute;n</th>
+					<td><?=$creacion_ticket?></td>
+				</tr>
+				<tr>
 					<th>Asignado a:</th>
 					<td><?=$staff_name?></td>
 				</tr>
 				<tr>
-					<th>Correo:</th>
-					<td><?=$staff_correo?></td>
-				</tr>
-				<tr>
 					<th>Tel&eacute;fono:</th>
-					<td><?=$staff_tel?></td>
+					<td>442 2340010</td>
 				</tr>
 			</tbody>
 		</table>
@@ -65,6 +65,8 @@
 <div id="contenedor_respuesta">
 	<form action="<?=base_url()?>tickets_usuario/agrega_mensaje" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="ticketID" value="<?=$ticketID?>">
+	<input type="checkbox" value="cerrar" name="cerrar">	
+	<label for="cerrar">Cerrar</label>    <br>
 	<label for="mensaje">Mensaje: <span class="rojo">*</span></label>
 	<?php echo form_error('mensaje'); ?>
 	<br>

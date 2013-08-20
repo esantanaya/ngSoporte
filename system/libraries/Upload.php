@@ -161,7 +161,6 @@ class CI_Upload {
 		if ( ! is_uploaded_file($_FILES[$field]['tmp_name']))
 		{
 			$error = ( ! isset($_FILES[$field]['error'])) ? 4 : $_FILES[$field]['error'];
-
 			switch($error)
 			{
 				case 1:	// UPLOAD_ERR_INI_SIZE
@@ -600,6 +599,11 @@ class CI_Upload {
 		{
 			return FALSE;
 		}
+		else //Se agrega validacion para tipos de archivos dificiles
+		{
+			return TRUE;
+		}
+		
 
 		// Images get some additional checks
 		$image_types = array('gif', 'jpg', 'jpeg', 'png', 'jpe');

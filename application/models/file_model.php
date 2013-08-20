@@ -102,12 +102,14 @@ class File_model extends CI_Model {
 			$config['upload_path'] = $this->path . $target;
 			$config['allowed_types'] = 
 			'doc|docx|xls|xlsx|pdf|jpg|jpeg|png|rar|zip|gif|bmp|xps|ppt|pptx';
+			//'*';
 
 			// $config['encrypt_name'] = 'TRUE';
 			$config['max_size'] = '5120';
 
 			$config['file_name'] = $this->name($ori_name, $data['date'], 
 				$data['random'], $data['user_id']);
+			//var_dump($config);
 			$this->upload->initialize($config);
 
 			if (!$this->upload->do_upload($file)) {
@@ -116,6 +118,7 @@ class File_model extends CI_Model {
 				$return = array();
 				$return['nombre'] = null;
 				$return['error'] = $error;
+				//var_dump($return);
 				return $return;
 			} 
 			else 

@@ -41,7 +41,8 @@ class Tickets_usuario extends CI_Controller {
 		$datos = $this->usuario_model->get_departamentos_id();
 
 		foreach ($datos as $depas => $valor) {
-			$select[$valor['dept_id']] = $valor['dept_name'];
+			if ($valor['dept_name'] == 'Soporte')
+				$select[$valor['dept_id']] = $valor['dept_name'];
 		}
 
 		$data['SYS_MetaTitle'] = 'Tickets :: Nuevo';
@@ -342,6 +343,7 @@ class Tickets_usuario extends CI_Controller {
 		$mensaje = $this->input->post('mensaje');
 		$ticketID = $this->input->post('ticketID');
 		$ticket_id = $this->ticket_model->get_ticket_ticketID($ticketID);
+		$cerrar = $this->input->post('cerrar');
 
 		$envio = false;
 
@@ -425,9 +427,14 @@ class Tickets_usuario extends CI_Controller {
 								 $respuesta);
 		
 		if ($estado_ticket != 'cerrado')
+		{
+			if ($cerrar == 'cerrar')
+			{
+				$this->ticket_model->cambia_estado_ticket($ticketID, 'cerrado');
+			}
 			redirect(base_url() . 'tickets_usuario/entra_edita_ticket/' 
 				 	 . $ticketID);
-
+		}	
 	}
 
 	public function lista_ticket($estado = null)
@@ -464,11 +471,16 @@ class Tickets_usuario extends CI_Controller {
 		$this->load->view('public/main_tickets_view', $data);
 	}
 
+
+
 	public function busqueda()
 	{
 		$query = $this->input->post('query');
+		$query = str_replace('\'', '', $query);
+		$query = str_replace('%', '', $query);
 		$usuario_id = $this->session->userdata('idUsuario');
-		$listado = $this->ticket_model->get_tickets_query_usuario($query, 
+		if (strlen($query) >= 4)
+			$listado = $this->ticket_model->get_tickets_query_usuario($query, 
 																  $usuario_id);
 
 		if ($listado == null)
