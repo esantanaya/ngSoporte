@@ -21,6 +21,9 @@ $config['tablas']['permiso'] = 'permiso';
 $config['tablas']['roltienepermiso'] = 'rolpermiso';
 $config['tablas']['empresas'] = 'sop_empresas';
 $config['tablas']['asignaciones'] = 'bt_asignaciones';
+$config['tablas']['horarios'] = 'sop_horarios';
+$config['tablas']['empHorarios'] = 'us_horario';
+
 
 /* End of file tables.php */
 /* Location: ./application/config/tables.php */

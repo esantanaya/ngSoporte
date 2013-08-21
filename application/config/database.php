@@ -49,11 +49,11 @@ $active_group = 'default';
 $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
-// $db['default']['username'] = 'soporte_tickets';
-// $db['default']['password'] = '123456';
+$db['default']['username'] = 'soporte_tickets';
+$db['default']['password'] = '123456';
 // $db['default']['database'] = 'soporte_tickets';
-$db['default']['username'] = 'simbankm_support';
-$db['default']['password'] = 'BdS0porte1';
+/*$db['default']['username'] = 'simbankm_support';
+$db['default']['password'] = 'BdS0porte1';*/
 $db['default']['database'] = 'simbankm_soporte';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';

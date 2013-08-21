@@ -114,7 +114,8 @@ class Ticket_model extends CI_Model {
 		{			
 			$miembro_actual = $miembro['cod_usuario'];			
 			$this->db->where('cod_staff', $miembro_actual);			
-			$this->db->where('status !=', 'cerrado');			
+			$this->db->where('status !=', 'cerrado');
+			$this->db->where('status !=', 'esperando');			
 			$this->db->select('cod_staff');			
 			$query = $this->db->get($this->tablas['ticket']);			
 

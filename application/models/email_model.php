@@ -22,25 +22,25 @@ class Email_model extends CI_Model {
 
 	{
 
-		// $config = array(
-
-		// 			'mailtype' => 'html',
-
-		// 			'protocol' => 'smtp',
-
-		// 			'smtp_host' => 'mail.nygconsulting.com.mx',
-
-		// 			'smtp_user' => 'enrique.santana@nygconsulting.com.mx',
-
-		// 			'smtp_pass' => '3691012',
-
-		// 			'smtp_port' => '26',
-
-		// 			'smtp_timeout' => '60'
-
-		// 			);
-
 		$config = array(
+
+					'mailtype' => 'html',
+
+					'protocol' => 'smtp',
+
+					'smtp_host' => 'smtp.gmail.com',
+
+					'smtp_user' => 'esantanaya@gmail.com',
+
+					'smtp_pass' => 'Ceresilla03/06/2011',
+
+					'smtp_port' => '465',
+
+					'smtp_timeout' => '60'
+
+					);
+
+		/*$config = array(
 
 					'mailtype' => 'html',
 
@@ -56,7 +56,7 @@ class Email_model extends CI_Model {
 
 					'smtp_timeout' => '60'
 
-					);
+					);*/
 
 		$this->email->initialize($config);
 
@@ -72,7 +72,7 @@ class Email_model extends CI_Model {
 
 		{
 
-			$this->email->from("notificaciones@simbank.mx", 
+			$this->email->from("esantanaya@gmail.com", 
 
 				'Sistema de Tickets N&G');
 
@@ -81,7 +81,6 @@ class Email_model extends CI_Model {
 		
 
 		$this->email->to($to);
-		//$this->email->to('esantana@nygconsulting.com.mx');
 
 		$this->email->subject($asunto);
 
@@ -92,9 +91,8 @@ class Email_model extends CI_Model {
 		if ($copia != null)
 
 			$this->email->cc($copia);
-			//$this->email->cc('esantana@nygconsulting.com.mx');
 
-		$this->email->bcc('esantana@nygconsulting.com.mx');
+		// $this->email->bcc('esantana@nygconsulting.com.mx');
 
 		if ($adjunto != null)
 

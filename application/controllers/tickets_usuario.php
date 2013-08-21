@@ -94,13 +94,12 @@ class Tickets_usuario extends CI_Controller {
 		$ticket['ticketID'] = $this->ticket_model->create_ticket_usuario();
 		$ticket['usuario_id'] = $usuario_id;
 
-		$miembros_staff = $this->usuario_model->
-							get_miembros_staff($dept);
+		$miembros_staff = $this->usuario_model->get_miembros_staff($dept);
 
 		switch ($miembros_staff->num_rows()) 
 		{
 			case 0:	
-				$archivo = array('error' => 'No hay staff Disponible');
+				$archivo = array('error' => 'Horario: 08:00 - 20:00');
 				break;
 
 			case 1:
