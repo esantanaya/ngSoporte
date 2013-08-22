@@ -348,10 +348,11 @@ class Ticket_model extends CI_Model {
 			A.status AS ESTADO, CONCAT(\'<a href=" '. base_url()
 			. 'staff/tickets/responde_ticket/\', A.ticketID,\'">\', 		
 			A.subject, \'</a>\') AS ASUNTO, 				
-			C.nombre_empresa AS EMPRESA, B.nombre_usuario AS STAFF
+			C.nombre_empresa AS EMPRESA, D.nombre_usuario AS STAFF
 			FROM tk_ticket A				
-			INNER JOIN us_usuarios B ON A.cod_staff = B.cod_usuario 
-			INNER JOIN sop_empresas C ON B.id_empresa = C.empresa_id';		
+			INNER JOIN us_usuarios B ON A.usuario_id = B.id_usuario  
+			INNER JOIN sop_empresas C ON B.id_empresa = C.empresa_id
+			INNER JOIN us_usuarios D ON A.cod_staff = D.cod_usuario';
 
 		if ($estado != null)		
 		{			
