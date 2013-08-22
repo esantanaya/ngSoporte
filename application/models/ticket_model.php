@@ -95,8 +95,17 @@ class Ticket_model extends CI_Model {
 	{		
 		$this->db->select('cod_staff, count(cod_staff) tickets');		
 		$this->db->where('dept_id', $dept);		
-		$this->db->where('id_departamento_usuario', $dept);		
-		$this->db->join($this->tablas['usuarios'], 'cod_staff = cod_usuario');		
+		$this->db->where('id_departamento_usuario', $dept);
+		$this->db->where('status !=', 'cerrado');
+		$this->db->where('status !=', 'esperando');
+		$this->db->where(
+			'(CURTIME() BETWEEN entrada_mat AND salida_mat OR CURTIME() 
+			BETWEEN entrada_ves AND salida_ves)');
+		$this->db->join($this->tablas['usuarios'], 'cod_staff = cod_usuario');
+		$this->db->join($this->tablas['empHorarios'], 
+			'id_staff = us_usuarios.id_usuario');
+		$this->db->join($this->tablas['horarios'], 
+			'sop_horarios.id_horario = us_horario.id_horario');
 		$this->db->group_by('cod_staff');		
 		$this->db->order_by('tickets', 'desc');		
 		$query = $this->db->get($this->tablas['ticket']);		
@@ -176,11 +185,11 @@ class Ticket_model extends CI_Model {
 			D.nombre_usuario AS nombre_cliente,
 			D.apellido_paterno AS apellido_cliente,A.message
 			FROM tk_mensaje A					
-			INNER JOIN tk_ticket B ON A.ticket_id = B.ticket_id					
-			INNER JOIN us_usuarios C ON B.usuario_id = C.id_usuario					
-			INNER JOIN us_usuarios D ON A.usuario_id = D.id_usuario					
-			WHERE A.ticket_id = ' . $ticket_id . 'ORDER BY A.msg_id ASC;');		
-		
+			INNER JOIN tk_ticket B ON A.ticket_id = B.ticket_id	
+			INNER JOIN us_usuarios C ON B.usuario_id = C.id_usuario
+			INNER JOIN us_usuarios D ON A.usuario_id = D.id_usuario
+			WHERE A.ticket_id = ' . $ticket_id . ' ORDER BY A.msg_id ASC;');
+
 		if ($query->num_rows() > 0)		
 		{			
 			return $query->result_array();		
@@ -195,8 +204,8 @@ class Ticket_model extends CI_Model {
 			B.nombre_usuario, B.apellido_paterno, A.response,				
 			A.response_id				
 			FROM tk_respuesta A				
-			INNER JOIN us_usuarios B ON A.staff_id = B.id_usuario				
-			WHERE A.ticket_id = ' . $ticket_id . 'ORDER BY A.msg_id ASC;');		
+			INNER JOIN us_usuarios B ON A.staff_id = B.id_usuario	
+			WHERE A.ticket_id = ' . $ticket_id . ' ORDER BY A.msg_id ASC;');		
 
 		if ($query->num_rows() > 0)		
 		{			
@@ -331,19 +340,17 @@ class Ticket_model extends CI_Model {
 				break;		
 		}		
 
-		$cadena_query = 'SELECT CONCAT(\'<input type="checkbox" ' 				
-			. 'name="ticket" value="\', A.ticketID, \'">\') AS \'\', ' 				
-			. 'CONCAT(\'<a href=" ' . base_url() 				
+		$cadena_query = 'SELECT CONCAT(\'<a href=" ' . base_url()
 			. 'staff/tickets/responde_ticket/\', '				
 			. 'A.ticketID,\'">\', 				
 			A.ticketID, \'</a>\') AS TICKETS, 				
 			SUBSTR(A.created, 1, 10) AS FECHAS, 				
-			A.status AS ESTADO, CONCAT(\'<a href=" '. base_url() 				
-			. 'staff/tickets/responde_ticket/\', A.ticketID,\'">\', 				
+			A.status AS ESTADO, CONCAT(\'<a href=" '. base_url()
+			. 'staff/tickets/responde_ticket/\', A.ticketID,\'">\', 		
 			A.subject, \'</a>\') AS ASUNTO, 				
-			C.nombre_empresa AS EMPRESA				
+			C.nombre_empresa AS EMPRESA, B.nombre_usuario AS STAFF
 			FROM tk_ticket A				
-			INNER JOIN us_usuarios B ON A.usuario_id = B.id_usuario				
+			INNER JOIN us_usuarios B ON A.cod_staff = B.cod_usuario 
 			INNER JOIN sop_empresas C ON B.id_empresa = C.empresa_id';		
 
 		if ($estado != null)		
@@ -362,12 +369,12 @@ class Ticket_model extends CI_Model {
 			$cadena_query .= ' AND cod_staff = \'' . $cod_usuario . '\'';			
 		}			
 
-		$cadena_query .= ' ORDER BY ' . $order;		
+		$cadena_query .= ' ORDER BY ' . $order;	
 		$query = $this->db->query($cadena_query);		
 
 		if ($query->num_rows() > 0)		
 		{			
-			return $query;		
+			return $query;	
 		}		
 
 		return null;	

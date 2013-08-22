@@ -304,70 +304,44 @@ class Usuario_model extends CI_Model {
 	}
 
 	public function get_miembros_staff($dept)
-
 	{
-
 		$this->db->where('id_departamento_usuario', $dept);
 		$this->db->where('vacacion', 0);
 		$this->db->where('id_nivel_usuario', 2);
 		$this->db->where('activo', 1);
 		$this->db->where(
-
-			'(CURTIME() BETWEEN entrada_mat AND salida_mat OR CURTIME() BETWEEN entrada_ves AND salida_ves)');
-		$this->db->join($this->tablas['empHorarios'], 'id_staff = id_usuario', 
-			'right');
+			'(CURTIME() BETWEEN entrada_mat AND salida_mat OR CURTIME() 
+			BETWEEN entrada_ves AND salida_ves)');
+		$this->db->join($this->tablas['empHorarios'], 'id_staff = id_usuario');
 		$this->db->join($this->tablas['horarios'], 
-			'sop_horarios.id_horario = us_horario.id_horario', 'right');
+			'sop_horarios.id_horario = us_horario.id_horario');
 		$this->db->select('cod_usuario');
-
 		$staff = $this->db->get($this->tablas['usuarios']);
 
-
-
 		return $staff;
-
 	}
 
 	public function get_usuario_nombre($cod_usuario, $id_usuario = null)
-
 	{
-
 		if ($id_usuario == null)
-
 		{
-
 			$this->db->where('cod_usuario', $cod_usuario);
-
 		}
-
 		elseif($cod_usuario == null)
-
 		{
-
 			$this->db->where('id_usuario', $id_usuario);
-
 		}
-
-
 
 		$this->db->select('nombre_usuario, apellido_paterno, 
-
 						   apellido_materno');
-
 		$query = $this->db->get($this->tablas['usuarios'], 1);	
 
-		
-
 		if ($query->num_rows() > 0)
-
 		{
-
 			return $query->result_array();
-
 		}
 
 		return null;
-
 	}
 
 
