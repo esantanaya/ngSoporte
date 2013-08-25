@@ -70,10 +70,10 @@ class Tickets_usuario extends CI_Controller {
 		$archivo = $this->file_model->uploadNonImage('tickets', $info, 
 														'adjunto', $envio);
 
-		$date_string = "%Y-%m-%d %h:%i:%s";
+		$date_string = "DATE_W3C";
 		$time = time();
 		$dept = $this->input->post('departamento');
-		$date_string = mdate($date_string, $time);
+		$date_string = standard_date($date_string, $time);
 		$usuario_id = $this->session->userdata('idUsuario');
 
 		$this->form_validation->set_rules('asunto', 'Asunto', 
@@ -335,9 +335,9 @@ class Tickets_usuario extends CI_Controller {
 
 	public function agrega_mensaje()
 	{
-		$date_string = "%Y-%m-%d %h:%i:%s";
+		$date_string = "DATE_W3C";
 		$time = time();
-		$date_string = mdate($date_string, $time);
+		$date_string = standard_date($date_string, $time);
 
 		$mensaje = $this->input->post('mensaje');
 		$ticketID = $this->input->post('ticketID');
@@ -530,7 +530,7 @@ class Tickets_usuario extends CI_Controller {
 		foreach ($mensajes as $row => $value)
 		{
 			$mensaje_id = $value['msg_id'];
-			$encabezado = $value['created'] . ' ' 
+			$encabezado = /*standard_date($date_string, */$value['created']/*)*/ . ' ' 
 						. $value['nombre_cliente'] . ' ' 
 						. $value['apellido_cliente'];
 			$mensaje = $value['message'];

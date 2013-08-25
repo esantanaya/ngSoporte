@@ -111,7 +111,7 @@ class Ticket_model extends CI_Model {
 		$query = $this->db->get($this->tablas['ticket']);		
 	
 		return $query->result();	
-	}	
+	}
 
 	public function get_elegido($dept)	
 	{				
@@ -136,8 +136,8 @@ class Ticket_model extends CI_Model {
 			}		
 		}		
 
-		$miembros = $this->get_tickets_staff($dept);		
-		$elegido = end($miembros);		
+		$miembros = $this->get_tickets_staff($dept);
+		$elegido = end($miembros);
 		$elegido = $elegido->cod_staff;		
 		
 		return $elegido;	
@@ -356,10 +356,12 @@ class Ticket_model extends CI_Model {
 
 		if ($estado != null)		
 		{			
-			$cadena_query .= ' WHERE status = \'' . $estado . '\'';			
-			/*if ($estado == 'cerrado')				
-				$cadena_query .= ' AND updated >= ADDDATE(CURDATE(), -7)';*/		
-		}		
+			$cadena_query .= ' WHERE status = \'' . $estado . '\'';
+		}
+		else
+		{
+			$cadena_query .= ' WHERE status != \'cerrado\'';
+		}
 
 		if ($cod_usuario != null AND $estado == null)		
 		{			
@@ -448,7 +450,7 @@ class Ticket_model extends CI_Model {
 		return null;	
 	}	
 
-	public function get_tickets_query($query, $order = 1)	
+	public function get_tickets_query($query, $fechaIni, $fechaFin, $order = 1)
 	{		
 		switch ($num_order) 		
 		{			
@@ -461,26 +463,38 @@ class Ticket_model extends CI_Model {
 			case 3:				
 				$order = 'ESTADO';				
 				break;						
-			default:				$order = 'FECHAS';				
+			default:				
+				$order = 'FECHAS';				
 				break;		
 		}		
 
-		$cadena_query = 'SELECT CONCAT(\'<input type="checkbox" ' 				
-			. 'name="ticket" value="\', A.ticketID, \'">\') AS \'\', ' 				
-			. 'CONCAT(\'<a href=" ' . base_url() 				
+		$cadena_query = 'SELECT CONCAT(\'<a href=" ' . base_url() 
 			. 'staff/tickets/responde_ticket/\', '				
 			. 'A.ticketID,\'">\', 				
 			A.ticketID, \'</a>\') AS TICKETS, 				
 			SUBSTR(A.created, 1, 10) AS FECHAS, 				
-			A.status AS ESTADO, CONCAT(\'<a href=" '. base_url() 				
-			. 'staff/tickets/responde_ticket/\', A.ticketID,\'">\', 				
+			A.status AS ESTADO, CONCAT(\'<a href=" '. base_url()
+			. 'staff/tickets/responde_ticket/\', A.ticketID,\'">\',
 			A.subject, \'</a>\') AS ASUNTO, 				
-			C.nombre_empresa AS EMPRESA				
+			C.nombre_empresa AS EMPRESA, F.nombre_usuario AS STAFF
 			FROM tk_ticket A				
-			INNER JOIN us_usuarios B ON A.usuario_id = B.id_usuario				
-			INNER JOIN sop_empresas C ON B.id_empresa = C.empresa_id				
-			WHERE A.ticketID LIKE \'%' . $query . '%\' 				
-			OR A.subject LIKE \'%' . $query . '%\'';
+			INNER JOIN us_usuarios B ON A.usuario_id = B.id_usuario
+			INNER JOIN sop_empresas C ON B.id_empresa = C.empresa_id
+			INNER JOIN tk_mensaje D ON A.ticket_id = D.ticket_id
+			INNER JOIN tk_respuesta E ON A.ticket_id = E.ticket_id
+			INNER JOIN us_usuarios F ON A.cod_staff = F.cod_usuario
+			WHERE (';
+
+		if($fechaIni != "" || $fechaFin != "") {
+			$cadena_query .= 'A.created BETWEEN \'' . $fechaIni . '\' AND \''
+			. $fechaFin . '\') AND(';
+		}
+
+		$cadena_query .= 'A.ticketID LIKE \'%' . $query . '%\' 				
+			OR A.subject LIKE \'%' . $query . '%\'
+			OR D.message LIKE \'%' . $query . '%\'
+			OR E.response LIKE \'%' . $query . '%\')
+			GROUP BY A.ticketID';
 
 		$cadena_query .= ' ORDER BY ' . $order;		
 		$query = $this->db->query($cadena_query);		
@@ -565,6 +579,11 @@ class Ticket_model extends CI_Model {
 		}	
 
 		return null;	
+	}
+
+	public function get_nombres_($value='')
+	{
+		# code...
 	}
 }
 /* End of file ticket_model.php */

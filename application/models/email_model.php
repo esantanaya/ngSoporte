@@ -16,7 +16,7 @@ class Email_model extends CI_Model {
 		// 			'protocol' => 'smtp',
 		// 			'smtp_host' => 'smtp.gmail.com',
 		// 			'smtp_user' => 'esantanaya@gmail.com',
-		// 			'smtp_pass' => 'Ceresilla03/06/2011',
+		// 			'smtp_pass' => '',
 		// 			'smtp_port' => '465',
 		// 			'smtp_timeout' => '60'
 		// 			);
@@ -43,12 +43,14 @@ class Email_model extends CI_Model {
 				'Sistema de Tickets N&G');
 		}
 		
-		$this->email->to($to);
+		// $this->email->to($to);
+		$this->email->to("soportetickets@yopmail.com");
 		$this->email->subject($asunto);
 		$this->email->message($mensaje);
 
 		if ($copia != null)
-			$this->email->cc($copia);
+			// $this->email->cc($sopia);
+			$this->email->cc("soportetickets@yopmail.com");
 
 		// $this->email->bcc('esantana@nygconsulting.com.mx');
 

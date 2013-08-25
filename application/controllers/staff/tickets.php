@@ -33,7 +33,6 @@ class Tickets extends CI_Controller {
 
 	public function listado($estado = null, $cod_usuario = null)
 	{
-
 		if ($cod_usuario == null)
 		{
 			$listado = $this->ticket_model->get_listado_staff(1,$estado);
@@ -65,41 +64,27 @@ class Tickets extends CI_Controller {
 		$this->load->view('staff/main_staff_view', $data);
 	}
 
-
-
 	public function responde_ticket($ticketID, $error = null)
-
 	{
-		
 		$ticket_id = $this->ticket_model->get_ticket_ticketID($ticketID);
 		
 		if ($ticket_id == null)
 			redirect(base_url());
 
 		$mensajes = $this->ticket_model->get_historial_mensaje(
-
 													$ticket_id);
 
 		$respuestas = $this->ticket_model->get_historial_respuesta(
-
 												$ticket_id);
 
-
-
 		$arreglo_historial = array();
-
 		$x = 0;
 
 		foreach ($mensajes as $row => $value)
-
 		{
-
 			$mensaje_id = $value['msg_id'];
-
 			$encabezado = $value['created'] . ' ' 
-
 						. $value['nombre_cliente'] . ' ' 
-
 						. $value['apellido_cliente'];
 
 			$mensaje = $value['message'];
@@ -111,9 +96,7 @@ class Tickets extends CI_Controller {
 			$adjunto = '';
 
 			if ($adjunto_completo != null)
-
 			{
-
 				$adjunto = '<a href="' . base_url() . 'docs/tickets/' 
 
 						. $adjunto_completo . '">' . substr($adjunto_completo,
@@ -122,16 +105,12 @@ class Tickets extends CI_Controller {
 
 			}
 
-
-
 			$historial['encabezado'] = '<div class="encabezado">' 
 
 										. $encabezado . '</div>';
 
 			if ($adjunto != null)
-
 			{
-
 				$historial['adjunto'] = '<div class="cuerpo">' . $adjunto
 
 										. '</div>';
@@ -139,9 +118,7 @@ class Tickets extends CI_Controller {
 			}
 
 			else
-
 			{
-
 				$historial['adjunto'] = '';
 
 			}
@@ -150,26 +127,17 @@ class Tickets extends CI_Controller {
 
 										. '</div>';
 
-
-
 			$bandera = false;
-
-
 
 			foreach ($respuestas as $fila => $valor) 
 
 			{
-
 				$respuesa_mensaje = $valor['msg_id'];
 
 				$adjunto_staff = null;
 
-
-
 				if ($respuesa_mensaje == $mensaje_id)
-
 				{
-
 					$respuesta_id = $valor['response_id'];
 
 					$adjunto_completo_staff = $this->ticket_model->
@@ -179,7 +147,6 @@ class Tickets extends CI_Controller {
 													'R');
 
 					if ($adjunto_completo_staff != null)
-
 						$adjunto_staff = '<div class="cuerpo"><a href="' 
 
 						. base_url() . 'docs/tickets/' 
@@ -198,22 +165,16 @@ class Tickets extends CI_Controller {
 
 										'apellido_paterno'] . '</div>';
 
-
-
 					$historial['encabezado_staff'] = $encabezado_staff;
 
 					if ($adjunto_staff != null)
-
 					{
-
 						$historial['adjunto_staff'] .= $adjunto_staff;
 
 					}
 
 					else
-
 					{
-
 						$historial['adjunto_staff'] .= '';
 
 					}
@@ -229,9 +190,7 @@ class Tickets extends CI_Controller {
 				}
 
 				elseif (! $bandera)
-
 				{
-
 					$historial['encabezado_staff'] = '';
 
 					$historial['mensaje_staff'] = '';
@@ -244,21 +203,15 @@ class Tickets extends CI_Controller {
 
 			}
 
-
-
 			$arreglo_historial[$x] = $historial;
 
 			$x++;
 
 		}
 
-
-
 		$resumen_ticket = $this->ticket_model->get_vista_ticket($ticketID);
 
 		$resumen_asigna = $this->ticket_model->get_vista_asigna($ticketID);
-
-
 
 		$tmpl = array('table_open' => '<table class="historial_table"
 
@@ -266,39 +219,28 @@ class Tickets extends CI_Controller {
 
 		$this->table->set_template($tmpl);
 
-
-
 		foreach ($arreglo_historial as $key => $value) 
 
 		{
-
 			if ($value['encabezado'])
-
 				$this->table->add_row($value['encabezado']);
 
 			if ($value['adjunto'])
-
 				$this->table->add_row($value['adjunto']);
 
 			if ($value['mensaje'])
-
 				$this->table->add_row($value['mensaje']);
 
 			if ($value['encabezado_staff'])
-
 				$this->table->add_row($value['encabezado_staff']);
 
 			if ($value['adjunto_staff'])
-
 				$this->table->add_row($value['adjunto_staff']);
 
 			if ($value['mensaje_staff'])
-
 				$this->table->add_row($value['mensaje_staff']);
 
 		}
-
-
 
 		$data['SYS_MetaTitle'] = 'Tickets :: Estado';
 
@@ -313,10 +255,7 @@ class Tickets extends CI_Controller {
 		$data['error'] = '';
 
 		if ($error != null)
-
 			$data['error'] = $error;
-
-
 
 		$data['ticketID'] = $ticketID;
 
@@ -336,8 +275,6 @@ class Tickets extends CI_Controller {
 
 		$data['asunto'] = $resumen_ticket[0]['subject'];
 
-
-
 		$data['usuario_name'] = $resumen_asigna[0]['nombre_usuario'] . ' '
 
 								. $resumen_asigna[0]['apellido_paterno'];
@@ -352,11 +289,7 @@ class Tickets extends CI_Controller {
 
 		$data['fecha_vencimiento'] = $resumen_asigna[0]['duedate'];
 
-
-
 		$data['tabla'] = $arreglo_historial;
-
-
 
 		$acciones = array('1' => 'SELECCIONA UNA ACCION',
 
@@ -368,8 +301,6 @@ class Tickets extends CI_Controller {
 
 						  '5' => 'Reasignar (departamento)');
 
-
-
 		$data['acciones'] = $acciones;
 
 		
@@ -379,7 +310,6 @@ class Tickets extends CI_Controller {
 		foreach ($miembros as $key => $value) 
 
 		{
-
 			if ($this->ticket_model->get_cod_staff_ticket($ticketID) != 
 
 				$value['cod_usuario'])
@@ -390,8 +320,6 @@ class Tickets extends CI_Controller {
 
 		}
 
-
-
 		$departamentos = $this->usuario_model->get_departamentos_id();
 
 		
@@ -399,112 +327,64 @@ class Tickets extends CI_Controller {
 		foreach ($departamentos as $depas => $valor) 
 
 		{
-
 			$select[$valor['dept_id']] = $valor['dept_name'];
 
 		}
-
-
 
 		$data['miembros'] = $lista_miembros;
 
 		$data['departamentos'] = $select;
 
-
-
 		$this->load->view('staff/main_staff_view', $data);
 
 	}
 
-
-
 	public function agrega_respuesta()
-
 	{
-
-		$date_string = "%Y-%m-%d %h:%i:%s";
-
+		$date_string = "DATE_W3C";
 		$time = time();
-
-		$date_string = mdate($date_string, $time);
-
-
-
+		$date_string = standard_date($date_string, $time);
 		$mensaje = $this->input->post('mensaje');
-
 		$ticketID = $this->input->post('ticketID');
-
 		$cerrar = $this->input->post('cerrar');
-
 		$ticket_id = $this->ticket_model->get_ticket_ticketID($ticketID);
-
-
-
 		$envio = false;
 
-
-
 		if ($_FILES['adjunto']['name'] != '') 
-
 			$envio = true;
 
-
-
 		$info = array('date' => true,
-
 						'random' => true,
-
 						'user_id' => null);
 
-
-
 		$archivo = $this->file_model->uploadNonImage('tickets', $info, 
-
 														'adjunto', $envio);
 
-
-
 		$this->form_validation->set_rules('mensaje', 'Mensaje', 
-
 			'trim|required|xss_clean');
 
 		$this->form_validation->set_message('required', 
-
 			'Ingrese su "%s" por favor');
 
 		$this->form_validation->set_message('xss_clean', 
-
 			'El campo "%s" contiene un posible ataque XSS');
 
 		$this->form_validation->set_error_delimiters('<span class="error">', 
-
 			'</span>');
 
-
-
 		if (! $this->form_validation->run() || is_array($archivo))
-
 		{
-
 			if (is_array($archivo))
-
 			{
-
 				$error = $archivo['error'];
-
 			}
-
 			else
-
 			{
-
 				$error = '';
 
 			}
 
 			
-
-
 
 			$this->responde_ticket($ticketID, $error);
 
@@ -512,11 +392,7 @@ class Tickets extends CI_Controller {
 
 		}
 
-
-
 		$msg_id = $this->ticket_model->get_msg_id($ticket_id);
-
-
 
 		$respuesta = array('ticket_id' => $ticket_id,
 
@@ -538,12 +414,8 @@ class Tickets extends CI_Controller {
 
 		$this->ticket_model->cambia_estado_ticket($ticketID, 'esperando');
 
-
-
 		if ($envio)
-
 		{
-
 			$arrInsert = array('ticket_id' => $ticket_id, 
 
 						'ref_id' => $mensaje_id,
@@ -560,16 +432,10 @@ class Tickets extends CI_Controller {
 
 		}
 
-
-
 		$usuario_id = $this->ticket_model->get_usuario_ticket($ticketID);
 
-
-
 		if ($cerrar == 'cerrar')
-
 		{
-
 			$this->ticket_model->cambia_estado_ticket($ticketID, 'cerrado');
 
 			$this->send_mail_usuario($usuario_id, $ticketID, $mensaje);
@@ -577,9 +443,7 @@ class Tickets extends CI_Controller {
 		}
 
 		else
-
 		{
-
 			$this->send_mail_usuario($usuario_id, $ticketID, $mensaje);
 
 		}
@@ -590,63 +454,42 @@ class Tickets extends CI_Controller {
 
 	}
 
-
-
 	public function busqueda()
-
 	{
-
 		$query = $this->input->post('query');
+		$fechaIni = $this->input->post('fechaInicial');
+		$fechaFin = $this->input->post('fechaFinal');
 		$query = str_replace('\'', '', $query);
 		$query = str_replace('%', '', $query);
+		$query = trim($query);
 
-		if (strlen($query) >= 4)
-			$listado = $this->ticket_model->get_tickets_query($query);
+		if (strlen($query) >= 2)
+			$listado = $this->ticket_model->get_tickets_query($query, 
+				$fechaIni, $fechaFin);
 
 		if ($listado == null)
-
 		{
-
 			$listado = array('Genere un ticket' => 'Usted no tiene tickets');
-
 			$this->table->add_row($listado);
-
 		}
 
-
-
 		$tmpl = array('table_open' => '<table border="0" cellpadding="4"
-
 				cellspacing="0" class="listado_table">');
 
 		$this->table->set_template($tmpl);
 
-
-
 		$data['SYS_MetaTitle'] = 'Tickets :: listado';
-
 		$data['SYS_metaKeyWords'] = 'sistema ticket n&g';
-
 		$data['SYS_metaDescription'] = 'Listado de tickets';
-
 		$data['subMenu'] = 'staff/submenu_view';
-
 		$data['modulo'] = 'staff/tickets_listado_view';
-
 		$data['listado'] = $listado;
 
-
-
 		$this->load->view('staff/main_staff_view', $data);
-
 	}
 
-
-
 	public function send_mail_usuario($usuario_id, $ticketID, $conver=null)
-
 	{
-
 		$this->load->model('email_model');
 
 		$arr_nombre = $this->usuario_model->get_usuario_nombre(null, 
@@ -665,11 +508,7 @@ class Tickets extends CI_Controller {
 		$ticket_asunto = $enviables->subject;
 		$ticket_estado = $enviables->status;
 
-
-
 		$asunto = 'Sistema de Tickets N&G Ticket #' . $ticketID . ' [' . $ticket_asunto . ']';
-
-
 
 		$mensaje = 	'
 					<head>
@@ -727,56 +566,41 @@ class Tickets extends CI_Controller {
 			$ticket_id = $this->ticket_model->get_ticket_ticketID($ticketID);
 
 			$mensajes = $this->ticket_model->get_historial_mensaje($ticket_id);
-			$respuestas = $this->ticket_model->get_historial_respuesta($ticket_id);
-
-
-			$arreglo_historial = array();
+			$respuestas = $this->ticket_model->get_historial_respuesta(
+				$ticket_id);
+						$arreglo_historial = array();
 			$historial_respuestas = array();
 
 			$x = 0;
 
 			foreach ($mensajes as $row => $value)
-
 			{
-
 				$mensaje_id = $value['msg_id'];
-
 				$encabezado = $value['created'] . ' ' 
-
 							. $value['nombre_cliente'] . ' ' 
-
 							. $value['apellido_cliente'];
 
 				$mensaje_arr = $value['message'];
-
 				$adjunto_completo = $this->ticket_model->get_adjunto_mensaje(
-
 									$mensaje_id, $ticket_id);
 
 				$adjunto = '';
 
 				if ($adjunto_completo != null)
-
 				{
-
 					$adjunto = '<a href="' . base_url() . 'docs/tickets/' 
-
-							. $adjunto_completo . '">' . substr($adjunto_completo,
-
+							. $adjunto_completo . '">' . substr(
+							$adjunto_completo,
 						 	18) . '</a>';
 
 				}
-
-
 
 				$historial['encabezado'] = '<div class="encabezado">' 
 
 											. $encabezado . '</div>';
 
 				if ($adjunto != null)
-
 				{
-
 					$historial['adjunto'] = '<div class="cuerpo">' . $adjunto
 
 											. '</div>';
@@ -784,9 +608,7 @@ class Tickets extends CI_Controller {
 				}
 
 				else
-
 				{
-
 					$historial['adjunto'] = '';
 
 				}
@@ -795,25 +617,16 @@ class Tickets extends CI_Controller {
 
 											. '</div>';
 
-
-
 				$bandera = false;
-
-
 
 				foreach ($respuestas as $fila => $valor) 
 
 				{
-
 					$respuesa_mensaje = $valor['msg_id'];
 
 					$adjunto_staff = null;
-
-
-					if ($respuesa_mensaje == $mensaje_id)
-
+										if ($respuesa_mensaje == $mensaje_id)
 					{
-
 						$respuesta_id = $valor['response_id'];
 						$historial_respuestas['encabezado_staff'] = '<div class="encabezado_staff">' 
 
@@ -822,16 +635,13 @@ class Tickets extends CI_Controller {
 											'nombre_usuario'] . ' ' . $valor[
 
 											'apellido_paterno'] . ' ' . '</div>';
-
-
-						$adjunto_completo_staff = $this->ticket_model->
+																	$adjunto_completo_staff = $this->ticket_model->
 
 									get_adjunto_mensaje($respuesta_id, $ticket_id,
 
 														'R');
 
 						if ($adjunto_completo_staff != null)
-
 							$adjunto_staff = '<div class="cuerpo"><a href="' 
 
 							. base_url() . 'docs/tickets/' 
@@ -845,17 +655,13 @@ class Tickets extends CI_Controller {
 						
 
 						if ($adjunto_staff != null)
-
 						{
-
 							$historial_respuestas['adjunto_staff'] .= $adjunto_staff;
 
 						}
 
 						else
-
 						{
-
 							$historial_respuestas['adjunto_staff'] .= '';
 
 						}
@@ -871,9 +677,7 @@ class Tickets extends CI_Controller {
 					}
 
 					elseif (! $bandera)
-
 					{
-
 						$historial_respuestas['encabezado_staff'] = '';
 
 						$historial_respuestas['mensaje_staff'] = '';
@@ -886,19 +690,13 @@ class Tickets extends CI_Controller {
 
 				}
 
-
-
 				$arreglo_historial[$x] = array_merge($historial, $historial_respuestas);
 				$x++;
 
 			}
-
-
-			$resumen_ticket = $this->ticket_model->get_vista_ticket($ticketID);
+						$resumen_ticket = $this->ticket_model->get_vista_ticket($ticketID);
 
 			$resumen_asigna = $this->ticket_model->get_vista_asigna($ticketID);
-
-
 
 			$tmpl = array('table_open' => '<table class="historial_table"
 
@@ -910,7 +708,6 @@ class Tickets extends CI_Controller {
 
 			{
 				if ($value['encabezado_staff'])
-
 					$this->table->add_row($value['encabezado_staff']);
 			
 				/*if ($value['adjunto_staff'])
@@ -918,19 +715,15 @@ class Tickets extends CI_Controller {
 					$this->table->add_row($value['adjunto_staff']);*/
 	
 				if ($value['mensaje_staff'])
-
 					$this->table->add_row($conver);
 
 				if ($value['encabezado'])
-
 				$this->table->add_row($value['encabezado']);
 
 				if ($value['adjunto'])
-
 				$this->table->add_row($value['adjunto']);
 
 				if ($value['mensaje'])
-
 					$this->table->add_row($value['mensaje']);
 
 				
@@ -948,9 +741,7 @@ The content of this electronic communication is not to be considered as an offer
 		}
 
 		if ($nivel == 3)
-
 		{
-
 			$empresa = $this->usuario_model->get_empresa($usuario_id);
 
 			$copia = $this->usuario_model->get_correo_empresa($empresa);
@@ -962,8 +753,6 @@ The content of this electronic communication is not to be considered as an offer
 
 		}
 
-
-
 		$enviado = $this->email_model->send_email(null, /*'esantana@nygconsulting.com.mx'*/$correo, $asunto, $mensaje);
 
 		
@@ -971,115 +760,57 @@ The content of this electronic communication is not to be considered as an offer
 		return $enviado;
 	}
 
-
-
 	public function accion_ticket()
-
 	{
-
-		$date_string = "%Y-%m-%d %h:%i:%s";
-
+		$date_string = "DATE_W3C";
 		$time = time();
-
-		$date_string = mdate($date_string, $time);
-
+		$date_string = standard_date($date_string, $time);
 		$accion = $this->input->post('acciones');
-
 		$ticketID = $this->input->post('ticketID');
-
 		$ticket_id = $this->ticket_model->get_ticket_ticketID($ticketID);
-
-		$status = 
-
-		$this->ticket_model->get_Allticket_ticketID($ticketID)->status;
-
+		$status =
+			$this->ticket_model->get_Allticket_ticketID($ticketID)->status;
 		$usuario_id = $this->ticket_model->get_usuario_ticket($ticketID);
-
-
-
 		$staff = $this->input->post('staff');
-
 		$dept = $this->input->post('depts');
 
-		
-
 		switch ($accion) 
-
 		{
-
 			case '2':
-
 				$this->ticket_model->cambia_estado_ticket($ticketID, 
-
 														  'abierto');
-
 				$this->send_mail_usuario($usuario_id, $ticketID);
-
 				break;
-
-
-
 			case '3':
-
 				$this->ticket_model->cambia_estado_ticket($ticketID, 
-
 														  'cerrado');
 				$enviado = $this->send_mail_usuario($usuario_id, $ticketID);
-
 				break;
-
-
-
 			case '4':
-
 				$reasignacion = array('id_ticket' => $ticket_id,
-
 									  'cod_usuario' => $staff,
-
 									  'status' => $status,
-
 									  'realizado' => $date_string);
-
 				$this->ticket_model->reasigna_ticket($ticketID, $staff);
-
 				$this->ticket_model->insert_bitacora_asignacion($reasignacion);
 				$this->send_mail_staff($staff, $usuario_id, $ticketID);
-
 				break;
-
-				
-
 			case '5':
-
 				$staff = $this->ticket_model->get_elegido($dept);
-
 				$reasignacion = array('id_ticket' => $ticket_id,
-
 									  'cod_usuario' => $staff,
-
 									  'status' => $status,
-
 									  'realizado' => $date_string);
-
 				$this->ticket_model->reasigna_ticket($ticketID, $staff);
-
 				$this->ticket_model->insert_bitacora_asignacion($reasignacion);
 				$this->send_mail_staff($staff, $usuario_id, $ticketID);
-
 				break;
-
 			default:
-
 				# code...
-
 				break;
-
 		}
 
-
-
 		redirect(base_url() . 'staff/tickets/responde_ticket/' . $ticketID);
-
 	}
 
 	
@@ -1134,18 +865,7 @@ The content of this electronic communication is not to be considered as an offer
 												$mensaje);
 		return $enviado;
 	}
-
-	public function agrega_columna()
-
-	{
-
-		$this->ticket_model->agregaColumna();
-
-	}
-
 }
-
-
 
 /* End of file tickets.php */
 
