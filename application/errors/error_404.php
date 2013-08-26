@@ -110,7 +110,7 @@ h1 {
 				<div id="logoError"></div>
 				<div id="texto">
 					<h3><span class="rojo">+ P&aacute;gina no encontrada</span></h3>
-					<p>La direcci&oacute;n que esta buscando no se encuentra, pruebe volviendola a escribir o dando click en <a href="/">INICIO</a> para volver al principip.</p>
+					<p>La direcci&oacute;n que esta buscando no se encuentra, pruebe volvi&eacute;ndola a escribir o dando click en <a href="/">INICIO</a> para volver al principio.</p>
 				</div>
 			</div>
 		</div>

@@ -8,6 +8,13 @@ $(function() {
 <div id="nuevoTitulo">
 	<h1><span class="rojo">>></span>NUEVO TICKET</h1>
 	<p>Por favor ingrese en el formuario los datos de su ticket</p>
+	<?php 
+		if ($errorGeneral != '')
+		{
+			echo '<span class="error">' . $errorGeneral . '</span>';
+			echo '<br />';
+		}
+	 ?>
 </div>
 <div class="linea"></div>
 <div id="formContent">

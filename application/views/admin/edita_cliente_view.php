@@ -27,7 +27,7 @@
 						<div class="select">
 							<?php 
 								echo form_dropdown('empresa', $empresas,
-									 				$empresaActual); 
+									$empresaActual); 
 							?>
 						</div>	
 					</div>

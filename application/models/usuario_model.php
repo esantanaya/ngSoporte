@@ -1,49 +1,26 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-
-
 class Usuario_model extends CI_Model {
-
-
 
 	var $tablas = array();
 
-
-
 	public function __construct()
-
 	{
-
 		parent::__construct();
-
 		$this->load->config('tables', TRUE);
-
 		$this->tablas = $this->config->item('tablas', 'tables');
-
 		$this->load->model('auth_model');
-
 	}
-
-
 
 	//****USUARIOS****
 
-
-
 	public function get_current_id_usuario()
-
 	{
-
 		$this->db->select_max('id_usuario');
-
 		$query = $this->db->get($this->tablas['usuarios']);
-
-
-
+		
 		if ($query->num_rows() > 0)
-
 		{
-
 			$row = $query->row();
 			$data = $row->id_usuario;
 
@@ -70,8 +47,6 @@ class Usuario_model extends CI_Model {
 		return null;
 	}
 
-
-
 	public function insert_usuario($data) 
 	{
 		$data['pass_usuario'] = $this->auth_model->hashPassword(
@@ -83,8 +58,6 @@ class Usuario_model extends CI_Model {
 		return $this->db->insert_id();
 	}
 
-
-
 	public function get_usuario_tipo($tipo)
 
 	{
@@ -92,8 +65,6 @@ class Usuario_model extends CI_Model {
 		$this->db->where('id_tipo_usuario', $tipo);
 
 		$query = $this->db->get($this->tablas['usuarios'], 1);
-
-
 
 		if ($query->num_rows() > 0) 
 
@@ -107,8 +78,6 @@ class Usuario_model extends CI_Model {
 
 	}
 
-
-
 	public function get_usuario_clave($clave)
 
 	{
@@ -116,8 +85,6 @@ class Usuario_model extends CI_Model {
 		$this->db->where('cod_usuario', $clave);
 
 		$query = $this->db->get($this->tablas['usuarios'], 1);
-
-
 
 		if ($query->num_rows() > 0)
 
@@ -135,8 +102,6 @@ class Usuario_model extends CI_Model {
 
 	}
 
-
-
 	public function update_usuario_id($id, $valores)
 
 	{
@@ -144,8 +109,6 @@ class Usuario_model extends CI_Model {
 		$this->db->where('id_usuario', $id);
 
 		$query = $this->db->get($this->tablas['usuarios']);
-
-
 
 		if ($query->num_rows() >=  1) 
 
@@ -185,13 +148,9 @@ class Usuario_model extends CI_Model {
 
 				'vacacion' => $valores['vaciones']);
 
-
-
 			$this->db->where('id_usuario', $id);
 
 			$this->db->update($this->tablas['usuarios'], $data);
-
-
 
 			return true;
 
@@ -200,8 +159,6 @@ class Usuario_model extends CI_Model {
 		return false;
 
 	}
-
-
 
 	public function update_usuario_cuenta($cod_usuario, $valores)
 
@@ -211,8 +168,6 @@ class Usuario_model extends CI_Model {
 
 		$query = $this->db->get($this->tablas['usuarios']);
 
-
-
 		if ($query->num_rows() >=  1) 
 
 		{
@@ -221,8 +176,6 @@ class Usuario_model extends CI_Model {
 
 			$this->db->update($this->tablas['usuarios'], $valores);
 
-
-
 			return true;
 
 		}
@@ -230,8 +183,6 @@ class Usuario_model extends CI_Model {
 		return false;
 
 	}
-
-
 
 	public function update_password_usuario($id_usuario, $new_password)
 
@@ -241,8 +192,6 @@ class Usuario_model extends CI_Model {
 
 		$query = $this->db->get($this->tablas['usuarios']);
 
-
-
 		if ($query->num_rows() >= 1)
 
 		{
@@ -251,19 +200,13 @@ class Usuario_model extends CI_Model {
 
 															null);
 
-
-
 			$data = array('pass_usuario' => $new_password, 
 
 						  'cambia_pass' => 0);
 
-
-
 			$this->db->where('id_usuario', $id_usuario);
 
 			$this->db->update($this->tablas['usuarios'], $data);
-
-
 
 			return true;
 
@@ -273,8 +216,6 @@ class Usuario_model extends CI_Model {
 
 	}
 
-
-
 	public function delete_usuario($id)
 
 	{
@@ -283,8 +224,6 @@ class Usuario_model extends CI_Model {
 
 		$query = $this->db->get($this->tablas['usuarios']);
 
-
-
 		if ($query->num_rows() >= 1)
 
 		{
@@ -292,8 +231,6 @@ class Usuario_model extends CI_Model {
 			$this->db->where('id_usuario', $id);
 
 			$this->db->delete($this->tablas['usuarios']);
-
-
 
 			return true;
 
@@ -344,8 +281,6 @@ class Usuario_model extends CI_Model {
 		return null;
 	}
 
-
-
 	public function get_usuario_mail($cod_usuario, $id_usuario = null)
 
 	{
@@ -372,8 +307,6 @@ class Usuario_model extends CI_Model {
 
 		$query = $this->db->get($this->tablas['usuarios'], 1);
 
-
-
 		if ($query->num_rows() > 0)
 
 		{
@@ -389,8 +322,6 @@ class Usuario_model extends CI_Model {
 		return null;
 
 	}
-
-
 
 	public function get_usuario_tel($cod_usuario, $id_usuario = null)
 
@@ -412,13 +343,9 @@ class Usuario_model extends CI_Model {
 
 		}
 
-
-
 		$this->db->select('tel_usuario');
 
 		$query = $this->db->get($this->tablas['usuarios'], 1);
-
-
 
 		if ($query->num_rows() > 0)
 
@@ -432,13 +359,9 @@ class Usuario_model extends CI_Model {
 
 		}
 
-
-
 		return null;
 
 	}
-
-
 
 	public function get_usuario_ext($cod_usuario, $id_usuario = null)
 
@@ -460,13 +383,9 @@ class Usuario_model extends CI_Model {
 
 		}
 
-
-
 		$this->db->select('ext_usuario');
 
 		$query = $this->db->get($this->tablas['usuarios'], 1);
-
-
 
 		if ($query->num_rows() > 0)
 
@@ -480,133 +399,73 @@ class Usuario_model extends CI_Model {
 
 		}
 
-
-
 		return null;
 
 	}
 
-
-
 	public function get_usuario_firma($cod_usuario, $id_usuario = null)
-
 	{
 
 		if ($id_usuario == null)
-
 		{
-
 			$this->db->where('cod_usuario', $cod_usuario);
-
 		}
-
 		elseif ($cod_usuario == null)
-
 		{
-
 			$this->db->where('id_usuario', $id_usuario);
-
 		}
-
-
 
 		$this->db->select('firma_usuario');
-
 		$query = $this->db->get($this->tablas['usuarios'], 1);
 
-
-
 		if ($query->num_rows() > 0)
-
 		{
-
 			$row = $query->row();
-
 			$firma = $row->firma_usuario;
 
 			return $firma;
-
 		}
 
-
-
 		return null;
-
 	}
 
-
-
 	public function get_empresa($id_usuario)
-
 	{
-
 		$this->db->select('id_empresa');
-
 		$this->db->where('id_usuario', $id_usuario);
-
 		$query = $this->db->get($this->tablas['usuarios'], 1);
 
-
-
 		if ($query->num_rows() > 0)
-
 		{
-
 			$row = $query->row();
-
 			$id_empresa = $row->id_empresa;
 
 			return $id_empresa;
-
 		}
 
-
-
 		return null;
-
 	}
 
-
-
 	public function get_cambia_pass($id_usuario)
-
 	{
-
 		$this->db->select('cambia_pass');
-
 		$this->db->where('id_usuario', $id_usuario);
-
 		$query = $this->db->get($this->tablas['usuarios'], 1);
 
-
-
 		if ($query->num_rows() > 0)
-
 		{
-
 			$row = $query->row();
-
 			$cambio = $row->cambia_pass;
 
-
-
 			if ($cambio == 0)
-
 				return false;
 
 			if ($cambio == 1)
-
 				return true;
-
 		}
 
-
-
-		return null;	
-
+		return null;
 	}
-
-
 
 	public function get_usuarios_nivel($nivel)
 
@@ -620,19 +479,13 @@ class Usuario_model extends CI_Model {
 
 		$query = $this->db->get($this->tablas['usuarios']);
 
-
-
 		if ($query->num_rows() > 0)
 
 			return $query->result_array();
 
-
-
 		return null;
 
 	}
-
-
 
 	public function get_usuario_hashed_pass($cod_usuario)
 
@@ -644,8 +497,6 @@ class Usuario_model extends CI_Model {
 
 		$query = $this->db->get($this->tablas['usuarios'], 1);
 
-
-
 		if ($query->num_rows() == 1)
 
 		{
@@ -654,19 +505,13 @@ class Usuario_model extends CI_Model {
 
 			$pass = $row->pass_usuario;
 
-
-
 			return $pass;
 
 		}
 
-
-
 		return null;
 
 	}
-
-
 
 	public function get_usuario_horario($cod_usuario)
 
@@ -709,8 +554,6 @@ class Usuario_model extends CI_Model {
 
 		$query = $this->db->get($this->tablas['usuarios']);
 
-
-
 		if ($query == 1)
 
 		{
@@ -719,23 +562,15 @@ class Usuario_model extends CI_Model {
 
 			$nivel = $row->id_nivel_usuario;
 
-
-
 			return $nivel;
 
 		}
-
-
 
 		return null;
 
 	}
 
-
-
 	//****GRUPOS****
-
-
 
 	public function get_current_grupo()
 
@@ -745,8 +580,6 @@ class Usuario_model extends CI_Model {
 
 		$query = $this->db->get($this->tablas['grupos']) + 1;
 
-
-
 		if ($query->num_rows() == 0)
 
 		{
@@ -755,13 +588,9 @@ class Usuario_model extends CI_Model {
 
 		}
 
-
-
 		return $query->result();
 
 	}
-
-
 
 	public function get_grupo_name($nombre)
 
@@ -770,8 +599,6 @@ class Usuario_model extends CI_Model {
 		$this->db->where('group_name', $nombre);
 
 		$query = $this->db->get($this->tablas['grupos']);
-
-
 
 		if ($query->num_rows() >= 1) 
 
@@ -785,19 +612,13 @@ class Usuario_model extends CI_Model {
 
 	}
 
-
-
 	public function insert_grupo($data)
 
 	{
 
-
-
 		$nombre = $data['group_name'];
 
 		$array = get_grupo_name($nombre);
-
-
 
 		if ($array >= 1) 
 
@@ -819,8 +640,6 @@ class Usuario_model extends CI_Model {
 
 	}
 
-
-
 	public function update_grupo_id($id, $valores)
 
 	{
@@ -828,8 +647,6 @@ class Usuario_model extends CI_Model {
 		$this->db->where('group_id', $id);
 
 		$query = $this->db->get($this->tablas['grupos']);
-
-
 
 		if ($query->num_rows() >= 1)
 
@@ -853,8 +670,6 @@ class Usuario_model extends CI_Model {
 
 				'can_ban_emails' => $valor['ban_mails']);
 
-
-
 			$this->db->where('group_id', $id);
 
 			$this->db->update($this->tablas['grupos'], $data);
@@ -869,8 +684,6 @@ class Usuario_model extends CI_Model {
 
 	}
 
-
-
 	public function delete_grupo($id)
 
 	{
@@ -878,8 +691,6 @@ class Usuario_model extends CI_Model {
 		$this->db->where('group_id', $id);
 
 		$query = $this->db->get($this->tablas['grupos']);
-
-
 
 		if ($query->num_rows() >= 1)
 
@@ -889,8 +700,6 @@ class Usuario_model extends CI_Model {
 
 			$this->db->delete($this->tablas['grupos']);
 
-
-
 			return true;
 
 		}
@@ -898,8 +707,6 @@ class Usuario_model extends CI_Model {
 		return false;
 
 	}
-
-
 
 	public function get_usuarios_listado()
 
@@ -927,19 +734,13 @@ class Usuario_model extends CI_Model {
 
 		$query = $this->db->query($cadena);
 
-
-
 		if ($query->num_rows() > 0)
 
 			return $query;
 
-
-
 		return null;
 
 	}
-
-
 
 	public function get_edita_usuario($cod_usuario)
 
@@ -957,55 +758,30 @@ class Usuario_model extends CI_Model {
 
 		$query = $this->db->get($this->tablas['usuarios'], 1);
 
-
-
 		if ($query->num_rows() == 1)
 
 			return $query->row();
 
-
-
 		return null;
 
 	}
-
-
 
 	public function get_edita_cliente($cod_usuario)
-
 	{
-
 		$this->db->select('id_empresa, nombre_usuario, apellido_paterno, 
-
 						   apellido_materno, email_usuario, 
-
 						   tel_usuario, ext_usuario, movil_usuario, 
-
 						   cambia_pass, activo');
-
-
-
 		$this->db->where('cod_usuario', $cod_usuario);
-
 		$query = $this->db->get($this->tablas['usuarios'], 1);
 
-
-
 		if ($query->num_rows() == 1)
-
 			return $query->row();
 
-
-
 		return null;
-
 	}
 
-
-
 	//****DEPARTAMENTOS****
-
-
 
 	public function insert_departamento($data)
 
@@ -1014,8 +790,6 @@ class Usuario_model extends CI_Model {
 		$this->db->insert($this->tablas['departamentos'], $data);
 
 	}
-
-
 
 	public function get_departamentos_id()
 
@@ -1027,17 +801,11 @@ class Usuario_model extends CI_Model {
 
 		$query = $this->db->get($this->tablas['departamentos']);
 
-
-
 		return $query->result_array();
 
 	}
 
-
-
 	//****NIVELES****
-
-
 
 	public function get_roles_staff()
 
@@ -1049,75 +817,58 @@ class Usuario_model extends CI_Model {
 
 		$query = $this->db->get($this->tablas['rol']);
 
-
-
 		return $query->result_array();
 
 	}
 
-
-
 	//****EMPRESAS****
 
-
-
 	public function get_empresas()
-
 	{
-
 		$this->db->select('empresa_id, nombre_empresa');
-
 		$query = $this->db->get($this->tablas['empresas']);
 
-
-
 		if ($query->num_rows() > 0)
-
 			return $query->result_array();
 
-
-
 		return null;
-
 	}
 
-
-
 	public function get_correo_empresa($empresa_id)
-
 	{
-
 		$this->db->select('correo');
-
 		$this->db->where('empresa_id', $empresa_id);
-
 		$query =$this->db->get($this->tablas['empresas']);
 
-
-
 		if ($query->num_rows == 1)
-
 		{
-
 			$row = $query->row();
-
 			$correo = $row->correo;
 
-
-
 			return $correo;
-
 		}
 
+		return null;
+	}
 
+	public function get_estado_empresa($empresa_id)
+	{
+		$this->db->select('activa');
+		$this->db->where('empresa_id', $empresa_id);
+		$query = $this->db->get($this->tablas['empresas']);
+
+		if ($query->num_rows() == 1)
+		{
+			$row = $query->row();
+			$estado = $row->activa;
+
+			return $estado;
+		}
 
 		return null;
-
 	}
 
 }
-
-
 
 /* End of file usuario_model.php */
 

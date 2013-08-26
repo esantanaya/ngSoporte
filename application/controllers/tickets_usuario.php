@@ -57,7 +57,6 @@ class Tickets_usuario extends CI_Controller {
 
 	public function crea_ticket()
 	{
-
 		$envio = false;
 
 		if ($_FILES['adjunto']['name'] != '') 
@@ -75,7 +74,9 @@ class Tickets_usuario extends CI_Controller {
 		$dept = $this->input->post('departamento');
 		$date_string = standard_date($date_string, $time);
 		$usuario_id = $this->session->userdata('idUsuario');
-
+		$empresa_id = $this->usuario_model->get_empresa($usuario_id);
+		$estado_empresa = $this->usuario_model->get_estado_empresa(
+			$empresa_id);
 		$this->form_validation->set_rules('asunto', 'Asunto', 
 			'trim|required|xss_clean');
 		$this->form_validation->set_rules('mensaje', 
@@ -114,7 +115,8 @@ class Tickets_usuario extends CI_Controller {
 				break;
 		}
 
-		if (! $this->form_validation->run() || is_array($archivo))
+		if (! $this->form_validation->run() || is_array($archivo) || 
+			$estado_empresa == 0)
 		{
 			$datos = $this->usuario_model->get_departamentos_id();
 
@@ -133,9 +135,15 @@ class Tickets_usuario extends CI_Controller {
 			{
 				$data['error'] = $archivo['error'];
 			}
+			elseif ($estado_empresa == 0)
+			{
+				$data['errorGeneral'] = 'Lo sentimos, por el momento su cuenta
+				 no puede generar tickets nuevos, pongase en contacto con el 
+				 área de cobranza.';
+			}
 			else
 			{
-				$data['error'] = '';
+				$data['errorGeneral'] = '';
 			}
 
 			$this->load->view('public/main_tickets_view', $data);

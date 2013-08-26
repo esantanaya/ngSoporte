@@ -41,7 +41,7 @@
 			</div>
 			<div id="menu">
 				<ul>
-					<li><a href="#">PANEL</a></li>
+					<li><a href="<?=base_url()?>admin/panel">PANEL</a></li>
 					<li><a href="#">CONFIGURACI&Oacute;N</a></li>
 					<li><a href="<?=base_url()?>admin/usuarios/lista">USUARIOS</a></li>
 				</ul>

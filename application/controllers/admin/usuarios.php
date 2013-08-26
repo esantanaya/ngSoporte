@@ -5,20 +5,22 @@ class Usuarios extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+
+		$this->load->helper('date');
+		$this->load->library('table');
+		$this->load->model('usuario_model');
+
 		if (!is_logged())
 			redirect(base_url() . 'login');
+
 		if (! is_authorized(array(0, 1), null, $this->session->userdata(
 			'nivel'), $this->session->userdata('rol')))
 			redirect(base_url() . 'login');
-
-		$this->load->model('usuario_model');
 
 		if ($this->usuario_model->get_cambia_pass($this->session->userdata(
 			'idUsuario')))
 			redirect(base_url() . 'cambia_pass');
 
-		$this->load->helper('date');
-		$this->load->library('table');
 		error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 	}
 
@@ -38,7 +40,7 @@ class Usuarios extends CI_Controller {
 		$data['SYS_MetaTitle'] = 'Tickets :: Usuarios';
 		$data['SYS_metaKeyWords'] = 'sistema ticket n&g';
 		$data['SYS_metaDescription'] = 'Listado de Usuario del sistema';
-		$data['subMenu'] = 'admin/submenu_view';
+		$data['subMenu'] = 'admin/submenu_usuarios_view';
 		$data['modulo'] = 'admin/lista_usuario_view';
 		$data['listado'] = $listado;
 
@@ -64,7 +66,7 @@ class Usuarios extends CI_Controller {
 		$data['SYS_MetaTitle'] = 'Tickets :: Usuarios';
 		$data['SYS_metaKeyWords'] = 'sistema ticket n&g';
 		$data['SYS_metaDescription'] = 'Panel de creación de usuarios';
-		$data['subMenu'] = 'admin/submenu_view';
+		$data['subMenu'] = 'admin/submenu_usuarios_view';
 		$data['modulo'] = 'admin/nuevo_usuario_view';
 		$data['depts'] = $select;
 		$data['niveles'] = $niveles;
@@ -120,7 +122,7 @@ class Usuarios extends CI_Controller {
 		$data['SYS_MetaTitle'] = 'Tickets :: Usuarios';
 		$data['SYS_metaKeyWords'] = 'sistema ticket n&g';
 		$data['SYS_metaDescription'] = 'Panel de edición de usuarios';
-		$data['subMenu'] = 'admin/submenu_view';
+		$data['subMenu'] = 'admin/submenu_usuarios_view';
 		$data['modulo'] = 'admin/edita_usuario_view';
 		$data['depts'] = $select;
 		$data['niveles'] = $niveles;
@@ -169,10 +171,10 @@ class Usuarios extends CI_Controller {
 		$data['SYS_MetaTitle'] = 'Tickets :: Usuarios';
 		$data['SYS_metaKeyWords'] = 'sistema ticket n&g';
 		$data['SYS_metaDescription'] = 'Panel de edición de usuarios';
-		$data['subMenu'] = 'admin/submenu_view';
+		$data['subMenu'] = 'admin/submenu_usuarios_view';
 		$data['modulo'] = 'admin/edita_cliente_view';
 		$data['empresas'] = $select;
-		$dtata['empresaActual'] = $generales->id_empresa;
+		$data['empresaActual'] = $generales->id_empresa;
 		$data['nombre'] = $generales->nombre_usuario;
 		$data['apPaterno'] = $generales->apellido_paterno;
 		$data['apMaterno'] = $generales->apellido_materno;
@@ -211,7 +213,7 @@ class Usuarios extends CI_Controller {
 		$data['SYS_MetaTitle'] = 'Tickets :: Usuarios';
 		$data['SYS_metaKeyWords'] = 'sistema ticket n&g';
 		$data['SYS_metaDescription'] = 'Panel de creación de usuarios';
-		$data['subMenu'] = 'admin/submenu_view';
+		$data['subMenu'] = 'admin/submenu_usuarios_view';
 		$data['modulo'] = 'admin/nuevo_cliente_view';
 		$data['empresas'] = $select;
 		$data['cod_usuario'] = '';
