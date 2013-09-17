@@ -50,6 +50,7 @@ class Tickets_usuario extends CI_Controller {
 		$data['SYS_metaDescription'] = 'Generar nuevo ticket';
 		$data['modulo'] = 'public/nuevo_ticket_view';
 		$data['error'] = '';
+		$data['errorGeneral'] = '';
 		$data['select'] = $select;
 
 		$this->load->view('public/main_tickets_view', $data);
@@ -69,10 +70,8 @@ class Tickets_usuario extends CI_Controller {
 		$archivo = $this->file_model->uploadNonImage('tickets', $info, 
 														'adjunto', $envio);
 
-		$date_string = "DATE_W3C";
-		$time = time();
 		$dept = $this->input->post('departamento');
-		$date_string = standard_date($date_string, $time);
+		$date_string = getFechaActualFormato();
 		$usuario_id = $this->session->userdata('idUsuario');
 		$empresa_id = $this->usuario_model->get_empresa($usuario_id);
 		$estado_empresa = $this->usuario_model->get_estado_empresa(
@@ -138,12 +137,8 @@ class Tickets_usuario extends CI_Controller {
 			elseif ($estado_empresa == 0)
 			{
 				$data['errorGeneral'] = 'Lo sentimos, por el momento su cuenta
-				 no puede generar tickets nuevos, pongase en contacto con el 
+				 no puede generar tickets nuevos, póngase en contacto con el 
 				 área de cobranza.';
-			}
-			else
-			{
-				$data['errorGeneral'] = '';
 			}
 
 			$this->load->view('public/main_tickets_view', $data);
@@ -437,7 +432,8 @@ class Tickets_usuario extends CI_Controller {
 		{
 			if ($cerrar == 'cerrar')
 			{
-				$this->ticket_model->cambia_estado_ticket($ticketID, 'cerrado');
+				$this->ticket_model->cambia_estado_ticket($ticketID, 
+					'cerrado');
 			}
 			redirect(base_url() . 'tickets_usuario/entra_edita_ticket/' 
 				 	 . $ticketID);

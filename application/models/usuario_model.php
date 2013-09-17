@@ -103,117 +103,73 @@ class Usuario_model extends CI_Model {
 	}
 
 	public function update_usuario_id($id, $valores)
-
 	{
-
 		$this->db->where('id_usuario', $id);
-
 		$query = $this->db->get($this->tablas['usuarios']);
 
 		if ($query->num_rows() >=  1) 
-
 		{
-
 			$data = array(
-
 				'cod_usuario' => $valores['username'],
-
 				'id_departamento_usuario' => $valores['dept'],
-
 				'id_grupo_usuario' => $valores['grupo'],
-
 				'nombre_usuario' => $valores['nombre'],
-
 				'apellido_paterno' => $valores['paterno'],
-
 				'apellido_materno' => $valores['materno'],
-
 				'email_usuario' => $valores['mail'],
-
 				'tel_usuario' => $valores['tel_usuario'],
-
 				'ext_usuario' => $valores['ext_usuario'],
-
 				'cel_usuario' => $valores['cel_usuario'],
-
 				'firma_usuario' => $valores['firma'],
-
 				'cambia_pass' => $valores['cambia_pass'],
-
 				'activo' => $valores['activo'],
-
 				'admin' => $valores['admin'],
-
 				'visible' => $valores['visible'],
-
 				'vacacion' => $valores['vaciones']);
 
 			$this->db->where('id_usuario', $id);
-
 			$this->db->update($this->tablas['usuarios'], $data);
 
 			return true;
-
 		}
 
 		return false;
-
 	}
 
 	public function update_usuario_cuenta($cod_usuario, $valores)
-
 	{
-
 		$this->db->where('cod_usuario', $cod_usuario);
-
 		$query = $this->db->get($this->tablas['usuarios']);
 
 		if ($query->num_rows() >=  1) 
-
 		{
-
 			$this->db->where('cod_usuario', $cod_usuario);
-
 			$this->db->update($this->tablas['usuarios'], $valores);
 
 			return true;
-
 		}
 
 		return false;
-
 	}
 
 	public function update_password_usuario($id_usuario, $new_password)
-
 	{
-
 		$this->db->where('id_usuario', $id_usuario);
-
 		$query = $this->db->get($this->tablas['usuarios']);
 
 		if ($query->num_rows() >= 1)
-
 		{
-
 			$new_password = $this->auth_model->hashPassword($new_password, 
-
 															null);
-
 			$data = array('pass_usuario' => $new_password, 
-
 						  'cambia_pass' => 0);
-
 			$this->db->where('id_usuario', $id_usuario);
-
 			$this->db->update($this->tablas['usuarios'], $data);
 
 			return true;
-
 		}
 
 		return false;
-
 	}
 
 	public function delete_usuario($id)
@@ -613,133 +569,83 @@ class Usuario_model extends CI_Model {
 	}
 
 	public function insert_grupo($data)
-
 	{
-
 		$nombre = $data['group_name'];
-
 		$array = get_grupo_name($nombre);
 
 		if ($array >= 1) 
-
 		{
-
 			return null;
-
 		}
-
 		else
-
 		{
-
 			$this->db->insert($this->tablas['grupos'], $data);
 
 			return $this->db->insert_id();
-
 		}
-
 	}
 
 	public function update_grupo_id($id, $valores)
-
 	{
-
 		$this->db->where('group_id', $id);
-
 		$query = $this->db->get($this->tablas['grupos']);
 
 		if ($query->num_rows() >= 1)
-
 		{
-
 			$data = array(
-
 				'group_name' => $valor['nombre'],
-
 				'dept_access' => $valor['departamento'],
-
 				'can_create_tickets' => $valor['crea_tickets'],
-
 				'can_edit_ticekts' => $valor['edita_ticets'],
-
 				'can_delete_tickets' => $valor['borra_tickets'],
-
 				'can_close_tickets' => $valor['cierra_tickets'],
-
 				'can_transfer_tickets' => $valor['transfer_tickets'],
-
 				'can_ban_emails' => $valor['ban_mails']);
-
 			$this->db->where('group_id', $id);
-
 			$this->db->update($this->tablas['grupos'], $data);
 
 			return true;
-
 		}
 
-		
-
 		return false;
-
 	}
 
 	public function delete_grupo($id)
-
 	{
-
 		$this->db->where('group_id', $id);
 
 		$query = $this->db->get($this->tablas['grupos']);
 
 		if ($query->num_rows() >= 1)
-
 		{
-
 			$this->db->where('group_id', $id);
-
 			$this->db->delete($this->tablas['grupos']);
 
 			return true;
-
 		}
 
 		return false;
-
 	}
 
 	public function get_usuarios_listado()
-
 	{
-
 		$cadena = 'SELECT CONCAT( \'<a href="'
-
 			. 'edita/\', us.cod_usuario, \'">\', CONCAT('
-
 			. 'us.nombre_usuario, \' \', us.apellido_paterno, \' \', '
-
 			. 'us.apellido_materno ) , \'</a>\' ) AS Usuario, rl.nombreRol AS '
-
 			. 'Nivel, em.nombre_empresa AS Empresa, dp.dept_name AS '
-
 			. 'Departamento, us.activo AS ESTADO FROM us_usuarios us '
-
 			. 'INNER JOIN rol rl ON us.id_nivel_usuario = rl.idRol INNER JOIN '
-
 			. 'sop_empresas em ON us.id_empresa = em.empresa_id INNER JOIN '
-
 			. 'us_departamentos dp ON us.id_departamento_usuario = dp.dept_id '
-
 			. 'ORDER BY rl.nombreRol ASC';
 
 		$query = $this->db->query($cadena);
 
 		if ($query->num_rows() > 0)
-
 			return $query;
 
 		return null;
-
 	}
 
 	public function get_edita_usuario($cod_usuario)
@@ -834,6 +740,58 @@ class Usuario_model extends CI_Model {
 		return null;
 	}
 
+	public function get_empresa_edicion($id_empresa)
+	{
+		$this->db->select('cod_empresa, nombre_empresa, correo, activa, 
+			soporte');
+		$this->db->where('empresa_id', $id_empresa);
+		$query = $this->db->get($this->tablas['empresas']);
+
+		if ($query->num_rows == 1)
+			return $query->result();
+
+		return null;
+	}
+
+	public function get_id_empresa($cod_empresa)
+	{
+		$this->db->select('empresa_id');
+		$this->db->where('cod_empresa', $cod_empresa);
+		$query = $this->db->get($this->tablas['empresas']);
+
+		if ($query->num_rows() == 1)
+		{
+			$row = $query->row();
+			$id = $row->empresa_id;
+
+			return $id;
+		}
+			
+		return false;
+	}
+
+	public function get_empresa_cod($cod_empresa)
+	{
+		$this->db->where('cod_empresa', $cod_empresa);
+		$query = $this->db->get($this->tablas['empresas']);
+
+		if($query->num_rows() > 0)
+			return true;
+
+		return false;
+	}
+
+	public function get_empresa_nombre($nombre_empresa)
+	{
+		$this->db->where('nombre_empresa', $nombre_empresa);
+		$query = $this->db->get($this->tablas['empresas']);
+
+		if($query->num_rows() > 0)
+			return true;
+
+		return false;
+	}
+
 	public function get_correo_empresa($empresa_id)
 	{
 		$this->db->select('correo');
@@ -853,14 +811,14 @@ class Usuario_model extends CI_Model {
 
 	public function get_estado_empresa($empresa_id)
 	{
-		$this->db->select('activa');
+		$this->db->select('soporte');
 		$this->db->where('empresa_id', $empresa_id);
 		$query = $this->db->get($this->tablas['empresas']);
 
 		if ($query->num_rows() == 1)
 		{
 			$row = $query->row();
-			$estado = $row->activa;
+			$estado = $row->soporte;
 
 			return $estado;
 		}
@@ -868,8 +826,42 @@ class Usuario_model extends CI_Model {
 		return null;
 	}
 
+	public function get_listado_empresas()
+	{
+		$this->db->select('CONCAT(\'<a href="editaEmpresa/\',empresa_id,\'">\',cod_empresa,\'</a>\') AS CÓDIGO, 
+			nombre_empresa AS EMPRESA', false);
+		$this->db->order_by('cod_empresa', 'asc');
+		$query = $this->db->get($this->tablas['empresas']);
+
+		if ($query->num_rows() > 0)
+			return $query;
+
+		return null;
+	}
+
+	public function insert_empresa($data)
+	{
+		$this->db->insert($this->tablas['empresas'], $data);
+
+		return $this->db->insert_id();
+	}
+
+	public function update_empresa($id_empresa, $data)
+	{
+		$this->db->where('empresa_id', $id_empresa);
+		$query = $this->db->get($this->tablas['empresas']);
+
+		if ($query->num_rows() >= 1)
+		{
+			$this->db->where('empresa_id', $id_empresa);
+			$this->db->update($this->tablas['empresas'], $data);
+
+			return true;
+		}
+
+		return false;
+	}
 }
 
 /* End of file usuario_model.php */
-
 /* Location: ./application/models/usuario_model.php */

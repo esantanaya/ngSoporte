@@ -264,9 +264,7 @@ class Tickets extends CI_Controller {
 
 	public function agrega_respuesta()
 	{
-		$date_string = "DATE_W3C";
-		$time = time();
-		$date_string = standard_date($date_string, $time);
+		$date_string = getFechaActualFormato();
 		$mensaje = $this->input->post('mensaje');
 		$ticketID = $this->input->post('ticketID');
 		$cerrar = $this->input->post('cerrar');
@@ -601,9 +599,7 @@ The content of this electronic communication is not to be considered as an offer
 
 	public function accion_ticket()
 	{
-		$date_string = "DATE_W3C";
-		$time = time();
-		$date_string = standard_date($date_string, $time);
+		$date_string = getFechaActualFormato();
 		$accion = $this->input->post('acciones');
 		$ticketID = $this->input->post('ticketID');
 		$ticket_id = $this->ticket_model->get_ticket_ticketID($ticketID);

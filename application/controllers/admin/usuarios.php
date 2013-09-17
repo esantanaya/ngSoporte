@@ -24,14 +24,13 @@ class Usuarios extends CI_Controller {
 		error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 	}
 
-	public function index($value='')
+	public function index()
 	{
 		$this->lista();
 	}
 
 	public function lista()
 	{
-
 		$listado = $this->usuario_model->get_usuarios_listado();
 		$tmpl = array('table_open' => '<table border="0" cellpadding="4"
 				cellspacing="0" class="listado_table">');
@@ -234,9 +233,7 @@ class Usuarios extends CI_Controller {
 
 	public function crea_cliente()
 	{
-		$date_string = "%Y-%m-%d %h:%i:%s";
-		$time = time();
-		$date_string = mdate($date_string, $time);
+		$date_string = getFechaActualFormato();
 
 		$cod_usuario = $this->input->post('cod_usuario');
 		$repite = $this->usuario_model->get_usuario_clave($cod_usuario);
@@ -333,11 +330,8 @@ class Usuarios extends CI_Controller {
 	}
 
 	public function crea_usuario()
-	{
-		
-		$date_string = "%Y-%m-%d %h:%i:%s";
-		$time = time();
-		$date_string = mdate($date_string, $time);
+	{		
+		$date_string = getFechaActualFormato();
 
 		$cod_usuario = $this->input->post('cod_usuario');
 		$repite = $this->usuario_model->get_usuario_clave($cod_usuario);
@@ -556,7 +550,6 @@ class Usuarios extends CI_Controller {
 		$this->usuario_model->update_usuario_cuenta($cod_usuario, $data);
 		$this->edita_cliente($cod_usuario);
 	}
-
 }
 
 /* End of file usuarios.php */

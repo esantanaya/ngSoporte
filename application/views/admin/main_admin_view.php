@@ -6,6 +6,10 @@
         <meta name="description" content="><?=$SYS_metaDescription?>">
 		<link rel="stylesheet" href="<?=base_url()?>css/admin.css" type="text/css">
 		<link rel="shortcut icon" href="<?=base_url()?>imagenes/iconos/logo.png">
+		<script src="<?=base_url()?>js/jQuery.js" type="text/javascript">
+		</script>
+		<script src="<?=base_url()?>js/jQueryUI.js" type="text/javascript">
+		</script>
 	</head>
 	<body>
 		<div id="wrapper">
@@ -41,7 +45,7 @@
 			</div>
 			<div id="menu">
 				<ul>
-					<li><a href="<?=base_url()?>admin/panel">PANEL</a></li>
+					<li><a href="<?=base_url()?>admin/panel/listaEmpresas">PANEL</a></li>
 					<li><a href="#">CONFIGURACI&Oacute;N</a></li>
 					<li><a href="<?=base_url()?>admin/usuarios/lista">USUARIOS</a></li>
 				</ul>

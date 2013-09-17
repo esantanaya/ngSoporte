@@ -427,8 +427,8 @@ if (!function_exists('gTranslate')) {
 
 }
 
-if (!function_exists('getTinyUrl')) {
-
+if (!function_exists('getTinyUrl')) 
+{
 	// Funcion que obtiene TinyURL
 	function getTinyUrl($bigURL) {
 		// Se crea un manejador CURL
@@ -449,8 +449,15 @@ if (!function_exists('getTinyUrl')) {
 		// Se cierra el recurso CURL y se liberan los recursos del sistema
 		curl_close($ch);
 	}
-
 }
 
+if (!function_exists('getFechaActualFormato'))
+{
+	function getFechaActualFormato()
+	{
+		$date_string = "DATE_W3C";
+		$time = time();
 
-
+		return standard_date($date_string, $time);
+	}
+}
