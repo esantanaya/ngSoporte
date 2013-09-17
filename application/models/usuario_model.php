@@ -444,49 +444,48 @@ class Usuario_model extends CI_Model {
 	}
 
 	public function get_usuario_hashed_pass($cod_usuario)
-
 	{
-
 		$this->db->where('cod_usuario', $cod_usuario);
-
 		$this->db->select('pass_usuario');
-
 		$query = $this->db->get($this->tablas['usuarios'], 1);
 
 		if ($query->num_rows() == 1)
-
 		{
-
 			$row = $query->row();
-
 			$pass = $row->pass_usuario;
 
 			return $pass;
-
 		}
 
 		return null;
+	}
 
+	public function get_horarios_preferencias()
+	{
+		$query = $this->db->get($this->tablas['horarios']);
+
+		if ($query->num_rows() > 0) 
+			return $query->result_array();
+
+		return null;
 	}
 
 	public function get_usuario_horario($cod_usuario)
-
 	{
-
 		$this->db->where('cod_usuario', $cod_usuario);
-
-		$this->db->select('sop_horarios.des_horario');
+		$this->db->select('sop_horarios.id_horario');
 		$this->db->join($this->tablas['empHorarios'], 
-			'us_horario.id_staff = us_usuarios.id_usuario', 'right');
+			'us_horario.id_staff = us_usuarios.id_usuario');
 		$this->db->join($this->tablas['horarios'], 
-			'sop_horarios.id_horario = us_horario.id_horario', 'right');
+			'sop_horarios.id_horario = us_horario.id_horario');
 		$query = $this->db->get($this->tablas['usuarios'], 1);
 
 		if ($query == 1)
 		{
 			$row = $query->row();
+			$horario = $row->id_horario;
 
-			return $row;
+			return $horario;
 		}
 		
 		return null;
@@ -649,27 +648,19 @@ class Usuario_model extends CI_Model {
 	}
 
 	public function get_edita_usuario($cod_usuario)
-
 	{
-
 		$this->db->select('id_departamento_usuario, id_nivel_usuario, 
-
 			nombre_usuario, apellido_paterno, apellido_materno, email_usuario, 
-
 			tel_usuario, ext_usuario, movil_usuario, firma_usuario, 
-
 			cambia_pass, activo, visible, vacacion');
 
 		$this->db->where('cod_usuario', $cod_usuario);
-
 		$query = $this->db->get($this->tablas['usuarios'], 1);
 
 		if ($query->num_rows() == 1)
-
 			return $query->row();
 
 		return null;
-
 	}
 
 	public function get_edita_cliente($cod_usuario)
@@ -690,41 +681,28 @@ class Usuario_model extends CI_Model {
 	//****DEPARTAMENTOS****
 
 	public function insert_departamento($data)
-
 	{
-
 		$this->db->insert($this->tablas['departamentos'], $data);
-
 	}
 
 	public function get_departamentos_id()
-
 	{
-
 		$this->db->select('dept_id, dept_name');
-
 		$this->db->where('dept_id >=', 1);
-
 		$query = $this->db->get($this->tablas['departamentos']);
 
 		return $query->result_array();
-
 	}
 
 	//****NIVELES****
 
 	public function get_roles_staff()
-
 	{
-
 		$this->db->select('idRol, nombreRol');
-
 		$this->db->where('idRol <', 3);
-
 		$query = $this->db->get($this->tablas['rol']);
 
 		return $query->result_array();
-
 	}
 
 	//****EMPRESAS****

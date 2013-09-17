@@ -495,9 +495,7 @@ div#respuesta {
 }
 
 /*
-
 * CUENTAS
-
 */
 
 a.perfil {
@@ -538,6 +536,11 @@ td.titulo {
 
 #formPass {
 	margin-left: 10px;
+}
+
+#contentPreferencias {
+	width: 90%;
+	margin-bottom: 25px;
 }
 
 /*
