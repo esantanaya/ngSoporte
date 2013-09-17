@@ -61,6 +61,25 @@ class Tickets extends CI_Controller {
 		$data['listado'] = $listado;
 		$data['error'] = '';
 
+		$empresas = $this->usuario_model->get_empresas();
+
+		foreach ($empresas as $depas => $valor) 
+		{
+			$select[$valor['empresa_id']] = $valor['nombre_empresa'];
+		}
+
+		$select['1001'] = 'TODAS';
+		$data['empresas'] = $select;
+
+		$estados = array(
+				'1' => 'TODOS',
+				'2' => 'abierto',
+				'3' => 'esperando',
+				'4' => 'cerrado'
+			);
+
+		$data['estados'] = $estados;
+
 		$this->load->view('staff/main_staff_view', $data);
 	}
 
@@ -346,15 +365,33 @@ class Tickets extends CI_Controller {
 	public function busqueda()
 	{
 		$query = $this->input->post('query');
+		$empresa = $this->input->post('empresas');
+		$estado = $this->input->post('estados');
 		$fechaIni = $this->input->post('fechaInicial');
 		$fechaFin = $this->input->post('fechaFinal');
 		$query = str_replace('\'', '', $query);
 		$query = str_replace('%', '', $query);
 		$query = trim($query);
 
+		switch ($estado) 
+		{
+			case 2:
+				$estado = 'abierto';
+				break;
+			case 3:
+				$estado = 'esperando';
+				break;
+			case 4:
+				$estado = 'cerrado';
+				break;
+			default:
+				$estado = null;
+				break;
+		}
+
 		if (strlen($query) >= 2)
 			$listado = $this->ticket_model->get_tickets_query($query, 
-				$fechaIni, $fechaFin);
+				$fechaIni, $fechaFin, 1, $empresa, $estado);
 
 		if ($listado == null)
 		{
@@ -373,6 +410,25 @@ class Tickets extends CI_Controller {
 		$data['subMenu'] = 'staff/submenu_view';
 		$data['modulo'] = 'staff/tickets_listado_view';
 		$data['listado'] = $listado;
+
+		$empresas = $this->usuario_model->get_empresas();
+
+		foreach ($empresas as $depas => $valor) 
+		{
+			$select[$valor['empresa_id']] = $valor['nombre_empresa'];
+		}
+
+		$select['1001'] = 'TODAS';
+		$data['empresas'] = $select;
+
+		$estados = array(
+				'1' => 'TODOS',
+				'2' => 'abierto',
+				'3' => 'esperando',
+				'4' => 'cerrado'
+			);
+
+		$data['estados'] = $estados;
 
 		$this->load->view('staff/main_staff_view', $data);
 	}

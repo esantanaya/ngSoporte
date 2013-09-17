@@ -264,6 +264,10 @@ input[type=radio]:not(old):checked + label {
 	border-bottom-left-radius: 10px;
 }
 
+.izquierda {
+	float: left;
+}
+
 .error {
 	color: #B81315;
 }
@@ -358,9 +362,7 @@ a.nuevo_cliente {
 }
 
 /*
-
 * LISTADO TICKETS STAFF
-
 */
 
 .listado_table th {
@@ -402,10 +404,17 @@ a.atrasado {
 	background: transparent url('../imagenes/iconos/tickets/mistickets.png') center top no-repeat;
 }
 
+.selectBA {
+	margin-left: 91px;
+}
+
+.labelBA {
+	margin-top: 9px;
+	margin-right: 5px;
+}
+
 /*
-
 *VISTA TICKET
-
 */
 
 #tabla_estado p {

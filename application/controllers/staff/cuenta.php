@@ -1,117 +1,60 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-
-
 class Cuenta extends CI_Controller {
 
-
-
 	public function __construct()
-
 	{
-
 		parent::__construct();
 
-
-
 		if (!is_logged())
-
 			redirect(base_url() . 'login');
-
-		
 
 		if (! is_authorized(array(0, 1, 2), null, $this->session->userdata(
-
 			'nivel'), $this->session->userdata('rol')))
-
 			redirect(base_url() . 'login');
-
-
 
 		$this->load->model('usuario_model');
 
-
-
 		if ($this->usuario_model->get_cambia_pass($this->session->userdata(
-
 			'idUsuario')))
-
 			redirect(base_url() . 'cambia_pass');
 
-
-
 		error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
-
 	}
-
-
 
 	public function index()
-
 	{
-
 		$this->mi_cuenta();
-
 	}
 
-
-
 	public function mi_cuenta()
-
 	{
-
 		$cod_usuario = $this->session->userdata('nombreUsuario');
-
 		$nombreCompleto = $this->usuario_model->get_usuario_nombre(
-
 												$cod_usuario);
-
 		$datos = array('nombre' => $nombreCompleto['0']['nombre_usuario'],
-
 						'apPaterno' => $nombreCompleto['0']
-
 						['apellido_paterno'],
-
 						'apMaterno' => $nombreCompleto['0']
-
 						['apellido_materno'],
-
 						'correo' => $this->usuario_model->get_usuario_mail(
-
 									$cod_usuario),
-
 						'tel' => $this->usuario_model->get_usuario_tel(
-
 								 $cod_usuario),
-
 						'ext' => $this->usuario_model->get_usuario_ext(
-
 								 $cod_usuario),
-
 						'firma' => $this->usuario_model->get_usuario_firma(
-
 								   $cod_usuario));
 
-
-
 		$data['SYS_MetaTitle'] = 'Staff :: Mi Cuenta';
-
 		$data['SYS_metaKeyWords'] = 'sistema cuentas staff n&g';
-
 		$data['SYS_metaDescription'] = 'Perfil Staff';
-
 		$data['subMenu'] = 'staff/cuenta_submenu_view.php';
-
 		$data['modulo'] = 'staff/cuenta_modifica_view.php';
-
 		$data['datos'] = $datos;
-
 		$data['error'] = '';
 
-
-
 		$this->load->view('staff/main_staff_view', $data);
-
 	}
 
 

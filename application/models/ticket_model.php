@@ -450,7 +450,8 @@ class Ticket_model extends CI_Model {
 		return null;	
 	}	
 
-	public function get_tickets_query($query, $fechaIni, $fechaFin, $order = 1)
+	public function get_tickets_query($query, $fechaIni, $fechaFin, $order=1, 
+		$empresa=null, $estado=null)
 	{		
 		switch ($num_order) 		
 		{			
@@ -489,6 +490,12 @@ class Ticket_model extends CI_Model {
 			$cadena_query .= 'A.created BETWEEN \'' . $fechaIni . '\' AND \''
 			. $fechaFin . '\') AND(';
 		}
+
+		if (isset($empresa) && $empresa != '1001') 
+			$cadena_query .= 'B.id_empresa = ' . $empresa . ') AND(';
+
+		if (isset($estado))
+			$cadena_query .= 'A.status = \'' . $estado . '\') AND (';
 
 		$cadena_query .= 'A.ticketID LIKE \'%' . $query . '%\' 				
 			OR A.subject LIKE \'%' . $query . '%\'
