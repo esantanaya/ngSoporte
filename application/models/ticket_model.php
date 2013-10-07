@@ -482,11 +482,11 @@ class Ticket_model extends CI_Model {
 			INNER JOIN us_usuarios B ON A.usuario_id = B.id_usuario
 			INNER JOIN sop_empresas C ON B.id_empresa = C.empresa_id
 			INNER JOIN tk_mensaje D ON A.ticket_id = D.ticket_id
-			INNER JOIN tk_respuesta E ON A.ticket_id = E.ticket_id
+			LEFT JOIN tk_respuesta E ON A.ticket_id = E.ticket_id
 			INNER JOIN us_usuarios F ON A.cod_staff = F.cod_usuario
 			WHERE (';
 
-		if($fechaIni != "" || $fechaFin != "") {
+		if($fechaIni != "" && $fechaFin != "") {
 			$cadena_query .= 'A.created BETWEEN \'' . $fechaIni . '\' AND \''
 			. $fechaFin . '\') AND(';
 		}
@@ -503,7 +503,7 @@ class Ticket_model extends CI_Model {
 			OR E.response LIKE \'%' . $query . '%\')
 			GROUP BY A.ticketID';
 
-		$cadena_query .= ' ORDER BY ' . $order;		
+		$cadena_query .= ' ORDER BY ' . $order;
 		$query = $this->db->query($cadena_query);		
 
 		if ($query->num_rows() > 0)		
@@ -593,21 +593,22 @@ class Ticket_model extends CI_Model {
 		
 	}*/
 
-	public function get_reporte()
+	public function get_reporte($empresa_id = null, $estado = null, 
+		$cod_usuario = null, $fechaIni = null, $fechaFin = null)
 	{
-		/*$this->db->select('sop_empresas.nombre_empresa,
-			tk_ticket.ticketID,
-			tk_ticket.created,
+		$this->db->select('sop_empresas.nombre_empresa AS EMPRESA,
+			tk_ticket.ticketID AS ID,
+			tk_ticket.created CREADO,
 			CONCAT(
 				us_usuarios.nombre_usuario,
-				' ',
+				\' \',
 				us_usuarios.apellido_paterno
-			) AS Reporta,
-			tk_ticket.SUBJECT,
-			tk_mensaje.message AS Detalle,
-			tk_respuesta.created AS FechaRespuesta,
-			tk_respuesta.staff_name,
-			tk_ticket.status', false);
+			) AS REPORTA,
+			tk_ticket.SUBJECT AS ASUNTO,
+			tk_mensaje.message AS DETALLE,
+			tk_respuesta.created AS RESPUESTA,
+			tk_respuesta.staff_name AS STAFF,
+			tk_ticket.status AS ESTADO', false);
 		$this->db->join($this->tablas['usuarios'], 
 			'tk_ticket.usuario_id = us_usuarios.id_usuario');
 		$this->db->join($this->tablas['empresas'], 
@@ -616,52 +617,68 @@ class Ticket_model extends CI_Model {
 			'tk_mensaje.ticket_id = tk_ticket.ticket_id 
 			AND tk_mensaje.msg_id = (SELECT MIN(tk_mensaje.msg_id))');
 		$this->db->join($this->tablas['respuesta'], 
-			'tk_respuesta.ticket_id = tk_ticket.ticket_id');
-		$this->db->group_by('sop_empresas.nombre_empresa,
-			tk_tickets.ticketID,
-			tk_tickets.created,
-			Reporta,
-			tk_tickets.SUBJECT');
-		$this->db->order_by('tk_tickets.created', 'desc');
-		$query = $this->db->get($this->tablas['ticket']);*/
+			'tk_respuesta.ticket_id = tk_ticket.ticket_id', 'left');
 
-		$query = $this->db->query('
-			SELECT
-				em.nombre_empresa AS EMPRESA,
-				tk.ticketID AS TICKET,
-				tk.created AS FECHA,
-				CONCAT(
-					us.nombre_usuario,
-					\' \',
-					us.apellido_paterno
-				) AS REPORTA,
-				tk.SUBJECT AS ASUNTO,
-				ms.message AS DETALLE,
-				rp.created AS FECHA_RESPUESTA,
-				rp.staff_name AS SATFF,
-				tk.status AS ESTADO
-			FROM
-				tk_ticket tk
-			INNER JOIN us_usuarios us ON (
-				tk.usuario_id = us.id_usuario
-			)
-			INNER JOIN sop_empresas em ON (
-				em.empresa_id = us.id_empresa
-			)
-			INNER JOIN tk_mensaje ms ON (ms.ticket_id = tk.ticket_id AND 
-				ms.msg_id = (SELECT MIN(ms.msg_id)))
-			INNER JOIN tk_respuesta rp ON (rp.ticket_id = tk.ticket_id)
-			GROUP BY
-				em.nombre_empresa,
-				tk.ticketID,
-				tk.created,
-				Reporta,
-				tk.SUBJECT
-			ORDER BY tk.created'
-			);
+		if (isset($empresa_id) && $empresa_id != '1001')
+			$this->db->where('sop_empresas.empresa_id', $empresa_id);
+
+		if (isset($estado))
+			$this->db->where('tk_ticket.status', $estado);
+
+		if (isset($cod_usuario) && $cod_usuario != '1001')
+			$this->db->where('tk_ticket.cod_staff', $cod_usuario);
+
+		if ($fechaIni != "" && $fechaFin != "")
+		{
+			$this->db->where('tk_ticket.created >=', $fechaIni);
+			$this->db->where('tk_ticket.created <=', $fechaFin);
+		}
+
+		$this->db->group_by('sop_empresas.nombre_empresa,
+			tk_ticket.ticketID,
+			tk_ticket.created,
+			Reporta,
+			tk_ticket.SUBJECT');
+		$this->db->order_by('tk_ticket.created', 'desc');
+		$query = $this->db->get($this->tablas['ticket']);
+
+		// $query = $this->db->query('
+		// 	SELECT
+		// 		em.nombre_empresa AS EMPRESA,
+		// 		tk.ticketID AS TICKET,
+		// 		tk.created AS FECHA,
+		// 		CONCAT(
+		// 			us.nombre_usuario,
+		// 			\' \',
+		// 			us.apellido_paterno
+		// 		) AS REPORTA,
+		// 		tk.SUBJECT AS ASUNTO,
+		// 		ms.message AS DETALLE,
+		// 		rp.created AS FECHA_RESPUESTA,
+		// 		rp.staff_name AS SATFF,
+		// 		tk.status AS ESTADO
+		// 	FROM
+		// 		tk_ticket tk
+		// 	INNER JOIN us_usuarios us ON (
+		// 		tk.usuario_id = us.id_usuario
+		// 	)
+		// 	INNER JOIN sop_empresas em ON (
+		// 		em.empresa_id = us.id_empresa
+		// 	)
+		// 	INNER JOIN tk_mensaje ms ON (ms.ticket_id = tk.ticket_id AND 
+		// 		ms.msg_id = (SELECT MIN(ms.msg_id)))
+		// 	INNER JOIN tk_respuesta rp ON (rp.ticket_id = tk.ticket_id)
+		// 	GROUP BY
+		// 		em.nombre_empresa,
+		// 		tk.ticketID,
+		// 		tk.created,
+		// 		Reporta,
+		// 		tk.SUBJECT
+		// 	ORDER BY tk.created'
+		// 	);
 
 		if($query->num_rows > 0)
-			return $query->result_array();
+			return $query;
 
 		return null;
 	}

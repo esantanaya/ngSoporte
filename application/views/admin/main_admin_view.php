@@ -5,6 +5,8 @@
 		<meta name="keywords" content="<?=$SYS_metaKeyWords?>">
         <meta name="description" content="><?=$SYS_metaDescription?>">
 		<link rel="stylesheet" href="<?=base_url()?>css/admin.css" type="text/css">
+		<link rel="stylesheet" href="<?=base_url()?>css/smoothness/jquery-ui.min.css" type="text/css">
+		<link rel="stylesheet" href="<?=base_url()?>css/smoothness/jquery.ui.theme.css" type="text/css">
 		<link rel="shortcut icon" href="<?=base_url()?>imagenes/iconos/logo.png">
 		<script src="<?=base_url()?>js/jQuery.js" type="text/javascript">
 		</script>

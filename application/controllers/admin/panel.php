@@ -159,8 +159,10 @@ class Panel extends CI_Controller {
 		if(!isset($_POST['soporte']))
 			$soporteEmpresa = 0;
 
-		$this->form_validation->set_rules('nombre_empresa', 'Nombre', 'trim|required|xss_clean');
-		$this->form_validation->set_rules('correo_empresa', 'Correo', 'trim|xss_clean|valid_email');
+		$this->form_validation->set_rules('nombre_empresa', 'Nombre', 
+			'trim|required|xss_clean');
+		$this->form_validation->set_rules('correo_empresa', 'Correo', 
+			'trim|xss_clean|valid_email');
 		$this->form_validation->set_message('required', 
 			'Ingrese el "%s" por favor');
 		$this->form_validation->set_message('xss_clean', 
@@ -240,21 +242,154 @@ class Panel extends CI_Controller {
 
 	public function reporte()
 	{
-		$listado = $this->ticket_model->get_reporte();
+		
+		$data['SYS_MetaTitle'] = 'Tickets :: Reporte';
+		$data['SYS_metaKeyWords'] = 'sistema ticket n&g';
+		$data['SYS_metaDescription'] = 'Reportes del sistema';
+		$data['subMenu'] = 'admin/submenu_panel_view';
+		$data['modulo'] = 'admin/reporte_empresas_view';
+		$data['encabezado'] = 'REPORTES';
 
-		$tmpl = array('table_open' => '<table border="0" cellpadding="4"
+		$empresas = $this->usuario_model->get_empresas();
+
+		foreach ($empresas as $depas => $valor) 
+		{
+			$select[$valor['empresa_id']] = $valor['nombre_empresa'];
+		}
+
+		$select['1001'] = 'TODAS';
+		$data['empresas'] = $select;
+
+		$estados = array(
+				'1' => 'TODOS',
+				'2' => 'abierto',
+				'3' => 'esperando',
+				'4' => 'cerrado'
+			);
+
+		$data['estados'] = $estados;
+		$selectUsu['1001'] = 'TODOS';
+
+		$usuarios = $this->usuario_model->get_staff_asignados();
+
+		foreach ($usuarios as $key => $value) 
+		{
+			if (strlen($value['cod_staff'])>0)
+				$selectUsu[$value['cod_staff']] = $value['cod_staff'];
+		}
+
+		$data['usuarios'] = $selectUsu;
+
+		$this->load->view('admin/main_admin_view', $data);
+	}
+
+	public function reporte_do()
+	{
+		$empresa = $this->input->post('empresas');
+		$estado = $this->input->post('estados');
+		$usuario = $this->input->post('usuarios');
+		$fechaIni = $this->input->post('fechaInicial');
+		$fechaFin = $this->input->post('fechaFinal');
+
+		switch ($estado) 
+		{
+			case 2:
+				$estado = 'abierto';
+				break;
+			case 3:
+				$estado = 'esperando';
+				break;
+			case 4:
+				$estado = 'cerrado';
+				break;
+			default:
+				$estado = null;
+				break;
+		}
+
+		// var_dump($empresa, $estado, $usuario, $fechaIni, $fechaFin);
+
+		$listado = $this->ticket_model->get_reporte($empresa, $estado, 
+			$usuario, $fechaIni, $fechaFin);
+		// echo '<br>';
+		// var_dump($listado->result_array()[0]["EMPRESA"]);
+
+		if (isset($listado))
+			$this->get_reporte($listado->result_array());
+
+		/*$tmpl = array('table_open' => '<table border="0" cellpadding="4"
 				cellspacing="0" class="listado_table">');
-		$this->table->set_template($tmpl);
+		$this->table->set_template($tmpl);*/
 
 		$data['SYS_MetaTitle'] = 'Tickets :: Reporte';
 		$data['SYS_metaKeyWords'] = 'sistema ticket n&g';
-		$data['SYS_metaDescription'] = 'Reporte Empresas del sistema';
+		$data['SYS_metaDescription'] = 'Reportes del sistema';
 		$data['subMenu'] = 'admin/submenu_panel_view';
-		$data['modulo'] = 'admin/reporte_empresas';
-		$data['encabezado'] = 'REPORTE';
-		$data['listado'] = $listado;
+		$data['modulo'] = 'admin/reporte_empresas_view';
+		$data['encabezado'] = 'REPORTES';
+		// $data['listado'] = $listado;
 
 		$this->load->view('admin/main_admin_view', $data);
+	}
+
+	private function get_reporte($arreglo)
+	{
+		set_include_path(base_url());
+		require_once  'Classes/PHPExcel.php';
+
+		$objPHPExcel = new PHPExcel();
+
+		$objPHPExcel->getProperties()->setCreator("Sistema de Tickets N&G")
+							 ->setLastModifiedBy("Sistema de Tickets N&G")
+							 ->setTitle("Reporte")
+							 ->setSubject("Reporte")
+							 ->setDescription("Reporte")
+							 ->setKeywords("reporte")
+							 ->setCategory("Reporte");
+
+		$objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue('A1', 'EMPRESA')
+					->setCellValue('B1', 'ID')
+					->setCellValue('C1', 'CREACION')
+					->setCellValue('D1', 'REPORTA')
+					->setCellValue('E1', 'ASUNTO')
+					->setCellValue('F1', 'DETALLE')
+					->setCellValue('G1', 'RESPUESTA')
+					->setCellValue('H1', 'ATIENDE')
+					->setCellValue('I1', 'ESTADO');
+
+		$objPHPExcel->getActiveSheet()->fromArray($arreglo, null, 'A2');
+
+		$objPHPExcel->getActiveSheet()->setAutoFilter($objPHPExcel->
+			getActiveSheet()->calculateWorksheetDimension());
+
+		$objPHPExcel->getActiveSheet()->getColumnDimension('A')->
+			setWidth(13.29);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('B')->
+			setWidth(6.29);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('C')->
+			setWidth(17.43);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('D')->
+			setWidth(21.57);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('E')->
+			setWidth(24.29);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('F')->
+			setWidth(24.29);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('G')->
+			setWidth(17.43);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('H')->
+			setWidth(15.14);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('Is ')->
+			setWidth(9.57);
+
+		header('Content-Type: application/vnd.openxmlformats-officedocument
+			.spreadsheetml.sheet');
+		header('Content-Disposition: attachment;filename="reporte.xlsx"');
+		header('Cache-Control: max-age=0');
+
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 
+			'Excel2007');
+		$objWriter->save('php://output');
 	}
 }
 

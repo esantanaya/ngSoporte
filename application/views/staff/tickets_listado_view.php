@@ -35,7 +35,7 @@
 				echo form_dropdown('empresas', $empresas, '1001');
 			?>
 		</div>
-		<label for="empresas" class="izquierda labelBA">Estado:</label>
+		<label for="estados" class="izquierda labelBA">Estado:</label>
 		<div class="select selectBA">
 			<?php 
 				echo form_dropdown('estados', $estados, '1');

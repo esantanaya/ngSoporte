@@ -58,48 +58,43 @@ class Usuario_model extends CI_Model {
 		return $this->db->insert_id();
 	}
 
-	public function get_usuario_tipo($tipo)
-
+	public function insert_horario_usuario($id_usuario)
 	{
+		$data['id_staff'] = $id_usuario;
+		$data['id_horario'] = 1;
+		$this->db->insert($this->tablas['empHorarios'], $data);
 
+		return $this->db->insert_id();
+	}
+
+	public function get_usuario_tipo($tipo)
+	{
 		$this->db->where('id_tipo_usuario', $tipo);
-
 		$query = $this->db->get($this->tablas['usuarios'], 1);
 
 		if ($query->num_rows() > 0) 
-
 		{
 
 		 	return $query->result();
-
-		 }
+		}
 
 		 return null; 
-
 	}
 
 	public function get_usuario_clave($clave)
-
 	{
-
 		$this->db->where('cod_usuario', $clave);
-
 		$query = $this->db->get($this->tablas['usuarios'], 1);
 
 		if ($query->num_rows() > 0)
-
 		{
-
 			$row = $query->row();
-
 			$data = $row->cod_usuario;
 
 		 	return $data;
-
 		}
 
 		return null;
-
 	}
 
 	public function update_usuario_id($id, $valores)
@@ -173,27 +168,19 @@ class Usuario_model extends CI_Model {
 	}
 
 	public function delete_usuario($id)
-
 	{
-
 		$this->db->where('id_usuario', $id);
-
 		$query = $this->db->get($this->tablas['usuarios']);
 
 		if ($query->num_rows() >= 1)
-
 		{
-
 			$this->db->where('id_usuario', $id);
-
 			$this->db->delete($this->tablas['usuarios']);
 
 			return true;
-
 		}
 
 		return false;
-
 	}
 
 	public function get_miembros_staff($dept)
@@ -212,6 +199,17 @@ class Usuario_model extends CI_Model {
 		$staff = $this->db->get($this->tablas['usuarios']);
 
 		return $staff;
+	}
+
+	public function get_staff_asignados()
+	{
+		$this->db->select('cod_staff, cod_staff');
+		$query = $this->db->get($this->tablas['ticket']);
+
+		if ($query->num_rows() > 0)
+			return $query->result_array();
+
+		return null;
 	}
 
 	public function get_usuario_nombre($cod_usuario, $id_usuario = null)
@@ -238,45 +236,29 @@ class Usuario_model extends CI_Model {
 	}
 
 	public function get_usuario_mail($cod_usuario, $id_usuario = null)
-
 	{
 
-		if ($id_usuario == null)
-
+		if (!isset($id_usuario))
 		{
-
 			$this->db->where('cod_usuario', $cod_usuario);
-
 		}
-
-		elseif ($cod_usuario == null)
-
+		elseif (!isset($cod_usuario))
 		{
-
 			$this->db->where('id_usuario', $id_usuario);
-
 		}
-
-		
 
 		$this->db->select('email_usuario');
-
 		$query = $this->db->get($this->tablas['usuarios'], 1);
 
 		if ($query->num_rows() > 0)
-
 		{
-
 			$row = $query->row();
-
 			$mail = $row->email_usuario;
 
 			return $mail;
-
 		}
 
 		return null;
-
 	}
 
 	public function get_usuario_tel($cod_usuario, $id_usuario = null)

@@ -417,12 +417,12 @@ class Usuarios extends CI_Controller {
 				'visible' => $listado,
 				'vacacion' => $vacacion,
 				'creado' => mdate($date_string)
-
 			);
 
 			$id_usuario = $this->usuario_model->insert_usuario($data);
+			$id_horario = $this->usuario_model->insert_horario_usuario(
+				$id_usuario);
 			$id_usuario = 'Se cre&oacute; el usuario con el ID ' . $id_usuario;
-			
 			$this->nuevo(null, null, $id_usuario);
 		}
 	}
