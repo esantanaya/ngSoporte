@@ -44,6 +44,7 @@ class Panel extends CI_Controller {
 		$data['modulo'] = 'admin/lista_empresas_view';
 		$data['encabezado'] = 'EMPRESAS';
 		$data['listado'] = $listado;
+		$data['js'] = array('jQuery'); 
 
 		$this->load->view('admin/main_admin_view', $data);
 	}
@@ -60,6 +61,7 @@ class Panel extends CI_Controller {
 		$data['checkActiva'] = 'checked';
 		$data['checkSoporte'] = 'checked';
 		$data['encabezado'] = 'NUEVA EMPRESA';
+		$data['js'] = array('jQuery'); 
 
 		if (isset($error_nombre))
 			$data['errorNombre'] = $error_nombre;
@@ -237,6 +239,8 @@ class Panel extends CI_Controller {
 		if (isset($mensaje))
 			$data['id_empresa'] = $mensaje;
 
+		$data['js'] = array('jQuery');
+
 		$this->load->view('admin/main_admin_view', $data);
 	}
 
@@ -279,6 +283,7 @@ class Panel extends CI_Controller {
 		}
 
 		$data['usuarios'] = $selectUsu;
+		$data['js'] = array('jQuery', 'jQueryUI');
 
 		$this->load->view('admin/main_admin_view', $data);
 	}

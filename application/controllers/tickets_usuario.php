@@ -52,12 +52,15 @@ class Tickets_usuario extends CI_Controller {
 		$data['error'] = '';
 		$data['errorGeneral'] = '';
 		$data['select'] = $select;
+		$data['js'] = array('jQuery');
 
 		$this->load->view('public/main_tickets_view', $data);
 	}
 
 	public function crea_ticket()
 	{
+		$this->load->model('conf_model');
+
 		$envio = false;
 
 		if ($_FILES['adjunto']['name'] != '') 
@@ -94,12 +97,23 @@ class Tickets_usuario extends CI_Controller {
 		$ticket['ticketID'] = $this->ticket_model->create_ticket_usuario();
 		$ticket['usuario_id'] = $usuario_id;
 
+		$horarios = $this->conf_model->get_horario();
+		$ini = $horarios[0]['horario_soporte_inicio'];
+		$fin = $horarios[0]['horario_soporte_final'];
+		$hora = getFechaActualFormato();
+
+		$esTiempo = revisaEntreTiempo($ini, $fin, $hora);
+
+		if (!$esTiempo)
+			$archivo = array('error' => 'Horario: ' . $ini . ' - ' . $fin);
+
 		$miembros_staff = $this->usuario_model->get_miembros_staff($dept);
 
 		switch ($miembros_staff->num_rows()) 
 		{
 			case 0:	
-				$archivo = array('error' => 'Horario: 08:00 - 20:00');
+				$ticket['cod_staff'] = 'admin';
+
 				break;
 
 			case 1:
@@ -338,9 +352,7 @@ class Tickets_usuario extends CI_Controller {
 
 	public function agrega_mensaje()
 	{
-		$date_string = "DATE_W3C";
-		$time = time();
-		$date_string = standard_date($date_string, $time);
+		$date_string = getFechaActualFormato();
 
 		$mensaje = $this->input->post('mensaje');
 		$ticketID = $this->input->post('ticketID');

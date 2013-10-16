@@ -97,7 +97,7 @@ class Auth_model extends CI_Model {
 		$this->db->where('cod_usuario', $codUsuario);
 		$this->db->or_where('email_usuario', $codUsuario);
 		$this->db->join($this->tablas['empresas'], 'id_empresa = empresa_id');
-		$this->db->limit(1);
+		// $this->db->limit(1);
 		$query = $this->db->get($this->tablas['usuarios']);
 
 		if ($query->num_rows() == 1) 
@@ -123,7 +123,7 @@ class Auth_model extends CI_Model {
 					//si todo va bien, el usuario accede
 						$this->iniciarsesion($result, $recordar);
 						return 1;
-						//wwelcome
+						//welcome
 						break;
 				}
 			} 

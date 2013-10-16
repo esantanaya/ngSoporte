@@ -104,6 +104,6 @@
 </div>
 <script type="text/javascript">
 	$('.boton').last().on('click', function(event) {
-		document.location.href = '<?=base_url()?>admin/panel'
+		document.location.href = '<?=base_url()?>admin/panel/listaEmpresas'
 	});
 </script>

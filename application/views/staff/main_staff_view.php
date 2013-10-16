@@ -8,10 +8,18 @@
 		<link rel="stylesheet" href="<?=base_url()?>css/smoothness/jquery-ui.min.css" type="text/css">
 		<link rel="stylesheet" href="<?=base_url()?>css/smoothness/jquery.ui.theme.css" type="text/css">
 		<link rel="shortcut icon" href="<?=base_url()?>imagenes/iconos/logo.png">
-		<script src="<?=base_url()?>js/jQuery.js" type="text/javascript">
+		<!--<script src="<?=base_url()?>js/jQuery.js" type="text/javascript">
 		</script>
 		<script src="<?=base_url()?>js/jQueryUI.js" type="text/javascript">
-		</script>
+		</script>-->
+		<?php
+        //js dinámicos
+        if(isset($js)){
+            for($i=0;$i<count($js);$i++){
+                echo "<script type=\"text/javascript\" src=\"" . base_url() . "js/" . $js[$i] . ".js\"></script>\n";                
+            }
+        }
+        ?>
 	</head>
 	<body>
 		<div id="wrapper">

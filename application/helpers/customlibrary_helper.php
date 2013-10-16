@@ -461,3 +461,14 @@ if (!function_exists('getFechaActualFormato'))
 		return standard_date($date_string, $time);
 	}
 }
+
+if (!function_exists('revisaEntreTiempo'))
+{
+	function revisaEntreTiempo($ini, $fin, $actual)
+	{
+		if ($actual >= $ini && $actual <= $fin)
+			return true;
+
+		return false;
+	}
+}

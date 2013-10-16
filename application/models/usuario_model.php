@@ -73,10 +73,7 @@ class Usuario_model extends CI_Model {
 		$query = $this->db->get($this->tablas['usuarios'], 1);
 
 		if ($query->num_rows() > 0) 
-		{
-
 		 	return $query->result();
-		}
 
 		 return null; 
 	}

@@ -60,6 +60,7 @@ class Tickets extends CI_Controller {
 		$data['modulo'] = 'staff/tickets_listado_view.php';
 		$data['listado'] = $listado;
 		$data['error'] = '';
+		$data['js'] = array('jQuery', 'jQueryUI'); 
 
 		$empresas = $this->usuario_model->get_empresas();
 
@@ -277,6 +278,7 @@ class Tickets extends CI_Controller {
 
 		$data['miembros'] = $lista_miembros;
 		$data['departamentos'] = $select;
+		$data['js'] = array('jQuery'); 
 
 		$this->load->view('staff/main_staff_view', $data);
 	}
