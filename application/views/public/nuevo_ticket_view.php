@@ -1,7 +1,12 @@
 <script>
-$(function() {
+$(document).ready(function() {
 	$("#btnCancelar").click(function() {
 		document.location.href='<?=base_url()?>';
+	});
+	$('form').submit(function(){
+		$(':submit', this).click(function() {
+	        return false;
+	    });
 	});
 });
 </script>

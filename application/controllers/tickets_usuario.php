@@ -127,6 +127,7 @@ class Tickets_usuario extends CI_Controller {
 				$ticket['cod_staff'] = $this->ticket_model->get_elegido($dept);
 				break;
 		}
+		$ticket['cod_staff'] = $this->get_asignado($dept);
 
 		if (! $this->form_validation->run() || is_array($archivo) || 
 			$estado_empresa == 0)
@@ -146,7 +147,7 @@ class Tickets_usuario extends CI_Controller {
 			
 			if (is_array($archivo))
 			{
-				$data['error'] = $archivo['error'];
+				$data['errorGeneral'] = $archivo['error'];
 			}
 			elseif ($estado_empresa == 0)
 			{
@@ -215,6 +216,27 @@ class Tickets_usuario extends CI_Controller {
 		return true;
 	}
 
+	public function get_asignado($dept)
+	{
+		$miembros_staff = $this->usuario_model->get_miembros_staff($dept);
+
+		switch ($miembros_staff->num_rows()) 
+		{
+			case 0:	
+				return 'admin';
+
+			case 1:
+				$row = $miembros_staff->row();
+				$otro = $row->cod_usuario;
+
+				return $otro;
+			
+			default:
+				$elegido = $this->ticket_model->get_elegido($dept);
+				return $elegido;
+		}
+	}
+
 	public function edita_ticket()
 	{
 
@@ -245,7 +267,6 @@ class Tickets_usuario extends CI_Controller {
 		}
 		else
 		{
-
 			$this->entra_edita_ticket($ticketID);
 		}
 	}
@@ -435,6 +456,19 @@ class Tickets_usuario extends CI_Controller {
 		$respuesta = true;
 		$cod_staff = $this->ticket_model->get_cod_staff_ticket($ticketID);
 
+		if(! $this->check_estados($cod_staff))
+		{
+			$staff = $this->get_asignado(1);
+			$ticket_id = $this->ticket_model->get_ticket_ticketID($ticketID);
+
+			$reasignacion = array('id_ticket' => $ticket_id,
+			  'cod_usuario' => $staff, 'status' => "abierto", 
+			  'realizado' => $date_string);
+
+			$this->ticket_model->reasigna_ticket($ticketID, $staff);
+			$this->ticket_model->insert_bitacora_asignacion($reasignacion);
+		}
+
 		$this->send_mail_usuario($usuario_id, $cod_staff, $ticketID, 
 								 $respuesta);
 		$this->send_mail_staff( $cod_staff, $usuario_id, $ticketID, 
@@ -486,8 +520,6 @@ class Tickets_usuario extends CI_Controller {
 		$this->load->view('public/main_tickets_view', $data);
 	}
 
-
-
 	public function busqueda()
 	{
 		$query = $this->input->post('query');
@@ -519,8 +551,47 @@ class Tickets_usuario extends CI_Controller {
 
 	public function reabre($ticketID)
 	{
+		$date_string = getFechaActualFormato();
+		$status = 'abierto';
+		$staff = $this->ticket_model->get_cod_staff_ticket($ticketID);
+		$esActivo = $this->check_estados($staff);
+
+		if (!$esActivo)
+		{
+			$staff = $this->get_asignado(1);
+			$ticket_id = $this->ticket_model->get_ticket_ticketID($ticketID);
+
+			$reasignacion = array('id_ticket' => $ticket_id,
+			  'cod_usuario' => $staff, 'status' => $status, 
+			  'realizado' => $date_string);
+
+			$this->ticket_model->reasigna_ticket($ticketID, $staff);
+			$this->ticket_model->insert_bitacora_asignacion($reasignacion);
+		}
+
 		$this->ticket_model->cambia_estado_ticket($ticketID, 'abierto');
 		$this->entra_edita_ticket($ticketID);
+	}
+
+	public function check_estados($cod_staff)
+	{
+		$estados = $this->usuario_model->get_staff_estados($cod_staff);
+		$hora = getFechaActualFormato();
+		$hora = explode("T", $hora);
+		$hora = rtrim($hora[1], "Q");
+	 	//die(var_dump($estados, $hora));
+	 	//die(var_dump(strtotime($estados->entrada_vesp)));
+		if ($estados->vacacion == 1)
+			return false;
+
+		if ($estados->activo == 0)
+			return false;
+		
+		if (strtotime($hora) > strtotime($estados->salida_mat) && strtotime($hora) < strtotime($estados->entrada_ves) || 
+			$estados->corrido == 1)
+			return false;
+
+		return true;
 	}
 
 	public function entra_edita_ticket($ticketID, $error = null)
@@ -650,7 +721,6 @@ class Tickets_usuario extends CI_Controller {
 			if ($value['mensaje_staff'])
 				$this->table->add_row($value['mensaje_staff']);
 		}
-		#var_dump($arreglo_historial);
 
 		$data['SYS_MetaTitle'] = 'Tickets :: Estado';
 		$data['SYS_metaKeyWords'] = 'sistema ticket n&g';

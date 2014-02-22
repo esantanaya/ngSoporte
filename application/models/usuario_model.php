@@ -209,6 +209,25 @@ class Usuario_model extends CI_Model {
 		return null;
 	}
 
+	public function get_staff_estados($cod_staff)
+	{
+		$this->db->select('vacacion, activo, entrada_mat, salida_mat, entrada_ves, salida_ves, corrido');
+		$this->db->where('cod_usuario', $cod_staff);
+		$this->db->join($this->tablas['empHorarios'], $this->tablas['usuarios'].'.id_usuario = '.$this->tablas['empHorarios'].'.id_staff');
+		$this->db->join($this->tablas['horarios'], $this->tablas['empHorarios'].'.id_horario = '.$this->tablas['horarios'].'.id_horario');
+		$query = $this->db->get($this->tablas['usuarios'], 1);
+
+		if ($query->num_rows() > 0)
+		{
+			 $row = $query->row();
+
+			 return $row;
+		}
+
+		return null;
+
+	}
+
 	public function get_usuario_nombre($cod_usuario, $id_usuario = null)
 	{
 		if ($id_usuario == null)
