@@ -14,10 +14,10 @@
 	<table cellspacing="0" cellpadding="0" border="0" class="ticket_form">
 		<tbody>
 			<tr>
-				<td colspan="2" class="header">Cuenta de Usuario</td>
+				<th colspan="2" class="header">Cuenta de Usuario</td>
 			</tr>
 			<tr>
-				<td colspan="2" class="subHeader">Informaci&oacute;n</td>
+				<th colspan="2" class="subHeader">Informaci&oacute;n</td>
 			</tr>
 			<tr>
 				<td class="table_title">Usuario:</td>
@@ -126,37 +126,38 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="table_title">Forzar cambio de contrase&ntilde;a:</td>
+				<td class="table_title"><label for="cambia_pass">Forzar cambio de contrase&ntilde;a:</td></label>
 				<td class="centrado">
-					<input type="checkbox" name="cambia_pass" value="Requerir cambio de contrase&ntilde;a" checked>
+					<input type="checkbox" name="cambia_pass" id="cambia_pass" value="Requerir cambio de contrase&ntilde;a" checked>
+					<label for="cambia_pass">&nbsp;</label>
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2" class="header">Permisos y configuraci&oacute;n de la cuenta</td>
+				<th colspan="2" class="header">Permisos y configuraci&oacute;n de la cuenta</td>
 			</tr>
 			<tr>
-				<td colspan="2" class="subHeader">Permisos</td>
+				<th colspan="2" class="subHeader">Permisos</td>
 			</tr>
 			<tr>
 				<td class="table_title">Estado:</td>
 				<td class="centrado">
 					<input type="radio" class="circulo" name="activo" id="activo" value="activo" checked>
-					<strong>Activo</strong>
+					<label for="activo"><strong>Activo</strong></label>
 					&nbsp;
 					<input type="radio" class="circulo" name="activo" id="bloqueado" value="bloqueado">
-					<strong>Bloqueado</strong>
+					<label for="bloqueado"><strong>Bloqueado</strong></label>
 				</td>
 			</tr>
 			<tr>
 				<td class="table_title">Listado:</td>
 				<td>
-					<input type="checkbox" name="listado" checked> El usuario es mostrado en el directorio
+					<input type="checkbox" name="listado" id="listado_check" checked> <label for="listado_check">El usuario es mostrado en el directorio</label>
 				</td>
 			</tr>
 			<tr>
-				<td class="table_title curva_derecha">Modo Inactivo</td>
+				<td class="table_title curva_izquierda">Modo Inactivo</td>
 				<td>
-					<input type="checkbox" name="vacacion"> El usuario no recibirá asignación
+					<input type="checkbox" name="vacacion" id="vacacion"> <label for="vacacion">El usuario no recibirá asignación</label>
 				</td>
 			</tr>
 			<tr>

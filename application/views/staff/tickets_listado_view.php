@@ -29,6 +29,18 @@
 	<label for="query">Query:</label>
 	<input type="text" class="texto" name="query" id="query">
 	<div id="rangoFechas">
+		<label for="empresas" class="izquierda labelBA">Empresa:</label>
+		<div class="select izquierda" >
+			<?php 
+				echo form_dropdown('empresas', $empresas, '1001');
+			?>
+		</div>
+		<label for="estados" class="izquierda labelBA">Estado:</label>
+		<div class="select selectBA">
+			<?php 
+				echo form_dropdown('estados', $estados, '1');
+			?>
+		</div>
   		<label for="fechaInicial">Fecha Inicial:</label>
   		<input class="fecha texto" id="fechaInicial" name="fechaInicial" type="text">
   		<label for="fechaFinal">Fecha Final:</label>

@@ -5,7 +5,25 @@
 		<meta name="keywords" content="<?=$SYS_metaKeyWords?>">
         <meta name="description" content="><?=$SYS_metaDescription?>">
 		<link rel="stylesheet" href="<?=base_url()?>css/admin.css" type="text/css">
+		<link rel="stylesheet" href="<?=base_url()?>css/smoothness/jquery-ui.min.css" type="text/css">
+		<link rel="stylesheet" href="<?=base_url()?>css/smoothness/jquery.ui.theme.css" type="text/css">
 		<link rel="shortcut icon" href="<?=base_url()?>imagenes/iconos/logo.png">
+		<?php
+        //css dinámicos
+        if(isset($css)){
+            for($i=0;$i<count($css);$i++){
+                echo "<link rel=\"stylesheet\" href=\"" . base_url() . "css/" . $css[$i] . ".css\">\n";                
+            }
+        }
+        ?>
+		<?php
+        //js dinámicos
+        if(isset($js)){
+            for($i=0;$i<count($js);$i++){
+                echo "<script type=\"text/javascript\" src=\"" . base_url() . "js/" . $js[$i] . ".js\"></script>\n";                
+            }
+        }
+        ?>
 	</head>
 	<body>
 		<div id="wrapper">
@@ -41,8 +59,8 @@
 			</div>
 			<div id="menu">
 				<ul>
-					<li><a href="<?=base_url()?>admin/panel">PANEL</a></li>
-					<li><a href="#">CONFIGURACI&Oacute;N</a></li>
+					<li><a href="<?=base_url()?>admin/panel/listaEmpresas">PANEL</a></li>
+					<li><a href="<?=base_url()?>admin/config">CONFIGURACI&Oacute;N</a></li>
 					<li><a href="<?=base_url()?>admin/usuarios/lista">USUARIOS</a></li>
 				</ul>
 			</div>

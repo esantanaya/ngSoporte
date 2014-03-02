@@ -23,7 +23,7 @@ $config['tablas']['empresas'] = 'sop_empresas';
 $config['tablas']['asignaciones'] = 'bt_asignaciones';
 $config['tablas']['horarios'] = 'sop_horarios';
 $config['tablas']['empHorarios'] = 'us_horario';
-
+$config['tablas']['config'] = 'sop_config';
 
 /* End of file tables.php */
 /* Location: ./application/config/tables.php */

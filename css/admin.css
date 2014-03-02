@@ -205,35 +205,67 @@ table {
 	border-bottom-right-radius: 10px;
 }
 
-table.ticket_form td.header {
+th.header {
 	background-color: #A6A4A4;
 	color: white;
 	text-transform: uppercase;
+	text-align: left;
 }
 
-table.ticket_form td.subHeader {
+th.subHeader {
 	background-color: #313131;
 	color: white;
+	text-align: left;
 }
 
 table.ticket_form div.alarga_celda {
 	padding-right: 228px;
 }
 
-table.ticket_form td.table_title {
+td.table_title {
 	background-color: #e1dddd;
 	width: 214px;
+	vertical-align: top;
 }
 
-table.ticket_form input.circulo {
-	background: url('../imagenes/circulo.png') no-repeat;
+input[type=radio]:not(old),
+input[type=checkbox]:not(old) {
 	width: 21px;
 	height: 23px;
 	vertical-align: middle;
+	opacity: 0;
 }
 
-.curva_derecha {
+input[type=checkbox]:not(old) + label {
+	background: url("../imagenes/check.png") no-repeat 0 0;
+	display: inline-block;
+	margin-left: -25px;
+	padding-left: 25px;
+	line-height: 25px;
+}
+
+input[type=radio]:not(old) + label {
+	background: url("../imagenes/circulo.png") no-repeat 0 0;
+	display: inline-block;
+	margin-left: -25px;
+	padding-left: 25px;
+	line-height: 25px;
+}
+
+input[type=checkbox]:not(old):checked + label {
+	background: url("../imagenes/check_selected.png") no-repeat 1 2;
+}
+
+input[type=radio]:not(old):checked + label {
+	background: url("../imagenes/circulo_select.png") no-repeat 0 0;
+}
+
+.curva_izquierda {
 	border-bottom-left-radius: 10px;
+}
+
+.izquierda {
+	float: left;
 }
 
 .error {
@@ -330,9 +362,7 @@ a.nuevo_cliente {
 }
 
 /*
-
 * LISTADO TICKETS STAFF
-
 */
 
 .listado_table th {
@@ -374,10 +404,17 @@ a.atrasado {
 	background: transparent url('../imagenes/iconos/tickets/mistickets.png') center top no-repeat;
 }
 
+.selectBA {
+	margin-left: 91px;
+}
+
+.labelBA {
+	margin-top: 9px;
+	margin-right: 5px;
+}
+
 /*
-
 *VISTA TICKET
-
 */
 
 #tabla_estado p {
@@ -458,9 +495,7 @@ div#respuesta {
 }
 
 /*
-
 * CUENTAS
-
 */
 
 a.perfil {
@@ -475,7 +510,8 @@ a.pref {
 
 a.pass {
 	width: 167px !important;
-	background: url("../imagenes/iconos/myaccount/ic_changepasswords.png") no-repeat scroll center top transparent;
+	background: url("../imagenes/iconos/myaccount/ic_changepasswords.png") 
+		no-repeat scroll center top transparent;
 }
 
 table.noAdorno {
@@ -500,6 +536,25 @@ td.titulo {
 
 #formPass {
 	margin-left: 10px;
+}
+
+#contentPreferencias {
+	width: 90%;
+	margin-bottom: 25px;
+}
+
+/*
+Empresas
+*/
+
+.contenedorBotones {
+	padding-left: 39;
+	width: 100%;
+	height: auto;
+}
+
+#tabla_empresa td, th {
+padding-left: 5px;
 }
 
 /*

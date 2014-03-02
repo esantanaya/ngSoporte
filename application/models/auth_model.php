@@ -94,11 +94,12 @@ class Auth_model extends CI_Model {
 	 */
 	function login($codUsuario, $contrasenaUsuario, $recordar) 
 	{
-		
 		$this->db->where('cod_usuario', $codUsuario);
 		$this->db->or_where('email_usuario', $codUsuario);
-		$this->db->limit(1);
+		$this->db->join($this->tablas['empresas'], 'id_empresa = empresa_id');
+		// $this->db->limit(1);
 		$query = $this->db->get($this->tablas['usuarios']);
+
 		if ($query->num_rows() == 1) 
 		{
 			//si tenemos UN SOLO RESULTADO, es que el usuario existe
@@ -106,7 +107,7 @@ class Auth_model extends CI_Model {
 			$saltdb = substr($result->pass_usuario, 0, $this->saltLength);
 			//recuperamos el salt del password de la DB
 			if ($this->hashPassword($contrasenaUsuario, $saltdb) == 
-				$result->pass_usuario)
+				$result->pass_usuario && $result->activa == 1) 
 			 {
 				switch($result->activo) 
 				{
@@ -122,7 +123,7 @@ class Auth_model extends CI_Model {
 					//si todo va bien, el usuario accede
 						$this->iniciarsesion($result, $recordar);
 						return 1;
-						//wwelcome
+						//welcome
 						break;
 				}
 			} 

@@ -15,10 +15,10 @@
 	<table cellspacing="0" cellpadding="0" border="0" class="ticket_form">
 		<tbody>
 			<tr>
-				<td colspan="2" class="header">Cuenta de Usuario</td>
+				<th colspan="2" class="header">Cuenta de Usuario</td>
 			</tr>
 			<tr>
-				<td colspan="2" class="subHeader">Informaci&oacute;n</td>
+				<th colspan="2" class="subHeader">Informaci&oacute;n</td>
 			</tr>
 			<tr>
 				<td class="table_title">Departamento:</td>
@@ -118,35 +118,36 @@
 			<tr>
 				<td class="table_title">Forzar cambio de contrase&ntilde;a:</td>
 				<td class="centrado">
-					<input type="checkbox" name="cambia_pass" <?=$cambioPass?>>
+					<input type="checkbox" name="cambia_pass" id="cambia_pass" <?=$cambioPass?>>
+					<label for="cambia_pass">&nbsp;</label>
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2" class="header">Permisos y configuraci&oacute;n de la cuenta</td>
+				<th colspan="2" class="header">Permisos y configuraci&oacute;n de la cuenta</td>
 			</tr>
 			<tr>
-				<td colspan="2" class="subHeader">Permisos</td>
+				<th colspan="2" class="subHeader">Permisos</td>
 			</tr>
 			<tr>
 				<td class="table_title">Estado:</td>
 				<td class="centrado">
 					<input type="radio" class="circulo" name="activo" id="activo" value="activo" <?=$activoCheck?>>
-					<strong>Activo</strong>
+					<label for="activo"><strong>Activo</strong></label>
 					&nbsp;
 					<input type="radio" class="circulo" name="activo" id="bloqueado" value="bloqueado" <?=$bloqueadoCheck?>>
-					<strong>Bloqueado</strong>
+					<label for="bloqueado"><strong>Bloqueado</strong></label>
 				</td>
 			</tr>
 			<tr>
 				<td class="table_title">Listado:</td>
 				<td>
-					<input type="checkbox" name="listado" <?=$listadoCheck?>> El usuario es mostrado en el directorio
+					<input type="checkbox" name="listado" id="listado_check" <?=$listado_checkCheck?>> <label for="listado_check">El usuario es mostrado en el directorio</label>
 				</td>
 			</tr>
 			<tr>
-				<td class="table_title curva_derecha">Modo Inactivo</td>
+				<td class="table_title curva_izquierda">Modo Inactivo</td>
 				<td>
-					<input type="checkbox" name="vacacion" <?=$vacacionCheck?>> El usuario no recibirá asignación
+					<input type="checkbox" name="vacacion" id="vacacion" <?=$vacacionCheck?>> <label for="vacacion">El usuario no recibirá asignación</label>
 				</td>
 			</tr>
 			<tr>
