@@ -22,7 +22,17 @@ class Conf_model extends CI_Model {
 
 	public function update_horario($data)
 	{
-		$this->db->update($this->tablas['config'], $data);
+		$this->db->select();
+		$query = $this->db->get($this->tablas['config']);
+
+		if ($query->num_rows() > 0)
+		{
+			$this->db->update($this->tablas['config'], $data);
+		}
+		else
+		{
+			$this->db->insert($this->tablas['config'], $data);
+		}
 	}
 }
 
