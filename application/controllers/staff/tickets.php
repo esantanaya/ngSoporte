@@ -150,7 +150,6 @@ class Tickets extends CI_Controller {
 					$adjunto_completo_staff = $this->ticket_model->
 								get_adjunto_mensaje($respuesta_id, $ticket_id,
 													'R');
-
 					if ($adjunto_completo_staff != null)
 						$adjunto_staff = '<div class="cuerpo"><a href="' 
 						. base_url() . 'docs/tickets/' 
@@ -162,18 +161,18 @@ class Tickets extends CI_Controller {
 										'nombre_usuario'] . ' ' . $valor[
 										'apellido_paterno'] . '</div>';
 
-					$historial['encabezado_staff'] = $encabezado_staff;
-
-					if ($adjunto_staff != null)
+					$historial['encabezado_staff'][$fila] = $encabezado_staff;
+					
+					if (!empty($adjunto_staff))
 					{
-						$historial['adjunto_staff'] .= $adjunto_staff;
+						$historial['adjunto_staff'][$fila] = $adjunto_staff;
 					}
 					else
 					{
-						$historial['adjunto_staff'] .= '';
+						$historial['adjunto_staff'][$fila] = '';
 					}
 
-					$historial['mensaje_staff'] .= '<div class="cuerpo">' 
+					$historial['mensaje_staff'][$fila] .= '<div class="cuerpo">' 
 												. $valor['response']
 												. '</div>';
 					$bandera = true;
@@ -190,7 +189,6 @@ class Tickets extends CI_Controller {
 			$arreglo_historial[$x] = $historial;
 			$x++;
 		}
-
 		$resumen_ticket = $this->ticket_model->get_vista_ticket($ticketID);
 
 		$resumen_asigna = $this->ticket_model->get_vista_asigna($ticketID);
@@ -202,7 +200,7 @@ class Tickets extends CI_Controller {
 		$this->table->set_template($tmpl);
 
 		// $arreglo_historial = array_reverse($arreglo_historial, true);
-
+		//die(var_dump($arreglo_historial));
 		foreach ($arreglo_historial as $key => $value) 
 		{
 			if ($value['encabezado'])
@@ -215,13 +213,16 @@ class Tickets extends CI_Controller {
 				$this->table->add_row($value['mensaje']);
 
 			if ($value['encabezado_staff'])
-				$this->table->add_row($value['encabezado_staff']);
+			{
+				foreach ($value['encabezado_staff'] as $llave => $valor) {
+					$this->table->add_row($value['encabezado_staff'][$llave]);
+					if ($value['adjunto_staff'])
+						$this->table->add_row($value['adjunto_staff'][$llave]);
 
-			if ($value['adjunto_staff'])
-				$this->table->add_row($value['adjunto_staff']);
-
-			if ($value['mensaje_staff'])
-				$this->table->add_row($value['mensaje_staff']);
+					if ($value['mensaje_staff'])
+						$this->table->add_row($value['mensaje_staff'][$llave]);	
+				}
+			}
 		}
 
 		$data['SYS_MetaTitle'] = 'Tickets :: Estado';
@@ -602,7 +603,7 @@ class Tickets extends CI_Controller {
 				 	cellspacing="0" cellpadding="4" border="0">', );
 
 			$this->table->set_template($tmpl);
-
+			die(var_dump($arreglo_historial));
 			foreach ($arreglo_historial as $key => $value) 
 			{
 				if ($value['encabezado_staff'])
