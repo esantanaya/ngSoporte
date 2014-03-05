@@ -513,7 +513,7 @@ class Tickets extends CI_Controller {
 				$encabezado = $value['created'] . ' ' 
 							. $value['nombre_cliente'] . ' ' 
 							. $value['apellido_cliente'];
-				$mensaje = $value['message'];
+				$mensaje_arr = $value['message'];
 				$adjunto_completo = $this->ticket_model->get_adjunto_mensaje(
 									$mensaje_id, $ticket_id);
 				$adjunto = '';
@@ -535,7 +535,7 @@ class Tickets extends CI_Controller {
 				{
 					$historial['adjunto'] = '';
 				}
-				$historial['mensaje'] = '<div class="cuerpo">' . $mensaje
+				$historial['mensaje'] = '<div class="cuerpo">' . $mensaje_arr
 											. '</div>';
 
 				$bandera = false;
