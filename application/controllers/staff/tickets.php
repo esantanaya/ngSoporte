@@ -513,23 +513,19 @@ class Tickets extends CI_Controller {
 				$encabezado = $value['created'] . ' ' 
 							. $value['nombre_cliente'] . ' ' 
 							. $value['apellido_cliente'];
-				$mensaje_arr = $value['message'];
+				$mensaje = $value['message'];
 				$adjunto_completo = $this->ticket_model->get_adjunto_mensaje(
 									$mensaje_id, $ticket_id);
-
 				$adjunto = '';
-
 				if ($adjunto_completo != null)
 				{
 					$adjunto = '<a href="' . base_url() . 'docs/tickets/' 
-							. $adjunto_completo . '">' . substr(
-							$adjunto_completo,
-						 	18) . '</a>';
+							. $adjunto_completo . '">' . substr($adjunto_completo,
+							 18) . '</a>';
 				}
 
 				$historial['encabezado'] = '<div class="encabezado">' 
 											. $encabezado . '</div>';
-
 				if ($adjunto != null)
 				{
 					$historial['adjunto'] = '<div class="cuerpo">' . $adjunto
@@ -539,8 +535,7 @@ class Tickets extends CI_Controller {
 				{
 					$historial['adjunto'] = '';
 				}
-
-				$historial['mensaje'] = '<div class="cuerpo">' . $mensaje_arr
+				$historial['mensaje'] = '<div class="cuerpo">' . $mensaje
 											. '</div>';
 
 				$bandera = false;
@@ -549,52 +544,48 @@ class Tickets extends CI_Controller {
 				{
 					$respuesa_mensaje = $valor['msg_id'];
 					$adjunto_staff = null;
+
 					if ($respuesa_mensaje == $mensaje_id)
 					{
 						$respuesta_id = $valor['response_id'];
-						$historial_respuestas['encabezado_staff'] = 
-						'<div class="encabezado_staff">' 
-						. $valor['created'] . ' ' . $valor[
-						'nombre_usuario'] . ' ' . $valor[
-						'apellido_paterno'] . ' ' . '</div>';
 						$adjunto_completo_staff = $this->ticket_model->
-							get_adjunto_mensaje($respuesta_id, $ticket_id,'R');
-
+									get_adjunto_mensaje($respuesta_id, $ticket_id, 
+														'R');
 						if ($adjunto_completo_staff != null)
 							$adjunto_staff = '<div class="cuerpo"><a href="' 
 							. base_url() . 'docs/tickets/' 
 							. $adjunto_completo_staff . '">' 
-							. substr($adjunto_completo_staff, 18) 
-							. '</a></div>';
+							. substr($adjunto_completo_staff, 18) . '</a></div>';
 						
+						$encabezado_staff = '<div class="encabezado_staff">' 
+											. $valor['created'] . ' ' . $valor[
+											'nombre_usuario'] . ' ' . $valor[
+											'apellido_paterno'] . '</div>';
+
+						$historial['encabezado_staff'][$fila] = $encabezado_staff;
 						if ($adjunto_staff != null)
 						{
-							$historial_respuestas['adjunto_staff'] 
-							.= $adjunto_staff;
+							$historial['adjunto_staff'][$fila] = $adjunto_staff;
 						}
 						else
 						{
-							$historial_respuestas['adjunto_staff'] .= '';
+							$historial['adjunto_staff'][$fila] = '';
 						}
-
-						$historial_respuestas['mensaje_staff'] 
-						.= '<div class="cuerpo">' 
-						. $valor['response']
-						. '</div>';
-
+						$historial['mensaje_staff'][$fila] .= '<div class="cuerpo">' 
+													. $valor['response']
+													. '</div>';
 						$bandera = true;
 					}
 					elseif (! $bandera)
 					{
-						$historial_respuestas['encabezado_staff'] = '';
-						$historial_respuestas['mensaje_staff'] = '';
-						$historial_respuestas['adjunto_staff'] = '';
+						$historial['encabezado_staff'] = '';
+						$historial['mensaje_staff'] = '';
+						$historial['adjunto_staff'] = '';
 						$bandera = false;
 					}
 				}
 
-				$arreglo_historial[$x] = array_merge($historial, 
-					$historial_respuestas);
+				$arreglo_historial[$x] = $historial;
 				$x++;
 			}
 			$resumen_ticket = $this->ticket_model->get_vista_ticket($ticketID);
@@ -603,27 +594,26 @@ class Tickets extends CI_Controller {
 				 	cellspacing="0" cellpadding="4" border="0">', );
 
 			$this->table->set_template($tmpl);
-			die(var_dump($arreglo_historial));
+			//die(var_dump(array_reverse($arreglo_historial)));
 			foreach ($arreglo_historial as $key => $value) 
 			{
-				if ($value['encabezado_staff'])
-					$this->table->add_row($value['encabezado_staff']);
-			
-				/*if ($value['adjunto_staff'])
-	
-					$this->table->add_row($value['adjunto_staff']);*/
-	
-				if ($value['mensaje_staff'])
-					$this->table->add_row($conver);
-
 				if ($value['encabezado'])
-				$this->table->add_row($value['encabezado']);
-
-				if ($value['adjunto'])
-				$this->table->add_row($value['adjunto']);
-
+					$this->table->add_row($value['encabezado']);
+				//if ($value['adjunto'])
+					//$this->table->add_row($value['adjunto']);
 				if ($value['mensaje'])
 					$this->table->add_row($value['mensaje']);
+				if ($value['encabezado_staff'])
+				{
+					foreach ($value['encabezado_staff'] as $llave => $valor) {
+						$this->table->add_row($value['encabezado_staff'][$llave]);
+						//if ($value['adjunto_staff'])
+							//$this->table->add_row($value['adjunto_staff'][$llave]);
+
+						if ($value['mensaje_staff'])
+							$this->table->add_row($value['mensaje_staff'][$llave]);	
+					}
+				}
 			}
 			$mensaje .= '<div id="centro">';
 			
