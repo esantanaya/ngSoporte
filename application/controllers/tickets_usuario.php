@@ -456,7 +456,7 @@ class Tickets_usuario extends CI_Controller {
 		$respuesta = true;
 		$cod_staff = $this->ticket_model->get_cod_staff_ticket($ticketID);
 
-		if(! $this->check_estados($cod_staff))
+		if(! $this->check_estados($cod_staff) && $this->usuario_model->get_usuario_dep($cod_staff) == 1)
 		{
 			$cod_staff = $this->get_asignado(1);
 			$ticket_id = $this->ticket_model->get_ticket_ticketID($ticketID);
