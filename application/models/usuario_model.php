@@ -692,6 +692,17 @@ class Usuario_model extends CI_Model {
 		return $query->result_array();
 	}
 
+	public function get_usuario_dep($cod_usuario)
+	{
+		$this->db->select('id_departamento_usuario');
+		$query = $this->db->get($this->tablas['usuarios'], 1);
+
+		if ($query->num_rows() == 1)
+			return $query->row();;
+
+		return null;
+	}
+
 	//****NIVELES****
 
 	public function get_roles_staff()

@@ -456,16 +456,15 @@ class Tickets_usuario extends CI_Controller {
 		$respuesta = true;
 		$cod_staff = $this->ticket_model->get_cod_staff_ticket($ticketID);
 
-		if(! $this->check_estados($cod_staff))
+		if(! $this->check_estados($cod_staff) && $this->usuario_model->get_usuario_dep($cod_staff) == 1)
 		{
-			$staff = $this->get_asignado(1);
+			$cod_staff = $this->get_asignado(1);
 			$ticket_id = $this->ticket_model->get_ticket_ticketID($ticketID);
 
 			$reasignacion = array('id_ticket' => $ticket_id,
-			  'cod_usuario' => $staff, 'status' => "abierto", 
+			  'cod_usuario' => $cod_staff, 'status' => "abierto", 
 			  'realizado' => $date_string);
-
-			$this->ticket_model->reasigna_ticket($ticketID, $staff);
+			$this->ticket_model->reasigna_ticket($ticketID, $cod_staff);
 			$this->ticket_model->insert_bitacora_asignacion($reasignacion);
 		}
 
@@ -579,16 +578,13 @@ class Tickets_usuario extends CI_Controller {
 		$hora = getFechaActualFormato();
 		$hora = explode("T", $hora);
 		$hora = rtrim($hora[1], "Q");
-	 	//die(var_dump($estados, $hora));
-	 	//die(var_dump(strtotime($estados->entrada_vesp)));
 		if ($estados->vacacion == 1)
 			return false;
 
 		if ($estados->activo == 0)
 			return false;
 		
-		if (strtotime($hora) > strtotime($estados->salida_mat) && strtotime($hora) < strtotime($estados->entrada_ves) || 
-			$estados->corrido == 1)
+		if (strtotime($hora) > strtotime($estados->salida_mat) && strtotime($hora) < strtotime($estados->entrada_ves))
 			return false;
 
 		return true;
@@ -617,7 +613,7 @@ class Tickets_usuario extends CI_Controller {
 		foreach ($mensajes as $row => $value)
 		{
 			$mensaje_id = $value['msg_id'];
-			$encabezado = /*standard_date($date_string, */$value['created']/*)*/ . ' ' 
+			$encabezado = $value['created'] . ' ' 
 						. $value['nombre_cliente'] . ' ' 
 						. $value['apellido_cliente'];
 			$mensaje = $value['message'];
