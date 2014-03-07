@@ -101,8 +101,9 @@ class Tickets_usuario extends CI_Controller {
 		$ini = $horarios[0]['horario_soporte_inicio'];
 		$fin = $horarios[0]['horario_soporte_final'];
 		$hora = getFechaActualFormato();
-
-		$esTiempo = revisaEntreTiempo($ini, $fin, $hora);
+		$hora = explode("T", $hora);
+		$hora = rtrim($hora[1], "Q");
+		$esTiempo = $this->revisaEntreTiempo($ini, $fin, $hora);
 
 		if (!$esTiempo)
 			$archivo = array('error' => 'Horario: ' . $ini . ' - ' . $fin);
@@ -213,6 +214,14 @@ class Tickets_usuario extends CI_Controller {
 									 informaci&oacute;n';	
 		}
 		$this->load->view('public/main_tickets_view', $data);
+		return true;
+	}
+
+	public function revisaEntreTiempo($inicio, $fin, $hora)
+	{
+		if ($hora < $inicio || $hora > $fin)
+			return false;
+
 		return true;
 	}
 
