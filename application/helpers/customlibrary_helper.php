@@ -466,9 +466,9 @@ if (!function_exists('revisaEntreTiempo'))
 {
 	function revisaEntreTiempo($ini, $fin, $actual)
 	{
-		if ($actual >= $ini && $actual <= $fin)
-			return true;
+		if ($actual < $ini || $actual > $fin)
+			return false;
 
-		return false;
+		return true;
 	}
 }
