@@ -101,7 +101,8 @@ class Tickets_usuario extends CI_Controller {
 		$ini = $horarios[0]['horario_soporte_inicio'];
 		$fin = $horarios[0]['horario_soporte_final'];
 		$hora = getFechaActualFormato();
-
+		$hora = explode("T", $hora);
+		$hora = rtrim($hora[1], "Q");
 		$esTiempo = revisaEntreTiempo($ini, $fin, $hora);
 
 		if (!$esTiempo)
@@ -665,16 +666,16 @@ class Tickets_usuario extends CI_Controller {
 										'nombre_usuario'] . ' ' . $valor[
 										'apellido_paterno'] . '</div>';
 
-					$historial['encabezado_staff'] = $encabezado_staff;
+					$historial['encabezado_staff'][$fila] = $encabezado_staff;
 					if ($adjunto_staff != null)
 					{
-						$historial['adjunto_staff'] .= $adjunto_staff;
+						$historial['adjunto_staff'][$fila] = $adjunto_staff;
 					}
 					else
 					{
-						$historial['adjunto_staff'] .= '';
+						$historial['adjunto_staff'][$fila] = '';
 					}
-					$historial['mensaje_staff'] .= '<div class="cuerpo">' 
+					$historial['mensaje_staff'][$fila] .= '<div class="cuerpo">' 
 												. $valor['response']
 												. '</div>';
 					$bandera = true;
@@ -711,11 +712,16 @@ class Tickets_usuario extends CI_Controller {
 			if ($value['mensaje'])
 				$this->table->add_row($value['mensaje']);
 			if ($value['encabezado_staff'])
-				$this->table->add_row($value['encabezado_staff']);
-			if ($value['adjunto_staff'])
-				$this->table->add_row($value['adjunto_staff']);
-			if ($value['mensaje_staff'])
-				$this->table->add_row($value['mensaje_staff']);
+			{
+				foreach ($value['encabezado_staff'] as $llave => $valor) {
+					$this->table->add_row($value['encabezado_staff'][$llave]);
+					if ($value['adjunto_staff'])
+						$this->table->add_row($value['adjunto_staff'][$llave]);
+
+					if ($value['mensaje_staff'])
+						$this->table->add_row($value['mensaje_staff'][$llave]);	
+				}
+			}
 		}
 
 		$data['SYS_MetaTitle'] = 'Tickets :: Estado';
